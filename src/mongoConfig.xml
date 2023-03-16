@@ -1,0 +1,8 @@
+<mongo:mongo-client id="mongoClient" host="localhost:27017" />
+<mongo:db-factory id="mongoDbFactory" dbname="octopus" mongo-client-ref="mongoClient" />
+
+<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+<constructor-arg ref="mongoDbFactory"/>
+</bean>
+
+<mongo:repositories base-package="src.main.java.adapters.persistence" mongo-template-ref="mongoTemplate"/>

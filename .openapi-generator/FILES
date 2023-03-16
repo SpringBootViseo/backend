@@ -1,0 +1,4 @@
+src/main/java/adapters/web/ApiUtil.java
+src/main/java/adapters/web/InventoryApi.java
+src/main/java/adapters/web/presenter/InventoryItemDTO.java
+src/main/java/adapters/web/presenter/ManufacturerDTO.java
