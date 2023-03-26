@@ -1,20 +1,23 @@
-package application.domain;
+package application.adapters.persistence.inventory.entity;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Manufacturer {
-
+@Document(collection = "Manufacturer")
+public class ManufacturerEntity {
     @Getter
     @Setter
+    @Id
     private UUID id;
 
     @Getter

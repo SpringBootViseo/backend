@@ -168,8 +168,8 @@
                                 <dateLibrary>java</dateLibrary>
                                 <generateModel>true</generateModel>
                             </configOptions>
-                            <modelPackage>adapters.web.presenter</modelPackage>
-                            <apiPackage>adapters.web</apiPackage>
+                            <modelPackage>application.adapters.web.presenter</modelPackage>
+                            <apiPackage>application.adapters.web</apiPackage>
                         </configuration>
                     </execution>
                 </executions>
