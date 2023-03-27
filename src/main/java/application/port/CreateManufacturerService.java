@@ -4,7 +4,6 @@ import application.domain.Manufacturer;
 import application.port.in.CreateManufacturerUseCase;
 import application.port.out.CreateManufacturerPort;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,5 @@ public class CreateManufacturerService implements CreateManufacturerUseCase {
     @Override
     public Manufacturer createManufacurer(Manufacturer manufacturer) {
         return createmanufacturerPort.createManufacurer(manufacturer);
-
     }
 }
