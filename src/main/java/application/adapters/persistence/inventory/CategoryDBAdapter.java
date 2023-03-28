@@ -3,7 +3,17 @@ package application.adapters.persistence.inventory;
 import application.adapters.persistence.inventory.entity.CategoryEntity;
 import application.domain.Category;
 import application.port.out.CategoryPort;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.internal.MongoClientImpl;
 import lombok.AllArgsConstructor;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CategoryDBAdapter implements CategoryPort {
     private CategoryRepository categoryRepository;
+
 
     @Override
     public Category createCategory(Category category) {
@@ -34,16 +45,31 @@ public class CategoryDBAdapter implements CategoryPort {
     public List<Category> listCategories() {
         System.out.println("can access to db adapter");
         //List<CategoryEntity> categoryEntityList=categoryRepository.findAll();
-        Iterable<CategoryEntity> categoryEntityList;
-        categoryEntityList = categoryRepository.findAll();
-        System.out.println("all found");
+
+        ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017");
+
+        // Create a new MongoClientSettings object
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+
+        // Create a new MongoClient object using the settings
+        MongoClient mongoClient = MongoClients.create(settings);
+
+        // Get the database instance from the client
+        MongoDatabase database = mongoClient.getDatabase("octopus");
+
+        MongoCollection<Document> collection = database.getCollection("category");
+        MongoCollection<CategoryEntity> categoryEntityList;
+        Document myDoc = collection.find().first();
+        System.out.println(myDoc.toJson());
         List<Category> categoryList=new ArrayList<>();
-        for (CategoryEntity categoryEntity:categoryEntityList
+       /* for (CategoryEntity categoryEntity:categoryEntityList
              ) {
             System.out.println("can add product");
             categoryList.add(new Category(categoryEntity.getId(),categoryEntity.getName(),categoryEntity.getLinkImg(),categoryEntity.getLinkImgBanner()));
 
-        }
+        }*/
         return categoryList;
     }
 
