@@ -1,5 +1,6 @@
 package application.adapters.web.presenter;
 
+
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,13 +14,14 @@ import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+import java.util.*;
 import javax.annotation.Generated;
 
 /**
  * InventoryItemDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-10T11:26:58.390740700+01:00[Europe/Paris]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-28T08:40:39.113207Z[Africa/Casablanca]")
 public class InventoryItemDTO {
 
   @JsonProperty("id")

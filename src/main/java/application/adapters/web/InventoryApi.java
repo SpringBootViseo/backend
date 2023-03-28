@@ -8,9 +8,11 @@ package application.adapters.web;
 import application.adapters.web.presenter.InventoryItemDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,14 +20,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-10T11:26:58.390740700+01:00[Europe/Paris]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-28T08:40:39.113207Z[Africa/Casablanca]")
 @Validated
 @Tag(name = "inventory", description = "Secured Admin-only calls")
 public interface InventoryApi {

@@ -1,13 +1,14 @@
 package application.adapters.web.presenter;
 
+
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 
 import javax.annotation.Generated;
 
@@ -15,7 +16,7 @@ import javax.annotation.Generated;
  * ManufacturerDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-10T11:26:58.390740700+01:00[Europe/Paris]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-28T08:40:39.113207Z[Africa/Casablanca]")
 public class ManufacturerDTO {
 
   @JsonProperty("id")
