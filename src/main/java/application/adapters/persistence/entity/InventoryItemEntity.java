@@ -1,4 +1,4 @@
-package application.adapters.persistence.inventory.entity;
+package application.adapters.persistence.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

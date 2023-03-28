@@ -1,4 +1,5 @@
-package application.adapters.persistence.inventory.entity;
+package application.adapters.persistence.entity;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,20 +12,24 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Users")
-public class UserEntity {
+
+@Document(collection = "Manufacturer")
+public class ManufacturerEntity {
     @Getter
     @Setter
     @Id
-    private String id;
+    private UUID id;
+
     @Getter
     @Setter
-    private String fullname;
+    private String name;
+
     @Getter
     @Setter
-    private String email;
+    private String homePage;
+
     @Getter
     @Setter
-    private String numberPhone;
+    private String phone;
 
 }

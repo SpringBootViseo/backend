@@ -35,7 +35,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
-        System.out.println("mongoclient");
         return MongoClients.create(mongoClientSettings);
     }
 

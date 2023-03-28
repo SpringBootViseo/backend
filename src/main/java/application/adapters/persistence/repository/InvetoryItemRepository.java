@@ -1,6 +1,6 @@
-package application.adapters.persistence.inventory;
+package application.adapters.persistence.repository;
 
-import application.adapters.persistence.inventory.entity.InventoryItemEntity;
+import application.adapters.persistence.entity.InventoryItemEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

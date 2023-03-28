@@ -1,6 +1,7 @@
-package application.adapters.persistence.inventory;
+package application.adapters.persistence.adapter;
 
-import application.adapters.persistence.inventory.entity.ManufacturerEntity;
+import application.adapters.persistence.entity.ManufacturerEntity;
+import application.adapters.persistence.repository.ManufacturerRepository;
 import application.domain.Manufacturer;
 import application.port.out.CreateManufacturerPort;
 import lombok.AllArgsConstructor;

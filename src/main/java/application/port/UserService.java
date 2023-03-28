@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class UserService implements UserUseCase {
-    @Autowired
     private final UserPort userPort;
 
     @Override

@@ -16,7 +16,6 @@ public class UserController {
     private final UserUseCase userUseCase;
     @PostMapping("")
     public User saveUser(@RequestBody User user){
-        System.out.println("hi from controller :"+user.toString());
         return userUseCase.saveUser(user);
     }
 }
