@@ -17,7 +17,7 @@ public class ProductDTO {
     @Getter
     @Setter
     @JsonProperty("id")
-    @NotBlank
+    @Valid
     private UUID id;
     @Getter
     @Setter
@@ -42,12 +42,12 @@ public class ProductDTO {
     @Getter
     @Setter
     @JsonProperty("images")
-    @NotBlank
+    @Valid
     private List<String> Images;
     @Getter
     @Setter
     @JsonProperty("unitQuantity")
-    @NotBlank
+    @Valid
     private String unitQuantity;
     @Getter
     @Setter
@@ -60,7 +60,7 @@ public class ProductDTO {
     @Getter
     @Setter
     @JsonProperty("price")
-    @NotBlank
+    @Valid
     private long currentPrice;
     @Getter
     @Setter

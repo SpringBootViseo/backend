@@ -71,8 +71,21 @@ public class ProductController {
         }
 
     }
+    @GetMapping("/name")
+    ResponseEntity<List<ProductDTO>> listProducts(@RequestParam(name="name") String subStringName){
+        try{
+            List<Product> productList=productUseCase.listProducts(subStringName);
+            System.out.println(productList);
+            return new ResponseEntity<List<ProductDTO>>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
+        }
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+
+        }
+    }
+
     @PutMapping("/{id}")
-    ResponseEntity<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO product,@PathVariable(name = "id") UUID id){
+    ResponseEntity<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO product,@Validated @PathVariable(name = "id") UUID id){
         try {
             Product productResponse=productUseCase.updateProduct(productMapper.productToProductDto(product),id);
             return new ResponseEntity<ProductDTO>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class CategoryDTO {
     @Getter
     @Setter
     @JsonProperty("id")
-    @NotBlank
+    @Valid
     private UUID id;
 
     @Getter

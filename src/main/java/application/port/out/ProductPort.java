@@ -10,4 +10,7 @@ public interface ProductPort {
     Product getProduct(UUID id);
     List<Product> listProducts();
     Product updateProduct(Product product,UUID id);
+    List<Product> listProducts(UUID id);
+    List<Product> listProducts(String subStringName);
+
 }

@@ -41,7 +41,7 @@ public class CategoryController {
 
     }
     @GetMapping("/{id}")
-    ResponseEntity<CategoryDTO> getCategory(@PathVariable(name = "id") UUID id){
+    ResponseEntity<CategoryDTO> getCategory(@Validated @PathVariable(name = "id") UUID id){
         try{
             Category category=categoryUseCase.getCategory(id);
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(category), HttpStatus.OK);
@@ -70,7 +70,7 @@ public class CategoryController {
         }
     }
     @PutMapping("/{id}")
-    ResponseEntity<CategoryDTO> updateCategory(@Validated @RequestBody CategoryDTO category, @PathVariable(name = "id") UUID id){
+    ResponseEntity<CategoryDTO> updateCategory(@Validated @RequestBody CategoryDTO category, @Validated @PathVariable(name = "id") UUID id){
         try{
             Category updaterCategory=categoryUseCase.updateCategory(categoryMapper.categoryToCategoryDto(category),id);
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(updaterCategory),HttpStatus.OK);

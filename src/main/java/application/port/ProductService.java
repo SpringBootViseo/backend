@@ -28,6 +28,16 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
+    public List<Product> listProducts(UUID id) {
+        return productPort.listProducts(id);
+    }
+
+    @Override
+    public List<Product> listProducts(String subStringName) {
+        return productPort.listProducts(subStringName);
+    }
+
+    @Override
     public Product updateProduct(Product product, UUID id) {
         return productPort.updateProduct(product,id);
     }

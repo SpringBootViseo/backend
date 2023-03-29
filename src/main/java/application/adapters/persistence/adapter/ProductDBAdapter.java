@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -56,6 +57,7 @@ public class ProductDBAdapter implements ProductPort {
 
     }
 
+
     @Override
     public Product updateProduct(Product product, UUID id) {
         if(productRepository.findById(id).isPresent()){
@@ -70,4 +72,25 @@ public class ProductDBAdapter implements ProductPort {
 
 
     }
+
+    @Override
+    public List<Product> listProducts(UUID id) {
+        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Products");
+        List<Product> productList=productMapper.categoryToDocument(collection);
+        List<Product> filteredList = productList.stream()
+                .filter(product -> product.getCategory().getId().equals(id))
+                .collect(Collectors.toList());
+        return filteredList;
+    }
+
+    @Override
+    public List<Product> listProducts(String subStringName) {
+        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Products");
+        List<Product> productList=productMapper.categoryToDocument(collection);
+        List<Product> filteredList = productList.stream()
+                .filter(product -> product.getName().contains(subStringName))
+                .collect(Collectors.toList());
+        return filteredList;
+    }
+
 }
