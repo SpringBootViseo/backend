@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-28T11:09:33.209460600Z[Africa/Casablanca]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-29T19:36:58.928259300Z[Africa/Casablanca]")
 @Validated
 @Tag(name = "inventory", description = "Secured Admin-only calls")
 public interface InventoryApi {

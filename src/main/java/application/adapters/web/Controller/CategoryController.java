@@ -27,7 +27,7 @@ public class CategoryController {
     private CategoryUseCase categoryUseCase;
     private CategoryMapperImpl categoryMapper;
     @PostMapping
-    ResponseEntity<CategoryDTO> createCategory(@Validated @RequestBody CategoryDTO category){
+    public ResponseEntity<CategoryDTO> createCategory(@Validated @RequestBody CategoryDTO category){
         try{
             Category categoryResponse=categoryUseCase.createCategory(categoryMapper.categoryToCategoryDto(category));
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(categoryResponse),HttpStatus.OK);
@@ -41,7 +41,7 @@ public class CategoryController {
 
     }
     @GetMapping("/{id}")
-    ResponseEntity<CategoryDTO> getCategory(@Validated @PathVariable(name = "id") UUID id){
+    public ResponseEntity<CategoryDTO> getCategory(@Validated @PathVariable(name = "id") UUID id){
         try{
             Category category=categoryUseCase.getCategory(id);
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(category), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class CategoryController {
 
     }
     @GetMapping("")
-    ResponseEntity<List<CategoryDTO>> listCategories(){
+    public ResponseEntity<List<CategoryDTO>> listCategories(){
         try{
             List<Category> listCategories= categoryUseCase.listCategories();
             return new ResponseEntity<List<CategoryDTO>>(categoryMapper.listCategoryToListCategoryDto(listCategories),HttpStatus.OK);
@@ -70,7 +70,7 @@ public class CategoryController {
         }
     }
     @PutMapping("/{id}")
-    ResponseEntity<CategoryDTO> updateCategory(@Validated @RequestBody CategoryDTO category, @Validated @PathVariable(name = "id") UUID id){
+    public ResponseEntity<CategoryDTO> updateCategory(@Validated @RequestBody CategoryDTO category, @Validated @PathVariable(name = "id") UUID id){
         try{
             Category updaterCategory=categoryUseCase.updateCategory(categoryMapper.categoryToCategoryDto(category),id);
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(updaterCategory),HttpStatus.OK);

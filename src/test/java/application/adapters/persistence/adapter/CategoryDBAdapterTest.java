@@ -1,11 +1,11 @@
-package application.adapters.web;
+package application.adapters.persistence.adapter;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryControllerTest {
+class CategoryDBAdapterTest {
 
     @BeforeEach
     void setUp() {

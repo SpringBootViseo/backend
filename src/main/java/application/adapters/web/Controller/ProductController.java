@@ -75,7 +75,7 @@ public class ProductController {
     ResponseEntity<List<ProductDTO>> listProducts(@RequestParam(name="name") String subStringName){
         try{
             List<Product> productList=productUseCase.listProducts(subStringName);
-            System.out.println(productList);
+
             return new ResponseEntity<List<ProductDTO>>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
         }
         catch (Exception e){
