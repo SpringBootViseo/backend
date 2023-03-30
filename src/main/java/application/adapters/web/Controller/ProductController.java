@@ -21,6 +21,8 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
+
 @RequestMapping("/products")
 public class ProductController {
     private ProductUseCase productUseCase;

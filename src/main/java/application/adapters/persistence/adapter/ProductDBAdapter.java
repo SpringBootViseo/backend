@@ -1,7 +1,6 @@
 package application.adapters.persistence.adapter;
 
 import application.adapters.persistence.MongoConfig;
-import application.adapters.persistence.entity.CategoryEntity;
 import application.adapters.persistence.entity.ProductEntity;
 import application.adapters.mapper.mapperImpl.ProductMapperImpl;
 import application.adapters.persistence.repository.ProductRepository;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.bson.Document;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;

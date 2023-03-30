@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/categories")
 @AllArgsConstructor
