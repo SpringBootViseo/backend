@@ -29,8 +29,4 @@ public class UserMapperImpl implements UserMapper {
 
     }
 
-    @Override
-    public UserEntity userDtoToUserEntity(UserDTO userDTO) {
-        return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone());
-    }
 }

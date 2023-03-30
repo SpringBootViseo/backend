@@ -5,6 +5,7 @@ import application.adapters.mapper.UserMapper;
 import application.adapters.web.presenter.UserDTO;
 import application.domain.User;
 import application.port.in.UserUseCase;
+import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.UnexpectedTypeException;
 
 @RestController
 @RequestMapping("/users")
@@ -30,13 +30,10 @@ public class UserController {
             User savedUser = userUseCase.saveUser(userMapper.userDtoToUser(userDTO));
             return new ResponseEntity<User>(savedUser, HttpStatus.CREATED);
         }catch (UnexpectedTypeException e){
-            e.printStackTrace();
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserAlreadyExistsException e) {
-            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User  exists", e);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }

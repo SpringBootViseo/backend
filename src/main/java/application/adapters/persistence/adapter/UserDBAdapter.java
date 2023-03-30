@@ -26,6 +26,4 @@ public class UserDBAdapter implements UserPort {
             return userMapperImpl.userEntityToUser (userEntitySaved);
         }
     }
-
-
 }

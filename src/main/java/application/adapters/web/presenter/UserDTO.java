@@ -36,7 +36,5 @@ public class UserDTO {
     @Getter
     @Setter
     @JsonProperty("phone")
-    @Valid
-    @Schema(name = "name", example = "066666666666")
     private String phone;
 }
