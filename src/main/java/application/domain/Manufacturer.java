@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Manufacturer {
 
     @Getter

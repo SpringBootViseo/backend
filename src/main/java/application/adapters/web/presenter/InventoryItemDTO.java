@@ -1,25 +1,28 @@
 package application.adapters.web.presenter;
 
+import java.net.URI;
 import java.util.Objects;
-
+import application.adapters.web.presenter.ManufacturerDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+import java.util.*;
 import javax.annotation.Generated;
 
 /**
  * InventoryItemDTO
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-02-10T11:26:58.390740700+01:00[Europe/Paris]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-30T13:17:14.294121100Z[Africa/Casablanca]")
 public class InventoryItemDTO {
 
   @JsonProperty("id")
