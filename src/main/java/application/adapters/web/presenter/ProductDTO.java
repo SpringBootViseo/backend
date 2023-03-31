@@ -1,6 +1,5 @@
 package application.adapters.web.presenter;
 
-import application.domain.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -39,6 +38,11 @@ public class ProductDTO {
     @JsonProperty("description")
     @NotBlank
     private String description;
+    @Getter
+    @Setter
+    @JsonProperty("quantity")
+
+    private int quantity;
     @Getter
     @Setter
     @JsonProperty("images")

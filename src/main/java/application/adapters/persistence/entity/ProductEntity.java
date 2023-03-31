@@ -32,6 +32,9 @@ public class ProductEntity {
     private String description;
     @Getter
     @Setter
+    private int quantity;
+    @Getter
+    @Setter
     private List<String> Images;
     @Getter
     @Setter

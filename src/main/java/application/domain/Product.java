@@ -14,6 +14,7 @@ public class Product {
     @Getter
     @Setter
     private UUID id;
+
     @Getter
     @Setter
     private String name;
@@ -26,6 +27,9 @@ public class Product {
     @Getter
     @Setter
     private String description;
+    @Getter
+    @Setter
+    private int quantity;
     @Getter
     @Setter
     private List<String> Images;
