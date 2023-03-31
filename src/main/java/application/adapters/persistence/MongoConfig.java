@@ -4,6 +4,10 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import org.bson.UuidRepresentation;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
@@ -33,6 +37,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         final ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/octopus");
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
+                .uuidRepresentation(UuidRepresentation.STANDARD)
                 .build();
         return MongoClients.create(mongoClientSettings);
     }
@@ -40,5 +45,15 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     public Collection<String> getMappingBasePackages() {
         return Collections.singleton("application.adapters.persistence");
+
     }
+    public MongoCollection<Document> getAllDocuments(String collectionName){
+        MongoClient mongoClient = this.mongoClient();
+
+        // Get the database instance from the client
+        MongoDatabase database = mongoClient.getDatabase(this.getDatabaseName());
+        return database.getCollection(collectionName);
+    }
+
+
 }
