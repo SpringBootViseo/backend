@@ -23,13 +23,5 @@ public class User {
     @Setter
     private String phone;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", fullname='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", numberPhone='" + phone + '\'' +
-                '}';
-    }
+
 }

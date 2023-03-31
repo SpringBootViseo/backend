@@ -24,7 +24,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        System.out.println("getDataBaseName");
         return "octopus";
     }
 

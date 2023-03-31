@@ -55,7 +55,7 @@
 //
 //        userDTO.setName(null);
 //        user.setName(null);
-//        given(userMapperImpl.userToUserDTO(user)).willReturn(userDTO);
+//        given(userMapperImpl.userToUserDTO(user)).willReturn(user);
 //        given(userMapperImpl.userDtoToUser(userDTO)).willReturn(user);
 //        when(userUseCase.saveUser(user)).thenThrow(new UnexpectedTypeException("test exception"));
 //        try {

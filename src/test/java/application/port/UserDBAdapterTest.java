@@ -6,18 +6,21 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import application.adapters.persistence.adapter.UserDBAdapter;
+import application.adapters.web.presenter.UserDTO;
 import application.port.out.UserPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.persistence.repository.UserRepository;
 import application.domain.User;
+
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,14 +52,12 @@ public class UserDBAdapterTest {
 
     @Test
     public void testSaveUser_UserAlreadyExists() {
-        User user = new User("aaaaaaaaaaaaaa","John Doe", "johndoe@example.com","12222222");
+        User user = new User("1", "otman otman", "otman@gmail.com", "123456789");
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(userEntity));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(userEntity));
 
-        Assertions.assertThrows(UserAlreadyExistsException.class, () -> {
-            userDBAdapter.saveUser(user);
-        });
+        assertThrows(UserAlreadyExistsException.class, () -> userDBAdapter.saveUser(user));
     }
 
 
