@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+
 public class CreateManufacturerService implements CreateManufacturerUseCase {
     @Autowired
     private final CreateManufacturerPort createmanufacturerPort;
