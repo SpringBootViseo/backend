@@ -73,8 +73,8 @@ public class ProductDBAdapter implements ProductPort {
 
     @Override
     public List<Product> listProducts(UUID id) {
-        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Products");
-        List<Product> productList=productMapper.categoryToDocument(collection);
+
+        List<Product> productList=this.listProducts();
         List<Product> filteredList = productList.stream()
                 .filter(product -> product.getCategory().getId().equals(id))
                 .collect(Collectors.toList());
@@ -83,12 +83,17 @@ public class ProductDBAdapter implements ProductPort {
 
     @Override
     public List<Product> listProducts(String subStringName) {
-        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Products");
-        List<Product> productList=productMapper.categoryToDocument(collection);
+        List<Product> productList=this.listProducts();
         List<Product> filteredList = productList.stream()
                 .filter(product -> product.getName().contains(subStringName))
                 .collect(Collectors.toList());
         return filteredList;
+    }
+
+    @Override
+    public Boolean validQuantity(UUID id, int quantity) {
+        Product product=this.getProduct(id);
+        return (quantity<product.getQuantity());
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 @Service
 @AllArgsConstructor
-public class ProductService implements ProductUseCase {
+public class ProductService implements ProductUseCase{
     private final ProductPort productPort;
     @Override
     public Product createProduct(Product product) {
@@ -40,5 +40,10 @@ public class ProductService implements ProductUseCase {
     @Override
     public Product updateProduct(Product product, UUID id) {
         return productPort.updateProduct(product,id);
+    }
+
+    @Override
+    public Boolean validQuantity(UUID id, int quantity) {
+        return productPort.validQuantity(id,quantity);
     }
 }

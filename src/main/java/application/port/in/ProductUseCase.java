@@ -12,5 +12,6 @@ public interface ProductUseCase {
     List<Product> listProducts(UUID id);
     List<Product> listProducts(String subStringName);
     Product updateProduct(Product product,UUID id);
+    Boolean validQuantity(UUID id,int quantity);
 
 }

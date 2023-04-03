@@ -84,4 +84,14 @@ public class ProductMapperImpl implements ProductMapper {
         }
         return productDtoList;
     }
+
+    @Override
+    public List<Product> listProductDTOToListProduct(List<ProductDTO> productDTOList) {
+        List<Product> productList=new ArrayList<>();
+        for (ProductDTO productDto: productDTOList
+             ) {
+            productList.add(this.productToProductDto(productDto));
+        }
+        return productList;
+    }
 }

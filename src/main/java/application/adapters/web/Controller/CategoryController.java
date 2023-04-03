@@ -6,15 +6,12 @@ import application.domain.Category;
 import application.port.in.CategoryUseCase;
 import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -23,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/categories")
 @AllArgsConstructor
 public class CategoryController {
-    @Autowired
+
     private CategoryUseCase categoryUseCase;
     private CategoryMapperImpl categoryMapper;
     @PostMapping
