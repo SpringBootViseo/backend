@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +22,9 @@ public class User {
     @Getter
     @Setter
     private String phone;
+    @Getter
+    @Setter
+    private String address;
 
 
 }

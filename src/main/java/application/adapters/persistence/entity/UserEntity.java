@@ -24,5 +24,8 @@ public class UserEntity {
     @Getter
     @Setter
     private String numberPhone;
+    @Getter
+    @Setter
+    private String address;
 
 }

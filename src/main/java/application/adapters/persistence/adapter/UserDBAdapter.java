@@ -1,6 +1,7 @@
 package application.adapters.persistence.adapter;
 
 import application.adapters.exception.UserAlreadyExistsException;
+import application.adapters.exception.UserNotFoundException;
 import application.adapters.mapper.mapperImpl.UserMapperImpl;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.persistence.repository.UserRepository;
@@ -16,6 +17,32 @@ public class UserDBAdapter implements UserPort {
     @Autowired
     private UserRepository userRepository;
     private UserMapperImpl userMapperImpl;
+
+    @Override
+    public User updateUser(String id, User user) {
+        if(userRepository.findById(id).isPresent()){
+            UserEntity savedUser=userRepository.findById(id).get();
+            savedUser.setAddress(user.getAddress());
+            savedUser.setNumberPhone(user.getPhone());
+            UserEntity result=userRepository.save(savedUser);
+            return userMapperImpl.userEntityToUser(result);
+        }
+        else throw new UserNotFoundException(id);
+
+    }
+
+    @Override
+    public boolean isAvailable(String id) {
+        return userRepository.findById(id).isPresent();
+    }
+
+    @Override
+    public User getUser(String id) {
+        if(isAvailable(id))
+        return userMapperImpl.userEntityToUser(userRepository.findById(id).get());
+        else throw new UserNotFoundException(id);
+    }
+
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
         UserEntity userEntity = userRepository.findById(user.getId()).orElse(null);

@@ -1,5 +1,6 @@
 package application.port;
 
+import application.adapters.exception.UserNotFoundException;
 import application.domain.Cart;
 import application.domain.User;
 import application.port.out.CartPort;
@@ -34,7 +35,7 @@ class UserServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
        id="VQl0nhjeMgP1CAunvAt7Ff7kA2";
-       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174");
+       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174","Casablanca");
        cart = new Cart(id,new ArrayList<>());
     }
     @AfterEach
@@ -62,5 +63,33 @@ class UserServiceTest {
         assertEquals(savedUser,user);
 
     }
+    @Test
+    void shouldReturnTrueWhenisAvailableWithAvailableUser(){
+        given(userPort.isAvailable(id)).willReturn(true);
+        assertTrue(userService.isAvailable(id));
+    }
+    @Test
+    void shouldReturnFalseWhenisAvailableWithUnavailableUser(){
+        assertFalse(userService.isAvailable(id));
+    }
+    @Test
+    void shouldGetUserWhenGetUserWithAvailableUser(){
+        given(userPort.isAvailable(id)).willReturn(true);
+        given(userPort.getUser(id)).willReturn(user);
+        assertEquals(userService.getUser(id),user);
+    }
+    @Test
+    void shouldThrowUserNotFoundExceptionWhenGetUserWithUnavailableUser(){
+        given(userPort.isAvailable(id)).willReturn(false);
+        assertThrows(UserNotFoundException.class,()->userService.getUser(id));
+    }
+    @Test
+    void shouldUpdateUserWhenUpdateUserWithAvailableUser(){
+        User user1= new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null);
+        given(userPort.updateUser(id,user1)).willReturn(user);
+        assertEquals(userService.updateUser(id,user1),user);
+
+    }
+
 
 }

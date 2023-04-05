@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
@@ -37,4 +36,9 @@ public class UserDTO {
     @Setter
     @JsonProperty("phone")
     private String phone;
+    @Getter
+    @Setter
+    @JsonProperty("address")
+    private String address;
+
 }
