@@ -5,31 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Document(collection = "Manufacturer")
-public class ManufacturerEntity {
+@Document(collection = "Orders")
+public class OrderEntity {
     @Getter
     @Setter
-    @Id
     private UUID id;
 
     @Getter
     @Setter
-    private String name;
+    private UserEntity user;
 
     @Getter
     @Setter
-    private String homePage;
+    private OrderStateEntity orderState;
 
     @Getter
     @Setter
-    private String phone;
+    private List<OrderItemEntity> orderItems;
+    @Getter
+    @Setter
+    private Long totalPrice;
 
 }

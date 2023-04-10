@@ -41,8 +41,14 @@ public class ProductDTO {
     @Getter
     @Setter
     @JsonProperty("quantity")
+    @Valid
+    private int storedQuantity;
 
-    private int quantity;
+    @Getter
+    @Setter
+    @JsonProperty("Ordredquantity")
+    @Valid
+    private int orderedQuantity;
     @Getter
     @Setter
     @JsonProperty("images")

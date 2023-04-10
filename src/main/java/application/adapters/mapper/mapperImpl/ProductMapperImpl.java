@@ -23,13 +23,13 @@ public class ProductMapperImpl implements ProductMapper {
     @Override
     public Product productToProductEntity(ProductEntity productEntity) {
         Category category= categoryMapper.categoryToCategoryEntity(productEntity.getCategory());
-        return  new Product(productEntity.getId(),productEntity.getName(),productEntity.getMarque(),productEntity.getLinkImg(),productEntity.getDescription(),productEntity.getQuantity(),productEntity.getImages(),productEntity.getUnitQuantity(),productEntity.getReductionPercentage(), productEntity.getPreviousPrice(), productEntity.getCurrentPrice(), category);
+        return  new Product(productEntity.getId(),productEntity.getName(),productEntity.getMarque(),productEntity.getLinkImg(),productEntity.getDescription(),productEntity.getStoredQuantity(),productEntity.getOrderedQuantity(),productEntity.getImages(),productEntity.getUnitQuantity(),productEntity.getReductionPercentage(), productEntity.getPreviousPrice(), productEntity.getCurrentPrice(), category);
     }
 
     @Override
     public ProductEntity productEntityToProduct(Product product) {
         CategoryEntity categoryEntity= categoryMapper.categoryEntityToCategory(product.getCategory());
-        return new ProductEntity(product.getId(),product.getName(),product.getMarque(),product.getLinkImg(),product.getDescription(),product.getQuantity(),product.getImages(),product.getUnitQuantity(),product.getReductionPercentage(), product.getPreviousPrice(), product.getCurrentPrice(), categoryEntity);
+        return new ProductEntity(product.getId(),product.getName(),product.getMarque(),product.getLinkImg(),product.getDescription(),product.getStoredQuantity(), product.getOrderedQuantity(), product.getImages(),product.getUnitQuantity(),product.getReductionPercentage(), product.getPreviousPrice(), product.getCurrentPrice(), categoryEntity);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ProductMapperImpl implements ProductMapper {
             Document document=doc.get("category", Document.class);
             CategoryEntity categoryEntity =new CategoryEntity(document.get("_id", UUID.class),document.getString("name"),document.getString("linkImg"),document.getString("linkImgBanner"));
 
-            productEntityList.add(new ProductEntity(doc.get("_id", UUID.class),doc.getString("name"),doc.getString("marque"),doc.getString("linkImg"),doc.getString("description"),doc.getInteger("quantity"),doc.getList("Images", String.class),null,doc.getLong("reductionPercentage"),doc.getLong("previousPrice") , doc.getLong("currentPrice"),categoryEntity ));
+            productEntityList.add(new ProductEntity(doc.get("_id", UUID.class),doc.getString("name"),doc.getString("marque"),doc.getString("linkImg"),doc.getString("description"),doc.getInteger("storedQuantity"),doc.getInteger("orderedQuantity"),doc.getList("Images", String.class),null,doc.getLong("reductionPercentage"),doc.getLong("previousPrice") , doc.getLong("currentPrice"),categoryEntity ));
         }
         return this.listProductEntityToListProduct(productEntityList);
     }
@@ -65,14 +65,14 @@ public class ProductMapperImpl implements ProductMapper {
     @Override
     public Product productToProductDto(ProductDTO productDTO) {
         Category category= categoryMapper.categoryToCategoryDto(productDTO.getCategory());
-        return  new Product(productDTO.getId(),productDTO.getName(),productDTO.getMarque(),productDTO.getLinkImg(),productDTO.getDescription(), productDTO.getQuantity(), productDTO.getImages(),productDTO.getUnitQuantity(),productDTO.getReductionPercentage(), productDTO.getPreviousPrice(), productDTO.getCurrentPrice(), category);
+        return  new Product(productDTO.getId(),productDTO.getName(),productDTO.getMarque(),productDTO.getLinkImg(),productDTO.getDescription(), productDTO.getStoredQuantity(),productDTO.getOrderedQuantity(), productDTO.getImages(),productDTO.getUnitQuantity(),productDTO.getReductionPercentage(), productDTO.getPreviousPrice(), productDTO.getCurrentPrice(), category);
 
     }
 
     @Override
     public ProductDTO productDtoToProduct(Product product) {
         CategoryDTO category= categoryMapper.categoryDtoToCategory(product.getCategory());
-        return  new ProductDTO(product.getId(),product.getName(),product.getMarque(),product.getLinkImg(),product.getDescription(), product.getQuantity(), product.getImages(),product.getUnitQuantity(),product.getReductionPercentage(), product.getPreviousPrice(), product.getCurrentPrice(), category);
+        return  new ProductDTO(product.getId(),product.getName(),product.getMarque(),product.getLinkImg(),product.getDescription(), product.getStoredQuantity(),product.getOrderedQuantity(), product.getImages(),product.getUnitQuantity(),product.getReductionPercentage(), product.getPreviousPrice(), product.getCurrentPrice(), category);
 
     }
 

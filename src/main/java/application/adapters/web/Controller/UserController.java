@@ -1,4 +1,4 @@
-package application.adapters.web;
+package application.adapters.web.Controller;
 
 import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.exception.UserNotFoundException;
@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<User> createUser(@Validated @RequestBody UserDTO userDTO) {
         try {
             User savedUser = userUseCase.saveUser(userMapper.userDtoToUser(userDTO));
-            return new ResponseEntity<User>(savedUser, HttpStatus.CREATED);
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         }catch (UnexpectedTypeException e){
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserAlreadyExistsException e) {

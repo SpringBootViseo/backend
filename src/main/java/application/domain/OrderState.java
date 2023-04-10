@@ -1,18 +1,17 @@
-package application.adapters.web.presenter;
+package application.domain;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartCreateRequestDTO {
+public class OrderState {
     @Getter
     @Setter
-    @NotBlank
     private String id;
-
+    @Getter
+    @Setter
+    private String state;
 }

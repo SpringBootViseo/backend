@@ -1,17 +1,21 @@
 package application.adapters.persistence.entity;
 
-import application.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItemEntity {
+@Document(collection = "Orderstates")
+public class OrderStateEntity {
     @Getter
     @Setter
-    Product product;
+    @Id
+    private String id;
     @Getter
     @Setter
-    int quatity;
+    private String state;
 }

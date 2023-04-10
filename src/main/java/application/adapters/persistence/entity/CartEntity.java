@@ -1,6 +1,5 @@
 package application.adapters.persistence.entity;
 
-import application.domain.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

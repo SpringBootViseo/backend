@@ -2,13 +2,10 @@ package application.adapters.mapper.mapperImpl;
 
 import application.adapters.mapper.CartMapper;
 import application.adapters.persistence.entity.CartEntity;
-import application.adapters.persistence.entity.CartItemEntity;
 import application.adapters.persistence.entity.ProductEntity;
-import application.adapters.web.presenter.CartItemDTO;
 import application.adapters.web.presenter.CartResponseDTO;
 import application.adapters.web.presenter.ProductDTO;
 import application.domain.Cart;
-import application.domain.CartItem;
 import application.domain.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

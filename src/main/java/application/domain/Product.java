@@ -29,7 +29,11 @@ public class Product {
     private String description;
     @Getter
     @Setter
-    private int quantity;
+    private int storedQuantity;
+
+    @Getter
+    @Setter
+    private int orderedQuantity;
     @Getter
     @Setter
     private List<String> Images;

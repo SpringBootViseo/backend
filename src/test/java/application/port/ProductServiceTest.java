@@ -1,5 +1,6 @@
 package application.port;
 
+import application.adapters.exception.ProductNotAvailableException;
 import application.domain.Category;
 import application.domain.Product;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -35,7 +36,7 @@ class ProductServiceTest {
         id= UUID.randomUUID();
         category=new Category(id,"test","test","test");
 
-        product = new Product(id,"test","test","test","test", 20, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
+        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
 
     }
 
@@ -62,7 +63,7 @@ class ProductServiceTest {
 
     @Test
     void shouldCallListCategoriesOnceAndReturnListCategoriesWhenlistCategories() {
-        Product product1 =new Product(id,"test1","test1","test1","test1", 20, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
+        Product product1 =new Product(id,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
         List<Product> productList=new ArrayList<>();
         productList.add(product);
         productList.add(product1);
@@ -75,8 +76,8 @@ class ProductServiceTest {
     @Test
     void shouldCallupdateProductOnceAndUpdateProductWhenUpdateProduct() {
         UUID id1=UUID.randomUUID();
-        Product productarg =new Product(id1,"test1","test1","test1","test1", 20, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        Product productexp=new Product(id,"test1","test1","test1","test1", 20, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
+        Product productarg =new Product(id1,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
+        Product productexp=new Product(id,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
         given(productPort.updateProduct(productarg,id)).willReturn(productexp);
         Product result=productService.updateProduct(productarg,id);
         verify(productPort,times(1)).updateProduct(any(),any());
@@ -100,6 +101,40 @@ class ProductServiceTest {
         verify(productPort,times(1)).listProducts((String) any());
 
     }
+    @Test
+    void shouldReturnTrueWhenIsAvailableWithValidIdAndQuanity(){
+        given(productPort.isAvailableToOrder(id,2)).willReturn(true);
+        assertEquals(true,productService.isAvailableToOrder(id,2));
+    }
+    @Test
+    void shouldReturnFalseWhenIsAvailableWithIvalidIdOrQuantity(){
+        given(productPort.isAvailableToOrder(id,30)).willReturn(false);
+        assertEquals(false,productService.isAvailableToOrder(id,30));
+    }
+    @Test
+    void shouldReturnFalseWhenIsAvailableWithNegativeQuantity(){
+        given(productPort.isAvailableToOrder(id,-1)).willReturn(false);
+        assertEquals(false,productService.isAvailableToOrder(id,-1));
+    }
+    @Test
+    void shouldReturnFalseWhenIsAvailableWithZeroQuantity(){
+        given(productPort.isAvailableToOrder(id,0)).willReturn(false);
+        assertEquals(false,productService.isAvailableToOrder(id,0));
+    }
+
+    @Test
+    void shouldOrderProductWhenOrderProductWithValidIdAndQuantity(){
+        Product  productAfterOrder = new Product(id,"test","test","test","test", 20,12, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
+        given(productPort.orderProduct(id,2)).willReturn(productAfterOrder);
+        assertEquals(productAfterOrder,productPort.orderProduct(id,2));
+    }
+    @Test
+    void shouldThrowProductNotAvailableExceptionWhenOrderProductWithInvalidIdOrQuantity(){
+        given(productPort.isAvailableToOrder(id,10)).willReturn(false);
+        given(productPort.orderProduct(id,10)).willThrow(ProductNotAvailableException.class);
+        assertThrows(ProductNotAvailableException.class,()->productPort.orderProduct(id,10));
+    }
+
     }
 
 

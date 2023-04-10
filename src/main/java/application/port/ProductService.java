@@ -43,7 +43,18 @@ public class ProductService implements ProductUseCase{
     }
 
     @Override
-    public Boolean validQuantity(UUID id, int quantity) {
-        return productPort.validQuantity(id,quantity);
+    public Boolean isAvailableToOrder(UUID id, int quantity) {
+
+            return productPort.isAvailableToOrder(id,quantity);
+
+
+    }
+
+    @Override
+    public Product orderProduct(UUID id, int quantity) {
+
+            return productPort.orderProduct(id,quantity);
+
+
     }
 }

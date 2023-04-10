@@ -1,5 +1,6 @@
 package application.adapters.persistence.adapter;
 
+import application.adapters.exception.ProductNotAvailableException;
 import application.adapters.persistence.MongoConfig;
 import application.adapters.persistence.entity.ProductEntity;
 import application.adapters.mapper.mapperImpl.ProductMapperImpl;
@@ -75,25 +76,39 @@ public class ProductDBAdapter implements ProductPort {
     public List<Product> listProducts(UUID id) {
 
         List<Product> productList=this.listProducts();
-        List<Product> filteredList = productList.stream()
+        List<Product> productsHasCategory = productList.stream()
                 .filter(product -> product.getCategory().getId().equals(id))
                 .collect(Collectors.toList());
-        return filteredList;
+        return productsHasCategory;
     }
 
     @Override
     public List<Product> listProducts(String subStringName) {
         List<Product> productList=this.listProducts();
-        List<Product> filteredList = productList.stream()
+        List<Product> productsHasSubStringNameInName = productList.stream()
                 .filter(product -> product.getName().contains(subStringName))
                 .collect(Collectors.toList());
-        return filteredList;
+        return productsHasSubStringNameInName;
     }
 
     @Override
-    public Boolean validQuantity(UUID id, int quantity) {
+    public Boolean isAvailableToOrder(UUID id, int quantity) {
+        if(quantity<1){
+            return false;
+        }
         Product product=this.getProduct(id);
-        return (quantity<product.getQuantity());
+        return (quantity<=product.getStoredQuantity()- product.getOrderedQuantity());
+    }
+
+    @Override
+    public Product orderProduct(UUID id, int quantity) {
+        if(this.isAvailableToOrder(id,quantity)){
+            Product product=this.getProduct(id);
+            product.setOrderedQuantity(product.getOrderedQuantity()+quantity);
+            return this.updateProduct(product,id);
+        }
+
+        else throw new ProductNotAvailableException();
     }
 
 }

@@ -12,5 +12,6 @@ public interface ProductPort {
     Product updateProduct(Product product,UUID id);
     List<Product> listProducts(UUID id);
     List<Product> listProducts(String subStringName);
-    Boolean validQuantity(UUID id,int quantity);
+    Boolean isAvailableToOrder(UUID id, int quantity);
+    Product orderProduct(UUID id,int quantity);
 }

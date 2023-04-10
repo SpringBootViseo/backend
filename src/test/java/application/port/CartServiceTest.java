@@ -39,7 +39,7 @@ class CartServiceTest {
         cart=new Cart("test",new ArrayList<>());
         category=new Category(id,"test","test","test");
 
-        product = new Product(id,"test","test","test","test", 20, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
+        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
 
 
     }

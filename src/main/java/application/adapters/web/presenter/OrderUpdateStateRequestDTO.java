@@ -1,23 +1,18 @@
 package application.adapters.web.presenter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.Valid;
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartResponseDTO {
+public class OrderUpdateStateRequestDTO {
     @Getter
     @Setter
     @NotBlank
-    private String id;
-    @Getter
-    @Setter
-    @Valid
-    private List<ProductDTO> cartItems;
+    @JsonProperty(value = "state")
+    private String idState;
 }

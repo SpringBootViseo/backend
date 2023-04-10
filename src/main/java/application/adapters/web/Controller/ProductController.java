@@ -10,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -32,7 +30,7 @@ public class ProductController {
     ResponseEntity<ProductDTO> createProduct(@Validated @RequestBody ProductDTO product){
         try{
             Product productResponse=productUseCase.createProduct(productMapper.productToProductDto(product));
-            return new ResponseEntity<ProductDTO>(productMapper.productDtoToProduct(productResponse), HttpStatus.OK);
+            return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse), HttpStatus.OK);
         }catch (UnexpectedTypeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
@@ -45,7 +43,7 @@ public class ProductController {
     ResponseEntity<ProductDTO> getProduct(@Validated @PathVariable(value = "id") UUID id){
         try{
             Product productResponse=productUseCase.getProduct(id);
-            return new ResponseEntity<ProductDTO>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
+            return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
@@ -65,7 +63,7 @@ public class ProductController {
     ResponseEntity<List<ProductDTO>> listProducts(){
         try {
             List<Product> productList=productUseCase.listProducts();
-            return new ResponseEntity<List<ProductDTO>>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
+            return new ResponseEntity<>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
         }
         catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
@@ -78,7 +76,7 @@ public class ProductController {
         try{
             List<Product> productList=productUseCase.listProducts(subStringName);
 
-            return new ResponseEntity<List<ProductDTO>>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
+            return new ResponseEntity<>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
         }
         catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
@@ -90,7 +88,7 @@ public class ProductController {
     ResponseEntity<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO product,@Validated @PathVariable(name = "id") UUID id){
         try {
             Product productResponse=productUseCase.updateProduct(productMapper.productToProductDto(product),id);
-            return new ResponseEntity<ProductDTO>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
+            return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
@@ -104,4 +102,5 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+
 }
