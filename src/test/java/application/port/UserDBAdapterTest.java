@@ -44,7 +44,7 @@ public class UserDBAdapterTest {
     }
     @Test
     public void testSaveUser_Success_()  {
-        User user = new User("7dogOFiqeWMDCXpbgINjz0iiMSr1", "Otman Otman", "otman@example.com", "0666666666",null);
+        User user = new User("7dogOFiqeWMDCXpbgINjz0iiMSr1", "Otman Otman", "otman@example.com", "0666666666",null,null);
         when(userPort.saveUser(any(User.class))).thenReturn(user);
         User savedUser = userService.saveUser(user);
 
@@ -54,7 +54,7 @@ public class UserDBAdapterTest {
 
     @Test
     public void testSaveUser_UserAlreadyExists() {
-        User user = new User("1", "otman otman", "otman@gmail.com", "123456789",null);
+        User user = new User("1", "otman otman", "otman@gmail.com", "123456789",null,null);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
         Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(userEntity));

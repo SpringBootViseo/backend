@@ -2,7 +2,7 @@ package application.adapters.mapper;
 
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.web.presenter.UserDTO;
-import application.adapters.web.presenter.UserUpdateDTO;
+import application.adapters.web.presenter.UserPhoneDTO;
 import application.domain.User;
 import org.mapstruct.Mapper;
 @Mapper
@@ -12,7 +12,7 @@ public interface UserMapper {
 
     UserDTO userToUserDTO(User user);
     User userDtoToUser (UserDTO userDTO);
-    User userUpdateDtoToUser(UserUpdateDTO userUpdateDTO);
+    User userUpdateDtoToUser(UserPhoneDTO userPhoneDTO);
 
 
 }

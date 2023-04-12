@@ -5,12 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-public class UserUpdateDTO {
-    @Getter
-    @Setter
-    @JsonProperty("phone")
-    @NotBlank
-    private String phone;
+public class UserAddressDTO {
     @Getter
     @Setter
     @JsonProperty("address")

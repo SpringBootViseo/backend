@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -24,7 +25,10 @@ public class User {
     private String phone;
     @Getter
     @Setter
-    private String address;
+    private String picture;
+    @Getter
+    @Setter
+    private List<String> address;
 
 
 }

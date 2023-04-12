@@ -8,6 +8,8 @@ import application.port.out.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+
 @Service
 @AllArgsConstructor
 public class UserService implements UserUseCase {
@@ -26,6 +28,13 @@ public class UserService implements UserUseCase {
             cartPort.createCart(id);
         return userPort.saveUser(user);
     }
+
+    @Override
+    public User addAddress(String id, String address) {
+
+        return userPort.addAddress(id,address);
+    }
+
     public boolean isAvailable(String id){
         return userPort.isAvailable(id);
     }

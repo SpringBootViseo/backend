@@ -7,5 +7,6 @@ public interface UserUseCase {
     boolean isAvailable(String id);
     User getUser(String id);
     User saveUser(User user);
+    User addAddress(String id,String address);
 
 }

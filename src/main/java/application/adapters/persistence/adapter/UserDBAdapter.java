@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 public class UserDBAdapter implements UserPort {
@@ -22,7 +24,6 @@ public class UserDBAdapter implements UserPort {
     public User updateUser(String id, User user) {
         if(userRepository.findById(id).isPresent()){
             UserEntity savedUser=userRepository.findById(id).get();
-            savedUser.setAddress(user.getAddress());
             savedUser.setNumberPhone(user.getPhone());
             UserEntity result=userRepository.save(savedUser);
             return userMapperImpl.userEntityToUser(result);
@@ -54,8 +55,23 @@ public class UserDBAdapter implements UserPort {
         userEntity.setId(user.getId());
         userEntity.setFullname(user.getName());
         userEntity.setEmail(user.getEmail());
+        userEntity.setPicture(user.getPicture());
         userEntity.setNumberPhone(user.getPhone());
         return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
+    }
+
+    @Override
+    public User addAddress(String id, String address) {
+        User user=this.getUser(id);
+        if(user.getAddress() ==null )
+            user.setAddress(List.of(address));
+        else {
+            List<String> addresses=user.getAddress();
+            addresses.add(address);
+            user.setAddress(addresses);
+        }
+        userRepository.save(userMapperImpl.userToUserEntity(user));
+        return user;
     }
 
 }

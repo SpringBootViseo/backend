@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
@@ -38,7 +40,12 @@ public class UserDTO {
     private String phone;
     @Getter
     @Setter
+    @JsonProperty("picture")
+    private String picture;
+    @Getter
+    @Setter
     @JsonProperty("address")
-    private String address;
+    private List<String> address;
+
 
 }

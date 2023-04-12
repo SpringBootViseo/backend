@@ -35,7 +35,7 @@ class UserServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
        id="VQl0nhjeMgP1CAunvAt7Ff7kA2";
-       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174","Casablanca");
+       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null);
        cart = new Cart(id,new ArrayList<>());
     }
     @AfterEach
@@ -85,7 +85,7 @@ class UserServiceTest {
     }
     @Test
     void shouldUpdateUserWhenUpdateUserWithAvailableUser(){
-        User user1= new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null);
+        User user1= new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null);
         given(userPort.updateUser(id,user1)).willReturn(user);
         assertEquals(userService.updateUser(id,user1),user);
 

@@ -8,4 +8,5 @@ public interface UserPort {
     boolean isAvailable(String id);
     User getUser(String id);
     User saveUser(User user) throws UserAlreadyExistsException;
+    User addAddress(String id,String address);
     }
