@@ -33,7 +33,7 @@ public class OrderService implements OrderUseCase {
             for (OrderItem orderItem: orderItemList){
                 try {
                     Product orderedProduct=productPort.orderProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
-                    order.setTotalPrice(order.getTotalPrice()+orderItem.getProduct().getCurrentPrice()*orderItem.getQuantity());
+                    order.setTotalPrice((long) (order.getTotalPrice()+orderItem.getProduct().getCurrentPrice()*orderItem.getQuantity()));
                     orderItem.setProduct(orderedProduct);
                 }
                 catch (ProductNotAvailableException e){

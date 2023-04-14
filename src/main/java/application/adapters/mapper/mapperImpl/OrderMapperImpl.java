@@ -73,7 +73,7 @@ public class OrderMapperImpl implements OrderMapper {
                 Document productDocument=orderItemsDocument.get("product",Document.class);
                 Document categorydocument=productDocument.get("category", Document.class);
                 Category category =new Category(categorydocument.get("_id", UUID.class),categorydocument.getString("name"),categorydocument.getString("linkImg"),categorydocument.getString("linkImgBanner"));
-                Product product=new Product(productDocument.get("_id", UUID.class),productDocument.getString("name"),productDocument.getString("marque"),productDocument.getString("linkImg"),productDocument.getString("description"),productDocument.getInteger("storedQuantity"),productDocument.getInteger("orderedQuantity"),productDocument.getList("Images", String.class),productDocument.getString("unitQuantity"),productDocument.getLong("reductionPercentage"),productDocument.getLong("previousPrice") , productDocument.getLong("currentPrice"),category);
+                Product product=new Product(productDocument.get("_id", UUID.class),productDocument.getString("name"),productDocument.getString("marque"),productDocument.getString("linkImg"),productDocument.getString("description"),productDocument.getInteger("storedQuantity"),productDocument.getInteger("orderedQuantity"),productDocument.getList("Images", String.class),productDocument.getString("unitQuantity"),productDocument.getDouble("reductionPercentage"),productDocument.getDouble("previousPrice") , productDocument.getDouble("currentPrice"),category);
 
                 orderItemList.add(new OrderItem(product,orderItemsDocument.getInteger("quantity")));
             }

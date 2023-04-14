@@ -44,15 +44,14 @@ public class ProductEntity {
     @Setter
     private String unitQuantity;
     @Getter
-
     @Setter
-    private long reductionPercentage;
+    private Double reductionPercentage;
     @Getter
     @Setter
-    private long previousPrice;
+    private Double previousPrice;
     @Getter
     @Setter
-    private long currentPrice;
+    private Double currentPrice;
     @Getter
     @Setter
     private CategoryEntity category;

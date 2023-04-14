@@ -62,16 +62,16 @@ public class ProductDTO {
     @Getter
     @Setter
     @JsonProperty("reduction")
-    private long reductionPercentage;
+    private Double reductionPercentage;
     @Getter
     @Setter
     @JsonProperty("previousPrice")
-    private long previousPrice;
+    private Double previousPrice;
     @Getter
     @Setter
     @JsonProperty("price")
     @Valid
-    private long currentPrice;
+    private Double currentPrice;
     @Getter
     @Setter
     @JsonProperty("category")

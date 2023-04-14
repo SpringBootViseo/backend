@@ -29,6 +29,6 @@ public class Order {
 
     @Getter
     @Setter
-    private Long totalPrice;
+    private long totalPrice;
 
 }

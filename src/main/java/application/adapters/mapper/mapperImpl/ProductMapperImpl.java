@@ -48,7 +48,7 @@ public class ProductMapperImpl implements ProductMapper {
             Document document=doc.get("category", Document.class);
             CategoryEntity categoryEntity =new CategoryEntity(document.get("_id", UUID.class),document.getString("name"),document.getString("linkImg"),document.getString("linkImgBanner"));
 
-            productEntityList.add(new ProductEntity(doc.get("_id", UUID.class),doc.getString("name"),doc.getString("marque"),doc.getString("linkImg"),doc.getString("description"),doc.getInteger("storedQuantity"),doc.getInteger("orderedQuantity"),doc.getList("Images", String.class),null,doc.getLong("reductionPercentage"),doc.getLong("previousPrice") , doc.getLong("currentPrice"),categoryEntity ));
+            productEntityList.add(new ProductEntity(doc.get("_id", UUID.class),doc.getString("name"),doc.getString("marque"),doc.getString("linkImg"),doc.getString("description"),doc.getInteger("storedQuantity"),doc.getInteger("orderedQuantity"),doc.getList("Images", String.class),null,doc.getDouble("reductionPercentage"),doc.getDouble("previousPrice") , doc.getDouble("currentPrice"),categoryEntity ));
         }
         return this.listProductEntityToListProduct(productEntityList);
     }
