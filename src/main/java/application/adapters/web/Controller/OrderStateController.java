@@ -29,15 +29,18 @@ public class OrderStateController {
             return new ResponseEntity<>(orderStateMapper.orderStateToOrderStateDTO(orderState), HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"OrderState not found",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -48,15 +51,18 @@ public class OrderStateController {
             return  new ResponseEntity<>(HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"OrderState not found",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -67,15 +73,18 @@ public class OrderStateController {
             return new ResponseEntity<>(orderStateMapper.orderStateToOrderStateDTO(savedOrderState),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (OrderStateAlreadyExistsException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT,"OrderState already exist",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 

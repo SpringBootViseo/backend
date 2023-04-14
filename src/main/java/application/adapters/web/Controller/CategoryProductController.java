@@ -10,7 +10,6 @@ import application.port.in.CategoryUseCase;
 import application.port.in.ProductUseCase;
 import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,15 +40,18 @@ public class CategoryProductController {
             return new ResponseEntity<CategoryProductDTO>(categoryProductDTO, HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -70,6 +72,7 @@ public class CategoryProductController {
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }

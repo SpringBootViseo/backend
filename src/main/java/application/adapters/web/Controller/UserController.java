@@ -33,10 +33,13 @@ public class UserController {
             User savedUser = userUseCase.saveUser(userMapper.userDtoToUser(userDTO));
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserAlreadyExistsException e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User  exists", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -46,10 +49,13 @@ public class UserController {
             User response= userUseCase.addAddress(id,userAddressDTO.getAddress());
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User  doesn't exist", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -59,10 +65,13 @@ public class UserController {
             User response=userUseCase.updateUser(id,userMapper.userUpdateDtoToUser(userPhoneDTO));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User  doesn't exist", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -72,10 +81,13 @@ public class UserController {
             User response=userUseCase.getUser(id);
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User doesn't exist", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }

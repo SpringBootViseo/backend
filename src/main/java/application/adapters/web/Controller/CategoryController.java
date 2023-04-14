@@ -29,10 +29,12 @@ public class CategoryController {
             Category categoryResponse=categoryUseCase.createCategory(categoryMapper.categoryToCategoryDto(category));
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(categoryResponse),HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -43,13 +45,16 @@ public class CategoryController {
             Category category=categoryUseCase.getCategory(id);
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(category), HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found",e);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -62,6 +67,7 @@ public class CategoryController {
         }
 
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
 
         }
@@ -73,13 +79,16 @@ public class CategoryController {
             return new ResponseEntity<CategoryDTO>(categoryMapper.categoryDtoToCategory(updaterCategory),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found",e);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 

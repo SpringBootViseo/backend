@@ -32,10 +32,12 @@ public class ProductController {
             Product productResponse=productUseCase.createProduct(productMapper.productToProductDto(product));
             return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse), HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -46,15 +48,18 @@ public class ProductController {
             return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -66,6 +71,7 @@ public class ProductController {
             return new ResponseEntity<>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
 
         }
@@ -79,6 +85,7 @@ public class ProductController {
             return new ResponseEntity<>(productMapper.listProductToListProductDto(productList),HttpStatus.OK);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
 
         }
@@ -91,14 +98,17 @@ public class ProductController {
             return new ResponseEntity<>(productMapper.productDtoToProduct(productResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found",e);
         }
 
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }

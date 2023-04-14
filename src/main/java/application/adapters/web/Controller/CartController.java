@@ -29,15 +29,19 @@ public class CartController {
     public ResponseEntity<CartResponseDTO> createCart(@Validated @RequestBody CartCreateRequestDTO cartCreateRequestDTO){
         try{
             Cart cartResponse=cartUseCase.createCart(cartCreateRequestDTO.getId());
-            return new ResponseEntity<CartResponseDTO>(cartMapper.cartToCartResponseDTO(cartResponse), HttpStatus.OK);
+            return new ResponseEntity<>(cartMapper.cartToCartResponseDTO(cartResponse), HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
         catch(CartAlreadyExistsException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cart already exists",e);
         }
 
         catch (Exception e) {
+
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -50,16 +54,20 @@ public class CartController {
             return new ResponseEntity<>(cartMapper.cartToCartResponseDTO(cartResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
         catch(CartNotFoundException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cart not found",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found",e);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -70,16 +78,20 @@ public class CartController {
             return new ResponseEntity<>(cartMapper.cartToCartResponseDTO(cartResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
         catch(CartNotFoundException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cart not found",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found",e);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -90,16 +102,20 @@ public class CartController {
             return new ResponseEntity<>(cartMapper.cartToCartResponseDTO(cartResponse),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
         catch(CartNotFoundException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cart not found",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found",e);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }

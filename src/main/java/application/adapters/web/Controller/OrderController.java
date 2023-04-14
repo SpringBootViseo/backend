@@ -32,10 +32,12 @@ public class OrderController {
             Order savedOrder=orderUseCase.saveOrder(orderMapper.orderCreateRequestDTOToOrder(orderDTO));
             return new ResponseEntity<>(orderMapper.orderToOrderDTO(savedOrder), HttpStatus.OK);
         }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
 
@@ -46,6 +48,7 @@ public class OrderController {
             List<Order> orderList=orderUseCase.listOrder(id);
             return new ResponseEntity<>(orderMapper.listOrderTolistOrderDTO(orderList),HttpStatus.OK);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
 
         }
@@ -57,15 +60,18 @@ public class OrderController {
             return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Order not found",e);
         }
 
 
         catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
@@ -76,14 +82,17 @@ public class OrderController {
             return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
         }
         catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
         }
 
         catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Order or State not found",e);
         }
 
         catch (Exception e){
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
