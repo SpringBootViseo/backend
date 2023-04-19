@@ -73,4 +73,10 @@ public class CartDBAdapter implements CartPort {
     public Boolean availableCart(String idCart) {
         return cartRepository.findById(idCart).isPresent();
     }
+
+    @Override
+    public void deleteCart(Cart cart) {
+        cart.setProductList(new ArrayList<>());
+        cartRepository.save(cartMapper.cartToCartEntity(cart));
+    }
 }

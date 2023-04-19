@@ -10,4 +10,5 @@ public interface CartUseCase {
     Cart deleteProduct(String idCart,UUID idProduct);
     Cart getCart(String idCart);
     Boolean availableCart(String idCart);
+    void deleteCart(String idCart);
 }

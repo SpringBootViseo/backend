@@ -27,7 +27,6 @@ public class OrderDBAdapter implements OrderPort {
 
     @Override
     public Order saveOrder(Order order) {
-
         OrderEntity orderEntity=orderMapper.orderToOrderEntity(order);
         OrderEntity savedOrder=orderRepository.save(orderEntity);
         return orderMapper.orderEntityToOrder(savedOrder);

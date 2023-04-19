@@ -11,10 +11,8 @@ import java.util.UUID;
 public class OrderCreateRequestDTO {
     @Getter
     @Setter
-    @Valid
     @JsonProperty(value = "id")
-
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
     @Getter
     @Setter

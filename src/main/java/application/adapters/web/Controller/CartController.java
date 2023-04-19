@@ -95,6 +95,30 @@ public class CartController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+    @DeleteMapping("/deleteProductsCart/{id}")
+    public void deleteUserCart(@Validated @PathVariable(name = "id") String id){
+        try{
+            System.out.println("id : "+id);
+            cartUseCase.deleteCart(id);
+        }
+        catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        }
+        catch(CartNotFoundException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cart not found",e);
+        }
+
+        catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found",e);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<CartResponseDTO> getCart(@Validated @PathVariable(name = "id") String id){
         try{

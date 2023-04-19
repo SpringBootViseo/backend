@@ -1,6 +1,5 @@
 package application.port;
 
-import application.adapters.exception.CartAlreadyExistsException;
 import application.domain.Cart;
 import application.domain.Product;
 import application.port.in.CartUseCase;
@@ -49,5 +48,11 @@ public class CartService implements CartUseCase {
     @Override
     public Boolean availableCart(String idCart) {
         return cartPort.availableCart(idCart);
+    }
+
+    @Override
+    public void deleteCart(String idCart) {
+        Cart cart = this.getCart(idCart);
+        cartPort.deleteCart(cart);
     }
 }
