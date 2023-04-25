@@ -28,22 +28,23 @@ public class OrderMapperImpl implements OrderMapper {
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemEntityTolistOrderItem(orderEntity.getOrderItems());
         OrderState orderState=orderStateMapper.orderStateEntityToOrderState(orderEntity.getOrderState());
         User user=userMapper.userEntityToUser(orderEntity.getUser());
-        return new Order(orderEntity.getId(),user,orderState,orderItemList,orderEntity.getTotalPrice());
+        return new Order(orderEntity.getId(),user,orderState,orderItemList,orderEntity.getTotalPrice(),orderEntity.getDateCommande());
     }
+
 
     @Override
     public Order orderDTOToOrder(OrderDTO orderDTO) {
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemDTOTolistOrderItem(orderDTO.getOrderItems());
         OrderState orderState=orderStateMapper.orderStateDTOToOrderState(orderDTO.getOrderState());
         User user=userMapper.userDtoToUser(orderDTO.getUser());
-        return new Order(orderDTO.getId(),user,orderState,orderItemList,orderDTO.getTotalPrice());    }
+        return new Order(orderDTO.getId(),user,orderState,orderItemList,orderDTO.getTotalPrice(),orderDTO.getDateCommande());    }
 
     @Override
     public OrderDTO orderToOrderDTO(Order order) {
         List<OrderItemDTO> orderItemList=orderItemMapper.listOrderItemTolistOrderItemDTO(order.getOrderItems());
         OrderStateDTO orderState=orderStateMapper.orderStateToOrderStateDTO(order.getOrderState());
         UserDTO user=userMapper.userToUserDTO(order.getUser());
-        return new OrderDTO(order.getId(),user,orderState,orderItemList,order.getTotalPrice());
+        return new OrderDTO(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande());
     }
 
     @Override
@@ -51,7 +52,7 @@ public class OrderMapperImpl implements OrderMapper {
         List<OrderItemEntity> orderItemList=orderItemMapper.listOrderItemTolistOrderItemEntity(order.getOrderItems());
         OrderStateEntity orderState=orderStateMapper.orderStateToOrderStateEntity(order.getOrderState());
         UserEntity user=userMapper.userToUserEntity(order.getUser());
-        return new OrderEntity(order.getId(),user,orderState,orderItemList,order.getTotalPrice());
+        return new OrderEntity(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande());
     }
 
     @Override
@@ -77,7 +78,7 @@ public class OrderMapperImpl implements OrderMapper {
 
                 orderItemList.add(new OrderItem(product,orderItemsDocument.getInteger("quantity")));
             }
-            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getLong("totalPrice")));
+            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getLong("totalPrice"),doc.getString("dateCommande")));
 
         }
         return orderList;
@@ -131,7 +132,7 @@ public class OrderMapperImpl implements OrderMapper {
         OrderState orderState=orderStatePort.getOrderState(orderCreateRequestDTO.getIdState());
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemCreateRequestDTOTolistOrderItem(orderCreateRequestDTO.getOrderItems());
 
-        return new Order(orderCreateRequestDTO.getId(),user,orderState,orderItemList, orderCreateRequestDTO.getTotalPrice());
+        return new Order(orderCreateRequestDTO.getId(),user,orderState,orderItemList, orderCreateRequestDTO.getTotalPrice(), orderCreateRequestDTO.getDateCommande());
     }
 
     @Override

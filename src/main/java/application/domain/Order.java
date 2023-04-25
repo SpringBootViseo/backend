@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +29,7 @@ public class Order {
     @Getter
     @Setter
     private long totalPrice;
-
+    @Getter
+    @Setter
+    private String  dateCommande;
 }

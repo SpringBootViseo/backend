@@ -36,5 +36,10 @@ public class OrderCreateRequestDTO {
     @Valid
     @JsonProperty(value = "totalPrice")
     private Long totalPrice;
+    @Getter
+    @Setter
+    @Valid
+    @JsonProperty(value = "dateCommande")
+    private String dateCommande;
 
 }

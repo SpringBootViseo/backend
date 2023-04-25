@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 import java.util.List;
 import java.util.UUID;
 @AllArgsConstructor
@@ -31,5 +32,7 @@ public class OrderEntity {
     @Getter
     @Setter
     private Long totalPrice;
-
+    @Getter
+    @Setter
+    private String dateCommande;
 }

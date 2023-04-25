@@ -11,6 +11,8 @@ import application.port.out.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -25,6 +27,7 @@ public class OrderService implements OrderUseCase {
     @Override
     public Order saveOrder(Order order) {
         order.setTotalPrice(0L);
+        order.setDateCommande(new SimpleDateFormat("dd MMM yyyy, hh:mm a").format(new Date()));
         if(this.isAvailable(order.getId())){
             throw new OrderAlreadyExistException();
         }
