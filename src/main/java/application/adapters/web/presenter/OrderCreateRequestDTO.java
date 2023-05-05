@@ -42,4 +42,15 @@ public class OrderCreateRequestDTO {
     @JsonProperty(value = "dateCommande")
     private String dateCommande;
 
+    @Override
+    public String toString() {
+        return "OrderCreateRequestDTO{" +
+                "id=" + id +
+                ", idUser='" + idUser + '\'' +
+                ", idState='" + idState + '\'' +
+                ", orderItems=" + orderItems +
+                ", totalPrice=" + totalPrice +
+                ", dateCommande='" + dateCommande + '\'' +
+                '}';
+    }
 }
