@@ -52,10 +52,10 @@ class CategoryProductControllerTest {
         id=UUID.randomUUID();
         categoryDTO=new CategoryDTO(id,"test","test","test");
         category=new Category(id,"test","test","test");
-        product = new Product(id,"test","test","test","test",20,10,List.of(new String[]{"test", "test"}),"test",0,0,0,category);
-        productDTO = new ProductDTO(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,categoryDTO);
-        product1 = new Product(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        productDTO1 = new ProductDTO(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test",0,0,0,categoryDTO);
+        product = new Product(id,"test","test","test","test",20,10,List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
+        productDTO = new ProductDTO(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,categoryDTO);
+        product1 = new Product(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        productDTO1 = new ProductDTO(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test",0.0,0.0,0.0,categoryDTO);
 
     }
 
@@ -108,9 +108,9 @@ class CategoryProductControllerTest {
         UUID id2=UUID.randomUUID();
         UUID id3=UUID.randomUUID();
         Category category1=new Category(id1,"test1","test1","test1");
-        Product product2 = new Product(id2,"test2","test2","test2","test2",20,10, List.of(new String[]{"test2", "test2"}),"test2",0,0,0,category1);
+        Product product2 = new Product(id2,"test2","test2","test2","test2",20,10, List.of(new String[]{"test2", "test2"}),"test2",0.0,0.0,0.0,category1);
         product1.setId(id1);
-        Product product3 = new Product(id3,"test3","test3","test3","test3",20,10, List.of(new String[]{"test3", "test3"}),"test3",0,0,0,category1);
+        Product product3 = new Product(id3,"test3","test3","test3","test3",20,10, List.of(new String[]{"test3", "test3"}),"test3",0.0,0.0,0.0,category1);
         List<Category> categories = new ArrayList<>();
         categories.add(category);
         categories.add(category1);
@@ -121,9 +121,9 @@ class CategoryProductControllerTest {
         products1.add(product2);
         products1.add(product3);
         CategoryDTO categoryDTO1=new CategoryDTO(id1,"test1","test1","test1");
-        ProductDTO productDTO2 = new ProductDTO(id2,"test2","test2","test2","test2",20,10, List.of(new String[]{"test2", "test2"}),"test2",0,0,0,categoryDTO1);
+        ProductDTO productDTO2 = new ProductDTO(id2,"test2","test2","test2","test2",20,10, List.of(new String[]{"test2", "test2"}),"test2",0.0,0.0,0.0,categoryDTO1);
         productDTO1.setId(id1);
-        ProductDTO productDTO3 = new ProductDTO(id3,"test3","test3","test3","test3",20,10, List.of(new String[]{"test3", "test3"}),"test3",0,0,0,categoryDTO1);
+        ProductDTO productDTO3 = new ProductDTO(id3,"test3","test3","test3","test3",20,10, List.of(new String[]{"test3", "test3"}),"test3",0.0,0.0,0.0,categoryDTO1);
         List<CategoryDTO> categoriesDTO = new ArrayList<>();
         categoriesDTO.add(categoryDTO);
         categoriesDTO.add(categoryDTO1);

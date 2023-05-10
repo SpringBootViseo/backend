@@ -27,6 +27,7 @@ public class CartController {
     private CartMapperImpl cartMapper;
     @PostMapping
     public ResponseEntity<CartResponseDTO> createCart(@Validated @RequestBody CartCreateRequestDTO cartCreateRequestDTO){
+        System.out.println(cartCreateRequestDTO.toString());
         try{
             Cart cartResponse=cartUseCase.createCart(cartCreateRequestDTO.getId());
             return new ResponseEntity<>(cartMapper.cartToCartResponseDTO(cartResponse), HttpStatus.OK);

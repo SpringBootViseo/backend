@@ -36,7 +36,7 @@ class ProductServiceTest {
         id= UUID.randomUUID();
         category=new Category(id,"test","test","test");
 
-        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
+        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
 
     }
 
@@ -63,7 +63,7 @@ class ProductServiceTest {
 
     @Test
     void shouldCallListCategoriesOnceAndReturnListCategoriesWhenlistCategories() {
-        Product product1 =new Product(id,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
+        Product product1 =new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
         List<Product> productList=new ArrayList<>();
         productList.add(product);
         productList.add(product1);
@@ -76,8 +76,8 @@ class ProductServiceTest {
     @Test
     void shouldCallupdateProductOnceAndUpdateProductWhenUpdateProduct() {
         UUID id1=UUID.randomUUID();
-        Product productarg =new Product(id1,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        Product productexp=new Product(id,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
+        Product productarg =new Product(id1,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
+        Product productexp=new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
         given(productPort.updateProduct(productarg,id)).willReturn(productexp);
         Product result=productService.updateProduct(productarg,id);
         verify(productPort,times(1)).updateProduct(any(),any());
@@ -124,7 +124,7 @@ class ProductServiceTest {
 
     @Test
     void shouldOrderProductWhenOrderProductWithValidIdAndQuantity(){
-        Product  productAfterOrder = new Product(id,"test","test","test","test", 20,12, List.of(new String[]{"test", "test"}),"test",0,0,0,category);
+        Product  productAfterOrder = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
         given(productPort.orderProduct(id,2)).willReturn(productAfterOrder);
         assertEquals(productAfterOrder,productPort.orderProduct(id,2));
     }
@@ -135,6 +135,6 @@ class ProductServiceTest {
         assertThrows(ProductNotAvailableException.class,()->productPort.orderProduct(id,10));
     }
 
-    }
+}
 
 

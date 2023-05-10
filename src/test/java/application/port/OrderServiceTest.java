@@ -49,14 +49,14 @@ class OrderServiceTest {
         user=new User("VQl0nhjeMgP1CAunvAt7Ff7kA2","Abdessamad","abdessamad@gmail.com","0612649174","Casablanca",null);
         category=new Category(id,"test","test","test");
 
-        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0,0,100,category);
-        product1 = new Product(uuid,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,10,category);
+        product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,100.0,category);
+        product1 = new Product(uuid,"test1","test1","test1","test1", 20,10, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,10.0,category);
         readyState=new OrderState("ready","ready to deliver");
         deliveredState=new OrderState("delivered","delivered to the Client");
         orderItemList=new ArrayList<>();
         orderItemList.add(new OrderItem(product,1));
         orderItemList.add(new OrderItem(product1,3));
-        order=new Order(id,user,readyState,orderItemList,0L);
+        order=new Order(id,user,readyState,orderItemList,0L,"15-12-2020");
     }
 
     @AfterEach
@@ -79,20 +79,20 @@ class OrderServiceTest {
         given(orderService.isAvailable(id)).willReturn(true);
         assertThrows(OrderAlreadyExistException.class,()->orderService.saveOrder(order));
     }
-   @Test
+    @Test
     void shouldThrowProductNotAvailableExceptionWhenSaveOrderWithUnAvailableProduct() {
         given(orderService.isAvailable(id)).willReturn(false);
         given(productPort.orderProduct(id,1)).willThrow(ProductNotAvailableException.class);
-       assertThrows(NoSuchElementException.class,()->orderService.saveOrder(order));
+        assertThrows(NoSuchElementException.class,()->orderService.saveOrder(order));
     }
     @Test
     void shouldSaveOrderUpdateProductWhenSaveOrderWithAvailableProduct(){
-        Product updatedProduct = new Product(id,"test","test","test","test", 20,11, List.of(new String[]{"test", "test"}),"test",0,0,100,category);
-        Product updatedProduct1=new Product(uuid,"test1","test1","test1","test1", 20,13, List.of(new String[]{"test1", "test1"}),"test1",0,0,10,category);
+        Product updatedProduct = new Product(id,"test","test","test","test", 20,11, List.of(new String[]{"test", "test"}),"test",0.0,0.0,100.0,category);
+        Product updatedProduct1=new Product(uuid,"test1","test1","test1","test1", 20,13, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,10.0,category);
         List<OrderItem> orderItemList1=new ArrayList<>();
         orderItemList1.add(new OrderItem(updatedProduct,1));
         orderItemList1.add(new OrderItem(updatedProduct1,3));
-        Order savedOrder=new Order(id,user,readyState,orderItemList1,130L);
+        Order savedOrder=new Order(id,user,readyState,orderItemList1,130L,"15-12-2020");
 
         given(orderService.isAvailable(id)).willReturn(false);
         given(productPort.orderProduct(id,1)).willReturn(updatedProduct);
@@ -136,7 +136,7 @@ class OrderServiceTest {
 
     @Test
     void shouldupdateStateOrderWhenUpdateStateWithAvailableOrderAndState() {
-        Order resultedOrder= new Order(id,user,deliveredState,orderItemList,0L);
+        Order resultedOrder= new Order(id,user,deliveredState,orderItemList,0L,"15-12-2020");
         given(orderStatePort.getOrderState("delivered")).willReturn(deliveredState);
         given(orderPort.updateStateOrder(id,deliveredState)).willReturn(resultedOrder);
         assertEquals(orderService.updateStateOrder(id,"delivered"),resultedOrder);

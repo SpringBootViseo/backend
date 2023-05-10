@@ -51,8 +51,8 @@ class ProductControllerTest {
         id=UUID.randomUUID();
         categoryDTO=new CategoryDTO(id,"test","test","test");
         category=new Category(id,"test","test","test");
-        product = new Product(id,"test","test","test","test", 20,10,List.of(new String[]{"test", "test"}),"test",0,0,0,category);
-        productDTO = new ProductDTO(id,"test","test","test","test", 20,10,List.of(new String[]{"test", "test"}),"test",0,0,0,categoryDTO);
+        product = new Product(id,"test","test","test","test", 20,10,List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,category);
+        productDTO = new ProductDTO(id,"test","test","test","test", 20,10,List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,categoryDTO);
 
     }
 
@@ -152,8 +152,8 @@ class ProductControllerTest {
         List<Product> products=new ArrayList<>();
         List<ProductDTO> productsdto=new ArrayList<>();
         UUID id1=UUID.randomUUID();
-        Product product1=new Product(id1,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productdto1=new ProductDTO(id1,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id1,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productdto1=new ProductDTO(id1,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
         products.add(product);
         products.add(product1);
         productsdto.add(productDTO);
@@ -190,8 +190,8 @@ class ProductControllerTest {
     @DisplayName("Unit Test for updateProduct with valid id and product")
     @Test
     void shouldUpdateProductWhenUpdateProductWithValidProduct(){
-        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
 
         when(productUseCase.updateProduct(product1,id)).thenReturn(product1);
         when(productMapper.productDtoToProduct(product1)).thenReturn(productDTO1);
@@ -205,8 +205,8 @@ class ProductControllerTest {
     @DisplayName("Unit Test for updateProduct with invalid Product")
     @Test
     void shouldThrowBadRequestWhenUpdateProductWithInvalidProduct(){
-        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
         when(productUseCase.updateProduct(product1,id)).thenThrow(new UnexpectedTypeException("Bad argument"));
         when(productMapper.productDtoToProduct(product1)).thenReturn(productDTO1);
         when(productMapper.productToProductDto(productDTO1)).thenReturn(product1);
@@ -217,8 +217,8 @@ class ProductControllerTest {
     @DisplayName("Unit Test for updateProduct with not found Product")
     @Test
     void shouldThrowNotFoundRequestWhenUpdateProductWithNotFoundId(){
-        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
         when(productUseCase.updateProduct(product1,id)).thenThrow(new NoSuchElementException("Product not found"));
         when(productMapper.productDtoToProduct(product1)).thenReturn(productDTO1);
         when(productMapper.productToProductDto(productDTO1)).thenReturn(product1);
@@ -228,8 +228,8 @@ class ProductControllerTest {
     @DisplayName("Unit Test for updateProduct with unexcepted Exception")
     @Test
     void shouldThrowUnexceptedExceptionWhenUpdateProduct(){
-        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
         when(productUseCase.updateProduct(product1,id)).thenThrow(new RuntimeException("Unexpected exception"));
         when(productMapper.productDtoToProduct(product1)).thenReturn(productDTO1);
         when(productMapper.productToProductDto(productDTO1)).thenReturn(product1);
@@ -240,8 +240,8 @@ class ProductControllerTest {
     @DisplayName("Unit test for listProducts with name")
     @Test
     void shouldReturnListOfProductWhenListProductsWithSubName(){
-        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,category);
-        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0,0,0,categoryDTO);
+        Product product1=new Product(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,category);
+        ProductDTO productDTO1=new ProductDTO(id,"test1","test1","test1","test1", 20,10,List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,categoryDTO);
         List<Product> productList= new ArrayList<>();
         productList.add(product);
         productList.add(product1);

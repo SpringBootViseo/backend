@@ -34,8 +34,8 @@ class ProductDBAdapterTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         id=UUID.randomUUID();
-        product=new Product(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,null);
-        productEntity=new ProductEntity(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0,0,0,null);
+        product=new Product(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,null);
+        productEntity=new ProductEntity(id,"test","test","test","test",20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,0.0,null);
     }
 
     @AfterEach
@@ -61,14 +61,14 @@ class ProductDBAdapterTest {
     void shouldThrowNoSuchElementWhenGetProductWithInvalidId(){
         given(productRepository.findById(id)).willReturn(Optional.empty());
         assertThrows(NoSuchElementException.class,()->
-            productDBAdapter.getProduct(id));
+                productDBAdapter.getProduct(id));
     }
     @Test
     void shouldUpdateProductWhenUpdateProductWithValidId(){
         UUID id1=UUID.randomUUID();
-        Product product1=new Product(id1,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,null);
-        Product product2=new Product(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,null);
-        ProductEntity productEntity2=new ProductEntity(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0,0,0,null);
+        Product product1=new Product(id1,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,null);
+        Product product2=new Product(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,null);
+        ProductEntity productEntity2=new ProductEntity(id,"test1","test1","test1","test1",20,10, List.of(new String[]{"test1", "test1"}),"test1",0.0,0.0,0.0,null);
 
         given(productRepository.findById(id)).willReturn(Optional.of(productEntity));
 
@@ -83,7 +83,7 @@ class ProductDBAdapterTest {
     void shouldThrowsNoSuchElementWhenUpdateProductWithInvaliId(){
         given(productRepository.findById(id)).willReturn(Optional.empty());
         assertThrows(NoSuchElementException.class,()->
-            productDBAdapter.updateProduct(product,id)
+                productDBAdapter.updateProduct(product,id)
         );
     }
 
