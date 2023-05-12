@@ -71,6 +71,7 @@ public class CartDBAdapter implements CartPort {
 
     @Override
     public Boolean availableCart(String idCart) {
+
         return cartRepository.findById(idCart).isPresent();
     }
 

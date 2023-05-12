@@ -4,6 +4,7 @@ import application.adapters.exception.UserNotFoundException;
 import application.domain.User;
 import application.port.in.UserUseCase;
 import application.port.out.CartPort;
+import application.port.out.PreferencePort;
 import application.port.out.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class UserService implements UserUseCase {
     private final UserPort userPort;
     private final CartPort cartPort;
 
+    private final PreferencePort preferencePort;
+
     @Override
     public User updateUser(String id, User user) {
         return userPort.updateUser(id,user);
@@ -26,6 +29,8 @@ public class UserService implements UserUseCase {
         String id= user.getId();
         if(!cartPort.availableCart(id))
             cartPort.createCart(id);
+        if(!preferencePort.availablePreference(id))
+            preferencePort.createPrefence(id);
         return userPort.saveUser(user);
     }
 

@@ -99,7 +99,6 @@ public class CartController {
     @DeleteMapping("/deleteProductsCart/{id}")
     public void deleteUserCart(@Validated @PathVariable(name = "id") String id){
         try{
-            System.out.println("id : "+id);
             cartUseCase.deleteCart(id);
         }
         catch (UnexpectedTypeException e){
