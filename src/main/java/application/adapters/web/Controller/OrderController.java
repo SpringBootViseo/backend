@@ -55,6 +55,18 @@ public class OrderController {
         }
     }
 
+    @GetMapping("")
+    ResponseEntity<List<OrderDTO>> listOrder(){
+        try {
+            List<Order> listOrder=orderUseCase.listOrder();
+            return  new ResponseEntity<>(orderMapper.listOrderTolistOrderDTO(listOrder),HttpStatus.OK);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+
+        }
+    }
     @GetMapping("/{id}")
     ResponseEntity<OrderDTO> getOrder(@Validated @PathVariable(name = "id")UUID id){
         try{

@@ -9,6 +9,7 @@ import application.port.out.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -50,5 +51,9 @@ public class UserService implements UserUseCase {
             return userPort.getUser(id);
         }
         else throw new UserNotFoundException(id);
+    }
+    @Override
+    public List<User> listUser() {
+        return userPort.listUser();
     }
 }

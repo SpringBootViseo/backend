@@ -10,5 +10,5 @@ public interface CategoryUseCase {
     Category getCategory(UUID id);
     List<Category> listCategories();
     Category updateCategory(Category category,UUID id);
-
+    void deleteCategory(UUID id);
 }

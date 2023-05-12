@@ -1,0 +1,17 @@
+package application.adapters.mapper;
+
+import application.adapters.security.entity.AuthenticationRequestSec;
+import application.adapters.security.entity.RegisterRequestSec;
+import application.adapters.web.presenter.AuthenticationRequestDTO;
+import application.adapters.web.presenter.RegisterRequestDTO;
+import application.domain.AuthenticationRequest;
+import application.domain.RegisterRequest;
+
+public interface AuthenticationRequestMapper {
+    AuthenticationRequest authenticationRequestDTOToAuthenticationRequest(AuthenticationRequestDTO authenticationRequestDTO);
+    AuthenticationRequest authenticationRequestSecToAuthenticationRequest(AuthenticationRequestSec authenticationRequestSec);
+    AuthenticationRequestSec authenticationRequestToAuthenticationRequestSec(AuthenticationRequest authenticationRequest);
+    AuthenticationRequestSec authenticationRequestDTOToAuthenticationRequestSec(AuthenticationRequestDTO  authenticationRequestDTO);
+    AuthenticationRequestDTO authenticationRequestToAuthenticationRequestDTO(AuthenticationRequest authenticationRequest);
+
+}

@@ -14,4 +14,6 @@ public interface ProductPort {
     List<Product> listProducts(String subStringName);
     Boolean isAvailableToOrder(UUID id, int quantity);
     Product orderProduct(UUID id,int quantity);
+    void deleteProduct(UUID id);
+    Product setReductionToProduct(UUID id,Double reduction);
 }

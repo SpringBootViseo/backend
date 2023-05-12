@@ -72,6 +72,19 @@ public class CategoryController {
 
         }
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UUID> deleteCategory(@Validated @PathVariable(name="id") UUID id){
+        try{
+            categoryUseCase.deleteCategory(id);
+            return new ResponseEntity(id,HttpStatus.OK);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+
+        }
+
+    }
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@Validated @RequestBody CategoryDTO category, @Validated @PathVariable(name = "id") UUID id){
         try{

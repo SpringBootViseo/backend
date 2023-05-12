@@ -34,5 +34,10 @@ public class CategoryService implements CategoryUseCase {
         return categoryPort.updateCategory(category,id);
     }
 
+    @Override
+    public void deleteCategory(UUID id) {
+        categoryPort.deleteCategory(id);
+    }
+
 
 }

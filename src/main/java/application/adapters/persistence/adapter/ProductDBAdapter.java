@@ -111,4 +111,20 @@ public class ProductDBAdapter implements ProductPort {
         else throw new ProductNotAvailableException();
     }
 
+    @Override
+    public void deleteProduct(UUID id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public Product setReductionToProduct(UUID id, Double reduction) {
+        Product product=this.getProduct(id);
+        product.setReductionPercentage(reduction);
+        Double newPrice=product.getCurrentPrice()*(1-reduction/100);
+        product.setPreviousPrice(product.getCurrentPrice());
+        product.setCurrentPrice(newPrice);
+        ProductEntity productEntity=productRepository.save(productMapper.productEntityToProduct(product));
+        return productMapper.productToProductEntity(productEntity);
+    }
+
 }

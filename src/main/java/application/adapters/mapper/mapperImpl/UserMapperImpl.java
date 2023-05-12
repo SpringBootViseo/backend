@@ -4,7 +4,13 @@ import application.adapters.mapper.UserMapper;
 import application.adapters.web.presenter.UserDTO;
 import application.adapters.web.presenter.UserPhoneDTO;
 import application.domain.User;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class UserMapperImpl implements UserMapper {
     @Override
@@ -28,6 +34,23 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public User userUpdateDtoToUser(UserPhoneDTO userPhoneDTO) {
         return new User(null,null,null, userPhoneDTO.getPhone(),null, null);
+    }
+    @Override
+    public List<User> usersToDocument(MongoCollection<Document> collection) {
+        List<User> userList=new ArrayList<>();
+        for(Document doc:collection.find()){
+            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", String.class) ));
+        }
+        return userList;
+    }
+
+    @Override
+    public List<UserDTO> listUserToListUserDTO(List<User> userList) {
+        List <UserDTO> userDTOList=new ArrayList<>();
+        for(User user:userList){
+            userDTOList.add(this.userToUserDTO(user));
+        }
+        return userDTOList;
     }
 
 

@@ -2,6 +2,7 @@ package application.adapters.web.Controller;
 
 import application.adapters.mapper.mapperImpl.ProductMapperImpl;
 import application.adapters.web.presenter.ProductDTO;
+import application.adapters.web.presenter.ReductionProductRequest;
 import application.domain.Product;
 import application.port.in.ProductUseCase;
 import jakarta.validation.UnexpectedTypeException;
@@ -91,6 +92,30 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<UUID> deleteProduct(@Validated @PathVariable(name = "id")UUID id){
+        try{
+            productUseCase.deleteProduct(id);
+            return new ResponseEntity<>(id,HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+
+        }
+
+    }
+    @PostMapping("/reduction")
+    ResponseEntity<ProductDTO> productReduction(@Validated @RequestBody ReductionProductRequest reductionProductRequest){
+        try{
+            Product product=productUseCase.setReductionToProduct(reductionProductRequest.getId(), reductionProductRequest.getReduction());
+            return new ResponseEntity<>(productMapper.productDtoToProduct(product),HttpStatus.OK);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+
+        }
+    }
     @PutMapping("/{id}")
     ResponseEntity<ProductDTO> updateProduct(@Validated @RequestBody ProductDTO product,@Validated @PathVariable(name = "id") UUID id){
         try {

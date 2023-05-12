@@ -73,6 +73,10 @@ public class CategoryDBAdapter implements CategoryPort {
         }
 
     }
+    @Override
+    public void deleteCategory(UUID id) {
+        categoryRepository.deleteById(id);
+    }
 
 
 }

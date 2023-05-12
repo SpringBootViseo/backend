@@ -12,4 +12,5 @@ public interface OrderUseCase {
     Order updateStateOrder(UUID id, String idorderState);
     List<Order> listOrder(String idUser,String idorderState);
     Boolean isAvailable(UUID id);
+    List <Order> listOrder();
 }

@@ -14,4 +14,5 @@ public interface OrderPort {
     Order updateStateOrder(UUID id, OrderState orderState);
     List<Order> listOrder(User user,OrderState orderState);
     Boolean isAvailable(UUID id);
+    List <Order> listOrder();
 }

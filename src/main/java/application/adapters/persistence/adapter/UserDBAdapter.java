@@ -3,13 +3,16 @@ package application.adapters.persistence.adapter;
 import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.exception.UserNotFoundException;
 import application.adapters.mapper.mapperImpl.UserMapperImpl;
+import application.adapters.persistence.MongoConfig;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.persistence.repository.UserRepository;
 import application.domain.User;
 import application.port.out.UserPort;
+import org.bson.Document;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.mongodb.client.MongoCollection;
 
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class UserDBAdapter implements UserPort {
     @Autowired
     private UserRepository userRepository;
     private UserMapperImpl userMapperImpl;
+    private final MongoConfig mongoConfig;
 
     @Override
     public User updateUser(String id, User user) {
@@ -72,6 +76,11 @@ public class UserDBAdapter implements UserPort {
         }
         userRepository.save(userMapperImpl.userToUserEntity(user));
         return user;
+    }
+    @Override
+    public List<User> listUser() {
+        MongoCollection<Document> collection=mongoConfig.getAllDocuments("Users");
+        return userMapperImpl.usersToDocument(collection);
     }
 
 }

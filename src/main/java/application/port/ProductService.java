@@ -45,7 +45,7 @@ public class ProductService implements ProductUseCase{
     @Override
     public Boolean isAvailableToOrder(UUID id, int quantity) {
 
-            return productPort.isAvailableToOrder(id,quantity);
+        return productPort.isAvailableToOrder(id,quantity);
 
 
     }
@@ -53,8 +53,18 @@ public class ProductService implements ProductUseCase{
     @Override
     public Product orderProduct(UUID id, int quantity) {
 
-            return productPort.orderProduct(id,quantity);
+        return productPort.orderProduct(id,quantity);
 
 
+    }
+
+    @Override
+    public void deleteProduct(UUID id) {
+        productPort.deleteProduct(id);
+    }
+
+    @Override
+    public Product setReductionToProduct(UUID id, Double reduction) {
+        return productPort.setReductionToProduct(id, reduction);
     }
 }

@@ -14,5 +14,7 @@ public interface ProductUseCase {
     Product updateProduct(Product product,UUID id);
     Boolean isAvailableToOrder(UUID id, int quantity);
     Product orderProduct(UUID id,int quantity);
+    void deleteProduct(UUID id);
+    Product setReductionToProduct(UUID id,Double reduction);
 
 }
