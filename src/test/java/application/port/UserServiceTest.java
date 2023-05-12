@@ -2,8 +2,10 @@ package application.port;
 
 import application.adapters.exception.UserNotFoundException;
 import application.domain.Cart;
+import application.domain.Preference;
 import application.domain.User;
 import application.port.out.CartPort;
+import application.port.out.PreferencePort;
 import application.port.out.UserPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,28 +30,34 @@ class UserServiceTest {
     private UserPort userPort;
     @Mock
     private CartPort cartPort;
+    @Mock
+    private PreferencePort preferencePort;
     private  String id;
     private User user;
     private Cart cart;
+    private Preference preference;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
        id="VQl0nhjeMgP1CAunvAt7Ff7kA2";
        user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null);
        cart = new Cart(id,new ArrayList<>());
+       preference=new Preference(id,new ArrayList<>());
     }
     @AfterEach
     public void tearDown(){
         id=null;
         user=null;
         cart=null;
+        preference=null;
     }
     @Test
     void shouldSaveUserandCreateCartWhenSaveUserWithUnavailableCart(){
         given(cartPort.availableCart(id)).willReturn(false);
         given(cartPort.createCart(id)).willReturn(cart);
         given(userPort.saveUser(user)).willReturn(user);
-
+        given((preferencePort.availablePreference(id))).willReturn(false);
+        given(preferencePort.createPrefence(id)).willReturn(preference);
         User savedUser=userService.saveUser(user);
         verify(cartPort,times(1)).createCart(any());
         assertEquals(savedUser,user);
@@ -58,6 +66,8 @@ class UserServiceTest {
     void shouldOnlySaveUserWhenSaveUserWithAvailableCart(){
         given(cartPort.availableCart(id)).willReturn(true);
         given(userPort.saveUser(user)).willReturn(user);
+        given(preferencePort.availablePreference(id)).willReturn(true);
+        given(preferencePort.createPrefence(id)).willReturn(preference);
         User savedUser=userService.saveUser(user);
         verify(cartPort,times(0)).createCart(any());
         assertEquals(savedUser,user);
