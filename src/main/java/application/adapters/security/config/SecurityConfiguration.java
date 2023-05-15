@@ -21,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 import static application.adapters.security.entity.RoleSec.ADMIN;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -36,9 +37,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
+
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orders","/users","/categories","/products","/categoryProducts","/carts")
+                .requestMatchers("/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orders","/users","/categories","/products","/categoryProducts","/carts","/preference")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests()
@@ -46,7 +48,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST,"/products").hasAnyRole(ADMIN.name())
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**")
+                .requestMatchers("/auth/**","auth/register")
                 .permitAll()
 
                 .anyRequest()
@@ -61,13 +63,15 @@ public class SecurityConfiguration {
                 .logout()
 
                 .logoutUrl("/auth/logout")
+                .permitAll()
 
 
                 .addLogoutHandler(logoutHandler)
 
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-        ;
-        ;
+                .permitAll();
+
+
 
         return http.build();
     }

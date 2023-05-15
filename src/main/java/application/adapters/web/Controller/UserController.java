@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/users")
@@ -87,6 +89,28 @@ public class UserController {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User doesn't exist", e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> loginWithGoogle(@Validated @RequestBody UserDTO userDTO){
+        try{
+            UserDTO response=userMapper.userToUserDTO(userUseCase.loginWithGoogle(userMapper.userDtoToUser(userDTO)));
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @GetMapping()
+    public ResponseEntity<List<UserDTO>> listUsers(){
+        try{
+            List<UserDTO> response=userMapper.listUserToListUserDTO(userUseCase.listUser());
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }

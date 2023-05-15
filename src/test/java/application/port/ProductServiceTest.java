@@ -7,6 +7,7 @@ import application.domain.Product;
 import application.port.out.ProductPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,6 +135,35 @@ class ProductServiceTest {
         given(productPort.isAvailableToOrder(id,10)).willReturn(false);
         given(productPort.orderProduct(id,10)).willThrow(ProductNotAvailableException.class);
         assertThrows(ProductNotAvailableException.class,()->productPort.orderProduct(id,10));
+    }
+    @DisplayName("should call delete from Port once when delete Product")
+    @Test
+    void test4(){
+        doNothing().when(productPort).deleteProduct(id);
+        productService.deleteProduct(id);
+        verify(productPort,times(1)).deleteProduct(id);
+    }
+    @DisplayName("should make reduction to product when setReductionToProduct")
+    @Test
+    void test5(){
+        Product result=  new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        given(productPort.setReductionToProduct(id,10.0)).willReturn(result);
+        Product assertionresult= productService.setReductionToProduct(id,10.0);
+        assertEquals(result,assertionresult);
+
+
+    }
+    @DisplayName("should not make reduction to product when setReductionToProduct with negative reductionpercentage")
+    @Test
+    void test6(){
+
+        assertThrows(NoSuchElementException.class,()->productService.setReductionToProduct(id,-10.0)) ;
+    }
+    @DisplayName("should not make reduction to product when setReductionToProduct with  reductionpercentage superior or equals than 100")
+    @Test
+    void test7(){
+
+        assertThrows(NoSuchElementException.class,()->productService.setReductionToProduct(id,100.0)) ;
     }
 
 }

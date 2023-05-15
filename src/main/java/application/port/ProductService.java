@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 @Service
 @AllArgsConstructor
@@ -65,6 +66,11 @@ public class ProductService implements ProductUseCase{
 
     @Override
     public Product setReductionToProduct(UUID id, Double reduction) {
-        return productPort.setReductionToProduct(id, reduction);
+        if(reduction>0.0 && reduction<100.0){
+            return productPort.setReductionToProduct(id, reduction);
+        }
+        else{
+            throw  new NoSuchElementException("Invalid reduction");
+        }
     }
 }

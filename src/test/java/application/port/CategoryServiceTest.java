@@ -4,6 +4,7 @@ import application.domain.Category;
 import application.port.out.CategoryPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,8 +17,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class CategoryServiceTest {
     @InjectMocks
@@ -79,4 +79,12 @@ class CategoryServiceTest {
         verify(categoryPort,times(1)).updateCategory(any(),any());
         assertEquals(result,categoryexp);
     }
+    @DisplayName("should call delete category once")
+    @Test
+    void test(){
+        doNothing().when(categoryPort).deleteCategory(id);
+        categoryService.deleteCategory(id);
+        verify(categoryPort,times(1)).deleteCategory(id);
+    }
+
 }

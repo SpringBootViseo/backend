@@ -11,4 +11,6 @@ public interface UserUseCase {
     User saveUser(User user);
     User addAddress(String id,String address);
     List<User> listUser();
+    User loginWithGoogle(User user);
+
 }

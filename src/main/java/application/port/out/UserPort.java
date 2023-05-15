@@ -12,4 +12,5 @@ public interface UserPort {
     User saveUser(User user) throws UserAlreadyExistsException;
     User addAddress(String id,String address);
     List<User> listUser();
-    }
+
+}

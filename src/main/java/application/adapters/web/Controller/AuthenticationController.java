@@ -19,10 +19,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/auth")
@@ -50,8 +52,19 @@ public class AuthenticationController {
         AuthenticationRequest authenticationRequest=authenticationRequestMapper.authenticationRequestDTOToAuthenticationRequest(request);
         return ResponseEntity.ok(authenticationResponseMapper.authenticationResponseToAuthenticationResposneDTO(authentificationUseCase.authenticate(authenticationRequest)));
     }
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PostMapping("/refresh-token")
+    public ResponseEntity<AuthenticationResponseDTO> refreshToken(@RequestHeader("Authorization") String refreshToken){
+        if (refreshToken == null ||!refreshToken.startsWith("Bearer ")) {
+            throw new NoSuchElementException("Can't find a valid token");
+        }
+        else{
+            String refreshTokenWithoutHeader = refreshToken.substring(7);
+            AuthenticationResponse authResponse =authentificationUseCase.refreshToken(refreshTokenWithoutHeader);
+            return new ResponseEntity<>(authenticationResponseMapper.authenticationResponseToAuthenticationResposneDTO(authResponse), HttpStatus.OK);
+        }
+    }
+    /*@PostMapping("/refresh-token")
     public void refreshToken(
             HttpServletRequest request,
             HttpServletResponse response
@@ -67,8 +80,9 @@ public class AuthenticationController {
         }
         refreshToken = authHeader.substring(7);
         AuthenticationResponse authResponse =authentificationUseCase.refreshToken(refreshToken);
+        System.out.println(".....////////////..............."+authResponse.getRefreshToken());
         new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
 
-    }
+    }*/
 
 }

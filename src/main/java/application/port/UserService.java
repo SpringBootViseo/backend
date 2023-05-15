@@ -56,4 +56,15 @@ public class UserService implements UserUseCase {
     public List<User> listUser() {
         return userPort.listUser();
     }
+
+
+    public User loginWithGoogle(User user) {
+        if(isAvailable(user.getId())){
+            return userPort.getUser(user.getId());
+        }
+        else{
+            return userPort.saveUser(user);
+        }
+    }
+
 }
