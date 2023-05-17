@@ -43,17 +43,6 @@ public class UserDBAdapter implements UserPort {
         return userRepository.findById(id).isPresent();
     }
 
-    @Override
-    public boolean addressAvailable(String id, Address address) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        for (Address existingAddress : user.get().getAddress()) {
-            if (existingAddress.equals(address)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     @Override
     public User getUser(String id) {
@@ -64,33 +53,11 @@ public class UserDBAdapter implements UserPort {
 
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
-        UserEntity userEntity = userRepository.findById(user.getId()).orElse(null);
-        if (userEntity != null) {
-            throw new UserAlreadyExistsException("");
-        }
-        // save the user
-        userEntity = new UserEntity();
-        userEntity.setId(user.getId());
-        userEntity.setFullname(user.getName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPicture(user.getPicture());
-        userEntity.setNumberPhone(user.getPhone());
+        UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress());
+
         return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
     }
 
-    @Override
-    public User addAddress(String id, Address address) {
-        User user=this.getUser(id);
-        if(user.getAddress() ==null )
-            user.setAddress(List.of(address));
-        else {
-            List<Address> addresses=user.getAddress();
-            addresses.add(address);
-            user.setAddress(addresses);
-        }
-        userRepository.save(userMapperImpl.userToUserEntity(user));
-        return user;
-    }
     @Override
     public List<User> listUser() {
         MongoCollection<Document> collection=mongoConfig.getAllDocuments("Users");

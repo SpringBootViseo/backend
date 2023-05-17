@@ -38,8 +38,19 @@ public class UserService implements UserUseCase {
 
     @Override
     public User addAddress(String id, Address address) {
-        if (addressAvailable(id,address))
-            return userPort.addAddress(id,address);
+
+        if (addressAvailable(id,address)) {
+            User user = userPort.getUser(id);
+            if(user.getAddress()==null)
+                user.setAddress(List.of(address));
+            else{
+                List<Address> addresses=user.getAddress();
+                addresses.add(address);
+                user.setAddress(addresses);
+            }
+            userPort.saveUser(user);
+            return user;
+        }
         else {
             throw new IllegalArgumentException("L'adresse existe déjà pour l'utilisateur.");
         }
@@ -51,7 +62,15 @@ public class UserService implements UserUseCase {
     }
 
     public boolean addressAvailable(String id , Address address){
-        return userPort.addressAvailable( id , address);
+        User user = userPort.getUser(id);
+        System.out.println(user.toString());
+        for (Address existingAddress : user.getAddress())
+        {
+            if (existingAddress.equals(address)) {
+                return false;
+            }
+        }
+        return true;
     }
     @Override
     public User getUser(String id) {

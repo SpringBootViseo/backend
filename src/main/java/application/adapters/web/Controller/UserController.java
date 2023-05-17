@@ -48,6 +48,7 @@ public class UserController {
     @PostMapping("/{id}")
     public ResponseEntity<User> addAdressToUser(@Validated @PathVariable(name = "id")String id, @Validated @RequestBody UserAddressDTO userAddressDTO){
         try{
+            System.out.println("hellllllllllllll");
             User response= userUseCase.addAddress(id,userMapper.userAddressDtoToAddress(userAddressDTO));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnexpectedTypeException e){
