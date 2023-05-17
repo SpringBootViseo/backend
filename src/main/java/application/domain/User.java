@@ -28,7 +28,7 @@ public class User {
     private String picture;
     @Getter
     @Setter
-    private List<String> address;
+    private List<Address> address;
 
 
 }

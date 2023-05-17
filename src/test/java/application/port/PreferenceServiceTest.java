@@ -23,15 +23,15 @@ import application.port.out.PreferencePort;
 import application.port.out.ProductPort;
 
 public class PreferenceServiceTest {
-
+    @InjectMocks
+    private PreferenceService preferenceService;
     @Mock
     private PreferencePort preferencePort;
 
     @Mock
     private ProductPort productPort;
 
-    @InjectMocks
-    private PreferenceService preferenceService;
+
 
     private String idPreference;
     private UUID idProduct;
@@ -111,3 +111,5 @@ public class PreferenceServiceTest {
     }
 
 }
+
+

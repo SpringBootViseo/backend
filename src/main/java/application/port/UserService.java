@@ -1,6 +1,7 @@
 package application.port;
 
 import application.adapters.exception.UserNotFoundException;
+import application.domain.Address;
 import application.domain.User;
 import application.port.in.UserUseCase;
 import application.port.out.CartPort;
@@ -36,15 +37,22 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public User addAddress(String id, String address) {
+    public User addAddress(String id, Address address) {
+        if (addressAvailable(id,address))
+            return userPort.addAddress(id,address);
+        else {
+            throw new IllegalArgumentException("L'adresse existe déjà pour l'utilisateur.");
+        }
 
-        return userPort.addAddress(id,address);
     }
 
     public boolean isAvailable(String id){
         return userPort.isAvailable(id);
     }
 
+    public boolean addressAvailable(String id , Address address){
+        return userPort.addressAvailable( id , address);
+    }
     @Override
     public User getUser(String id) {
         if(isAvailable(id)){
