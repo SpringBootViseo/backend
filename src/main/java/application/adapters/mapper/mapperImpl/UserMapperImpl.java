@@ -15,31 +15,31 @@ import java.util.List;
 public class UserMapperImpl implements UserMapper {
     @Override
     public UserEntity userToUserEntity(User user) {
-        return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(),user.getAddress() );
+        return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(),user.getAddress(), user.getAvertissement(), user.isBlackListed());
     }
     @Override
     public User userEntityToUser(UserEntity userEntity) {
-        return new User(userEntity.getId(), userEntity.getFullname(), userEntity.getEmail(), userEntity.getNumberPhone(), userEntity.getPicture(), userEntity.getAddress());
+        return new User(userEntity.getId(), userEntity.getFullname(), userEntity.getEmail(), userEntity.getNumberPhone(), userEntity.getPicture(), userEntity.getAddress(), userEntity.getAvertissement(), userEntity.isBlackListed());
     }
     @Override
     public UserDTO userToUserDTO(User user) {
-        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress() );
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress(), user.getAvertissement(), user.isBlackListed() );
     }
     @Override
     public User userDtoToUser(UserDTO userDTO) {
-        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone(), userDTO.getPicture(), userDTO.getAddress() );
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone(), userDTO.getPicture(), userDTO.getAddress() , userDTO.getAvertissement(), userDTO.isBlackListed());
 
     }
 
     @Override
     public User userUpdateDtoToUser(UserPhoneDTO userPhoneDTO) {
-        return new User(null,null,null, userPhoneDTO.getPhone(),null, null);
+        return new User(null,null,null, userPhoneDTO.getPhone(),null, null,0,false);
     }
     @Override
     public List<User> usersToDocument(MongoCollection<Document> collection) {
         List<User> userList=new ArrayList<>();
         for(Document doc:collection.find()){
-            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", String.class) ));
+            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", String.class), doc.getInteger("avertissement"),doc.getBoolean("blackListed") ));
         }
         return userList;
     }

@@ -32,5 +32,11 @@ public class UserEntity {
     @Getter
     @Setter
     private List<String> address;
+    @Getter
+    @Setter
+    private int avertissement;
+    @Getter
+    @Setter
+    private boolean blackListed;
 
 }

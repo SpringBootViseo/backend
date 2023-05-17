@@ -50,18 +50,13 @@ public class UserDBAdapter implements UserPort {
 
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
-        UserEntity userEntity = userRepository.findById(user.getId()).orElse(null);
-        if (userEntity != null) {
-            throw new UserAlreadyExistsException("");
-        }
-        // save the user
-        userEntity = new UserEntity();
-        userEntity.setId(user.getId());
-        userEntity.setFullname(user.getName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPicture(user.getPicture());
-        userEntity.setNumberPhone(user.getPhone());
-        return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
+
+            UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress(), user.getAvertissement(), user.isBlackListed());
+
+            return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
+
+
+
     }
 
     @Override
@@ -82,5 +77,7 @@ public class UserDBAdapter implements UserPort {
         MongoCollection<Document> collection=mongoConfig.getAllDocuments("Users");
         return userMapperImpl.usersToDocument(collection);
     }
+
+
 
 }

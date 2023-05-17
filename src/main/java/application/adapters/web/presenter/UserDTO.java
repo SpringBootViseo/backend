@@ -46,6 +46,15 @@ public class UserDTO {
     @Setter
     @JsonProperty("address")
     private List<String> address;
-
+    @Getter
+    @Setter
+    @JsonProperty("avertissement")
+    @Valid
+    private int avertissement;
+    @Getter
+    @Setter
+    @JsonProperty("blacklisted")
+    @Valid
+    private boolean blackListed;
 
 }

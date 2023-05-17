@@ -18,10 +18,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 
 import static application.adapters.security.entity.RoleSec.ADMIN;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +38,7 @@ public class SecurityConfiguration {
 
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orders","/users","/categories","/products","/categoryProducts","/carts","/preference")
+                .requestMatchers("/api/createCustomer","/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orders","/users","/categories","/products","/categoryProducts","/carts","/preference")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests()
@@ -48,7 +46,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST,"/products").hasAnyRole(ADMIN.name())
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**","auth/register")
+                .requestMatchers("/auth/**","auth/register","/users/**")
                 .permitAll()
 
                 .anyRequest()

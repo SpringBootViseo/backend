@@ -12,7 +12,7 @@ import application.domain.User;
 public class UserMapperImplTest {
 
     private final UserMapperImpl userMapper = new UserMapperImpl();
-    private final User testUser = new User("1L", "John Doe", "john.doe@example.com", "1234567890",null,null);
+    private final User testUser = new User("1L", "John Doe", "john.doe@example.com", "1234567890",null,null,0,false);
 
     @Test
     public void testUserToUserEntity() {
@@ -25,7 +25,7 @@ public class UserMapperImplTest {
 
     @Test
     public void testUserEntityToUser() {
-        UserEntity userEntity = new UserEntity("1L", "John Doe", "john.doe@example.com", "1234567890",null,null);
+        UserEntity userEntity = new UserEntity("1L", "John Doe", "john.doe@example.com", "1234567890",null,null,0,false);
         User user = userMapper.userEntityToUser(userEntity);
         assertEquals(userEntity.getId(), user.getId());
         assertEquals(userEntity.getFullname(), user.getName());
@@ -44,7 +44,7 @@ public class UserMapperImplTest {
 
     @Test
     public void testUserDtoToUser() {
-        UserDTO userDTO = new UserDTO("1L", "John Doe", "john.doe@example.com", "1234567890",null,null);
+        UserDTO userDTO = new UserDTO("1L", "John Doe", "john.doe@example.com", "1234567890",null,null,0,false);
         User user = userMapper.userDtoToUser(userDTO);
         assertEquals(userDTO.getId(), user.getId());
         assertEquals(userDTO.getName(), user.getName());

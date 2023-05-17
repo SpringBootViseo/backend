@@ -9,6 +9,7 @@ import application.port.out.PreferencePort;
 import application.port.out.UserPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,7 +41,7 @@ class UserServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
        id="VQl0nhjeMgP1CAunvAt7Ff7kA2";
-       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null);
+       user=new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null,0,false);
        cart = new Cart(id,new ArrayList<>());
        preference=new Preference(id,new ArrayList<>());
     }
@@ -95,11 +96,83 @@ class UserServiceTest {
     }
     @Test
     void shouldUpdateUserWhenUpdateUserWithAvailableUser(){
-        User user1= new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null);
+        User user1= new User(id,"Abdessamad","abdessamad@gmail.com","0612649174",null,null,0,false);
         given(userPort.updateUser(id,user1)).willReturn(user);
         assertEquals(userService.updateUser(id,user1),user);
 
     }
+    @DisplayName("add 1 to avertissement when avertie if avertissement <2")
+    @Test
+    void fct(){
+        User user = new User();
+        user.setId("sampleId");
+        user.setAvertissement(1);
+        user.setBlackListed(false);
+
+        // Mock the getUser and saveUser methods of the userPort
+        given(userPort.getUser("sampleId")).willReturn(user);
+        given(userPort.saveUser(user)).willReturn(user);
+
+        // Invoke the updateAvertissement method
+        User result = userService.avertirUser("sampleId");
+
+        // Verify that getUser and saveUser were called with the correct arguments
+        verify(userPort,times(1)).getUser("sampleId");
+        verify(userPort,times(1)).saveUser(user);
+
+        // Verify that the avertissement is incremented
+       assertEquals(2, result.getAvertissement());
+
+        // Verify that the user is not blacklisted
+       assertFalse(result.isBlackListed());
+    }
+    @DisplayName("black list when avertie if avertissement >2")
+    @Test
+    void fct1(){
+        User user = new User();
+        user.setId("sampleId");
+        user.setAvertissement(2);
+        user.setBlackListed(false);
+
+        // Mock the getUser and saveUser methods of the userPort
+        given(userPort.getUser("sampleId")).willReturn(user);
+        given(userPort.saveUser(user)).willReturn(user);
+
+        // Invoke the updateAvertissement method
+        User result = userService.avertirUser("sampleId");
+
+        // Verify that getUser and saveUser were called with the correct arguments
+        verify(userPort,times(1)).getUser("sampleId");
+        verify(userPort,times(1)).saveUser(user);
+
+        // Verify that the avertissement is incremented
+        assertEquals(3, result.getAvertissement());
+
+        // Verify that the user is not blacklisted
+        assertTrue(result.isBlackListed());
+    }
+    @DisplayName("blackList user when blacklist user")
+    @Test
+    void fct2(){
+        User user = new User();
+        user.setId("sampleId");
+        user.setBlackListed(false);
+
+        // Mock the getUser and saveUser methods of the userPort
+        given(userPort.getUser("sampleId")).willReturn(user);
+        given(userPort.saveUser(user)).willReturn(user);
+
+        // Invoke the blacklisterUser method
+        User result = userService.blacklisterUser("sampleId");
+
+        // Verify that getUser and saveUser were called with the correct arguments
+        verify(userPort,times(1)).getUser("sampleId");
+        verify(userPort,times(1)).saveUser(user);
+
+        // Verify that the user object is blacklisted
+        assertTrue(result.isBlackListed());
+    }
+
 
 
 }

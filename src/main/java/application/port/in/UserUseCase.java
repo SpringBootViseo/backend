@@ -12,5 +12,7 @@ public interface UserUseCase {
     User addAddress(String id,String address);
     List<User> listUser();
     User loginWithGoogle(User user);
+    User avertirUser(String id);
+    User blacklisterUser(String id);
 
 }

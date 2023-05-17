@@ -28,10 +28,14 @@ public class UserService implements UserUseCase {
     @Override
     public User saveUser(User user) {
         String id= user.getId();
+        user.setAvertissement(0);
+        user.setBlackListed(false);
         if(!cartPort.availableCart(id))
             cartPort.createCart(id);
         if(!preferencePort.availablePreference(id))
             preferencePort.createPrefence(id);
+
+
         return userPort.saveUser(user);
     }
 
@@ -59,12 +63,42 @@ public class UserService implements UserUseCase {
 
 
     public User loginWithGoogle(User user) {
+        System.out.println("Availability in DB:"+isAvailable(user.getId()));
         if(isAvailable(user.getId())){
             return userPort.getUser(user.getId());
         }
         else{
-            return userPort.saveUser(user);
+            return this.saveUser(user);
         }
+    }
+
+    @Override
+    public User avertirUser(String id) {
+        User user = userPort.getUser(id);
+
+        int avertissements= user.getAvertissement();
+        if(avertissements>=0 && avertissements<=2){
+            avertissements +=1;
+            user.setAvertissement(avertissements);
+        }
+       if(avertissements>=3){
+
+           user.setBlackListed(true);
+        }
+
+
+
+
+        return userPort.saveUser(user);
+    }
+
+    @Override
+    public User blacklisterUser(String id) {
+        User user=userPort.getUser(id);
+        user.setBlackListed(true);
+
+
+        return userPort.saveUser(user);
     }
 
 }

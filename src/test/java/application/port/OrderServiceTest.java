@@ -46,7 +46,7 @@ class OrderServiceTest {
         MockitoAnnotations.initMocks(this);
         id=UUID.randomUUID();
         uuid=UUID.randomUUID();
-        user=new User("VQl0nhjeMgP1CAunvAt7Ff7kA2","Abdessamad","abdessamad@gmail.com","0612649174","Casablanca",null);
+        user=new User("VQl0nhjeMgP1CAunvAt7Ff7kA2","Abdessamad","abdessamad@gmail.com","0612649174","Casablanca",null,0,false);
         category=new Category(id,"test","test","test");
 
         product = new Product(id,"test","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",0.0,0.0,100.0,category);

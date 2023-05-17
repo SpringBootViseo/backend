@@ -93,6 +93,40 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+    @PutMapping("/avertir/{id}")
+    public  ResponseEntity<UserDTO> avertirUser(@Validated @PathVariable(name = "id")String id){
+        try{
+            UserDTO response=userMapper.userToUserDTO(userUseCase.avertirUser(id));
+            return new ResponseEntity<>(response,HttpStatus.OK);
+
+        }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User doesn't exist", e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @PutMapping("/blackLister/{id}")
+    ResponseEntity<UserDTO> blackListerUser(@Validated @PathVariable(name = "id")String id){
+        try {
+            UserDTO userDTO=userMapper.userToUserDTO(userUseCase.blacklisterUser(id));
+            return new ResponseEntity<>(userDTO,HttpStatus.OK);
+
+        }catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User doesn't exist", e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginWithGoogle(@Validated @RequestBody UserDTO userDTO){
         try{
