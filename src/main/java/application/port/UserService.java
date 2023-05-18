@@ -10,6 +10,7 @@ import application.port.out.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,40 +39,44 @@ public class UserService implements UserUseCase {
 
     @Override
     public User addAddress(String id, Address address) {
-
-        if (addressAvailable(id,address)) {
+        if (addressAvailable(id, address)) {
             User user = userPort.getUser(id);
-            if(user.getAddress()==null)
-                user.setAddress(List.of(address));
-            else{
-                List<Address> addresses=user.getAddress();
-                addresses.add(address);
-                user.setAddress(addresses);
+            List<Address> addresses = user.getAddress();
+
+            if (addresses == null) {
+                addresses = new ArrayList<>();
             }
+
+            addresses.add(address);
+            user.setAddress(addresses);
+
             userPort.saveUser(user);
             return user;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("L'adresse existe déjà pour l'utilisateur.");
         }
-
     }
+
 
     public boolean isAvailable(String id){
         return userPort.isAvailable(id);
     }
 
-    public boolean addressAvailable(String id , Address address){
+    public boolean addressAvailable(String id, Address newAddress) {
         User user = userPort.getUser(id);
-        System.out.println(user.toString());
-        for (Address existingAddress : user.getAddress())
-        {
-            if (existingAddress.equals(address)) {
-                return false;
+        List<Address> addresses = user.getAddress();
+
+        if (addresses != null) {
+            for (Address existingAddress : addresses) {
+                if (existingAddress != null && existingAddress.equals(newAddress)) {
+                    return false; // Address already exists
+                }
             }
         }
-        return true;
+
+        return true; // Address is available
     }
+
     @Override
     public User getUser(String id) {
         if(isAvailable(id)){
