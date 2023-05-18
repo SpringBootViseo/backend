@@ -1,5 +1,6 @@
 package application.port.in;
 
+import application.domain.Address;
 import application.domain.User;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface UserUseCase {
     boolean isAvailable(String id);
     User getUser(String id);
     User saveUser(User user);
-    User addAddress(String id,String address);
+    User addAddress(String id, Address address);
     List<User> listUser();
     User loginWithGoogle(User user) throws IllegalAccessException;
     User avertirUser(String id);

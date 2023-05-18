@@ -1,5 +1,6 @@
 package application.adapters.persistence.entity;
 
+import application.domain.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class UserEntity {
     private String picture;
     @Getter
     @Setter
-    private List<String> address;
+    private List<Address> address;
     @Getter
     @Setter
     private int avertissement;

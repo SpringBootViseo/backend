@@ -1,8 +1,10 @@
 package application.adapters.mapper.mapperImpl;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.mapper.UserMapper;
+import application.adapters.web.presenter.UserAddressDTO;
 import application.adapters.web.presenter.UserDTO;
 import application.adapters.web.presenter.UserPhoneDTO;
+import application.domain.Address;
 import application.domain.User;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -35,11 +37,21 @@ public class UserMapperImpl implements UserMapper {
     public User userUpdateDtoToUser(UserPhoneDTO userPhoneDTO) {
         return new User(null,null,null, userPhoneDTO.getPhone(),null, null,0,false);
     }
+
+        @Override
+        public Address userAddressDtoToAddress(UserAddressDTO userAddressDTO) {
+            Address address = new Address(userAddressDTO.getId(),userAddressDTO.getStreet(), userAddressDTO.getCity(), userAddressDTO.getState());
+            return address;
+        }
+
+
+
+
     @Override
     public List<User> usersToDocument(MongoCollection<Document> collection) {
         List<User> userList=new ArrayList<>();
         for(Document doc:collection.find()){
-            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", String.class), doc.getInteger("avertissement"),doc.getBoolean("blackListed") ));
+            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", Address.class), doc.getInteger("avertissement"),doc.getBoolean("blackListed") ));
         }
         return userList;
     }

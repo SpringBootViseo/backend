@@ -1,6 +1,7 @@
 package application.port;
 
 import application.adapters.exception.UserNotFoundException;
+import application.domain.Address;
 import application.domain.Cart;
 import application.domain.Preference;
 import application.domain.User;
@@ -16,12 +17,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -36,6 +38,8 @@ class UserServiceTest {
     private  String id;
     private User user;
     private Cart cart;
+    private Address address;
+
     private Preference preference;
     @BeforeEach
     public void setUp() {
@@ -172,6 +176,52 @@ class UserServiceTest {
         // Verify that the user object is blacklisted
         assertTrue(result.isBlackListed());
     }
+
+    @Test
+    public void shouldReturnTrueIfAddressIsAvailable() {
+        Address address = new Address(UUID.randomUUID(),"Street 1", "City", "12345");
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(new Address(UUID.randomUUID(),"Street 2", "City", "54321"));
+        user.setAddress(addresses);
+
+        given(userPort.getUser(id)).willReturn(user);
+
+        boolean result = userService.addressAvailable(id, address);
+
+        verify(userPort, times(1)).getUser(id);
+        assertEquals(true, result);
+    }
+
+//    @Test
+//    void shouldAddAddressWhenAvailable() {
+//        // Arrange
+//        List<Address> addresses = new ArrayList<>();
+//        addresses.add(address);
+//        user.setAddress(addresses);
+//        when(userPort.getUser(eq(id))).thenReturn(user);
+//        when(userPort.saveUser(user)).thenReturn(user);
+//
+//        // Act
+//        User result = userService.addAddress(id, address);
+//
+//        // Assert
+//        verify(userPort, times(1)).getUser(eq(id));
+//        verify(userPort, times(1)).saveUser(user);
+//        assertEquals(user, result);
+//        assertEquals(addresses, result.getAddress());
+//
+//        // Verify that addressAvailable was called
+//        verify(userService, times(1)).addressAvailable(eq(id), any(Address.class));
+//    }
+
+
+
+
+
+
+
+
+
 
 
 
