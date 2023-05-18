@@ -102,6 +102,10 @@ public class UserService implements UserUseCase {
                 throw new IllegalAccessException("Can't be connected");
             }
             else{
+                if(!cartPort.availableCart(user.getId()))
+                    cartPort.createCart(user.getId());
+                if(!preferencePort.availablePreference(user.getId()))
+                    preferencePort.createPrefence(user.getId());
                 return user1;
             }
         }

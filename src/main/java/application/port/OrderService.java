@@ -28,6 +28,9 @@ public class OrderService implements OrderUseCase {
         if(this.isAvailable(order.getId())){
             throw new OrderAlreadyExistException();
         }
+        if(order.getOrderItems().isEmpty()){
+            throw new ProductNotAvailableException();
+        }
         else{
             List<OrderItem> orderItemList=order.getOrderItems();
             for (OrderItem orderItem: orderItemList){
@@ -40,7 +43,8 @@ public class OrderService implements OrderUseCase {
                     throw new NoSuchElementException("Can't Purchase this Order");
                 }
             }
-
+            OrderState orderState=orderStatePort.getOrderState("commandé");
+            order.setOrderState(orderState);
             return orderPort.saveOrder(order);
         }
 
@@ -82,4 +86,36 @@ public class OrderService implements OrderUseCase {
     public List<Order> listOrder() {
         return orderPort.listOrder();
     }
+
+    @Override
+    public Order payerOrder(UUID id) throws IllegalAccessException {
+        if(orderPort.getOrder(id).getOrderState().getState().equals("prête à livré")){
+            OrderState payedState=orderStatePort.getOrderState("payé");
+            return orderPort.updateStateOrder(id,payedState);
+        }
+       else throw new IllegalAccessException("Impossible de payé cette commande ");
+    }
+
+
+    @Override
+    public Order preparerOrder(UUID id) throws IllegalAccessException {
+        if(orderPort.getOrder(id).getOrderState().getState().equals("commandé")) {
+            OrderState onPrepareState = orderStatePort.getOrderState("en préparation");
+            return orderPort.updateStateOrder(id, onPrepareState);
+        }
+        else throw new IllegalAccessException("Impossible de préparer cette commande ");
+
+    }
+
+    @Override
+    public Order readyForDeliveryOrder(UUID id) throws IllegalAccessException {
+        if(orderPort.getOrder(id).getOrderState().getState().equals("en préparation")) {
+
+        OrderState readyForDeliveryState = orderStatePort.getOrderState("prête à livré");
+
+        return orderPort.updateStateOrder(id, readyForDeliveryState);
+    }else throw new IllegalAccessException("Impossible de payé cette commande ");
+
+    }
+
 }

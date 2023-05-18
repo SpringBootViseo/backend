@@ -13,4 +13,8 @@ public interface OrderUseCase {
     List<Order> listOrder(String idUser,String idorderState);
     Boolean isAvailable(UUID id);
     List <Order> listOrder();
+    Order payerOrder(UUID id) throws IllegalAccessException;
+    Order preparerOrder(UUID id) throws IllegalAccessException;
+    Order readyForDeliveryOrder(UUID id) throws IllegalAccessException;
+
 }

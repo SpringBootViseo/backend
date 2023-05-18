@@ -10,6 +10,7 @@ import application.port.out.ProductPort;
 import application.port.out.UserPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -183,5 +184,68 @@ class OrderServiceTest {
     void shouldReturnFalseWhenisAvailableWithUnavailableOrder(){
         given(orderPort.isAvailable(id)).willReturn(false);
         assertFalse(orderService.isAvailable(id));
+    }
+    @DisplayName("should pay order if order is prête à livré")
+    @Test
+    void function() throws IllegalAccessException {
+        OrderState payed=new OrderState("payé","payé");
+        Order order1=new Order(id,user,new OrderState("prête à livré","prête à livré"),orderItemList,0L,"15-12-2020");
+        Order order2=new Order(id,user,payed,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        given(orderPort.updateStateOrder(id,payed)).willReturn(order2);
+        given(orderStatePort.getOrderState("payé")).willReturn(payed);
+        Order result=orderService.payerOrder(id);
+        assertEquals(result,order2);
+    }
+    @DisplayName("should prepare order if order is commandé")
+    @Test
+    void function1() throws IllegalAccessException {
+        OrderState ordered1=new OrderState("en préparation","en préparation");
+        Order order1=new Order(id,user,new OrderState("commandé","commandé"),orderItemList,0L,"15-12-2020");
+        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        given(orderPort.updateStateOrder(id,ordered1)).willReturn(order2);
+        given(orderStatePort.getOrderState("en préparation")).willReturn(ordered1);
+        Order result=orderService.preparerOrder(id);
+        assertEquals(result,order2);
+    }
+    @DisplayName("should end prepare order if order is en preparartion")
+    @Test
+    void function2() throws IllegalAccessException {
+        OrderState ordered1=new OrderState("prête à livré","prête à livré");
+        Order order1=new Order(id,user,new OrderState("en préparation","en préparation"),orderItemList,0L,"15-12-2020");
+        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        given(orderPort.updateStateOrder(id,ordered1)).willReturn(order2);
+        given(orderStatePort.getOrderState("prête à livré")).willReturn(ordered1);
+        Order result=orderService.readyForDeliveryOrder(id);
+        assertEquals(result,order2);
+    }
+    @DisplayName("should throw illegalAccessException if order is not en preparation and wanna end prepare")
+    @Test
+    void function3(){
+        OrderState ordered1=new OrderState("prête à livré","prête à livré");
+
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        assertThrows(IllegalAccessException.class,()->orderService.readyForDeliveryOrder(id));
+    }
+    @DisplayName("should throw illegalAccessException if order is not command and wanna prepare it")
+    @Test
+    void function4(){
+        OrderState ordered1=new OrderState("prête à livré","prête à livré");
+
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        assertThrows(IllegalAccessException.class,()->orderService.preparerOrder(id));
+    }
+    @DisplayName("should throw illegalAccessException if order is not prête à livré and wanna pay it")
+    @Test
+    void function5(){
+        OrderState ordered1=new OrderState("commandé","commandé");
+
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        given(orderPort.getOrder(id)).willReturn(order1);
+        assertThrows(IllegalAccessException.class,()->orderService.payerOrder(id));
     }
 }

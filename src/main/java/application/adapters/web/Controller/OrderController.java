@@ -110,5 +110,79 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+    @PatchMapping("/pay/{id}")
+    ResponseEntity<OrderDTO> payOrder(@Validated @PathVariable(name = "id") UUID id){
+        try{
+            Order order=orderUseCase.payerOrder(id);
+            return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
+        }
+        catch (IllegalAccessException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        }
 
+        catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Order or State not found",e);
+        }
+
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @PatchMapping("/prepare/{id}")
+    ResponseEntity<OrderDTO> prepareOrder(@Validated @PathVariable(name = "id") UUID id){
+        try{
+            Order order=orderUseCase.preparerOrder(id);
+            return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
+        }
+        catch (IllegalAccessException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        }
+
+        catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Order or State not found",e);
+        }
+
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @PatchMapping("/readyToGo/{id}")
+    ResponseEntity<OrderDTO> readyToGoOrder(@Validated @PathVariable(name = "id") UUID id){
+        try{
+            Order order=orderUseCase.readyForDeliveryOrder(id);
+            return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
+        }
+        catch (IllegalAccessException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        }
+
+        catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Order or State not found",e);
+        }
+
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
 }

@@ -38,7 +38,7 @@ public class SecurityConfiguration {
 
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/createCustomer","/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orders","/users","/categories","/products","/categoryProducts","/carts","/preference")
+                .requestMatchers("/api/createCustomer","/preference/**","/auth/**","/users/**","/categories/**","/products/**","/categoryProducts/**","/carts/**","/orders/**","/orderStates","/orderStates/**","/orders","/users","/categories","/products","/categoryProducts","/carts","/preference")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests()
