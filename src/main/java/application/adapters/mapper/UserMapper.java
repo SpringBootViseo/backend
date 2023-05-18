@@ -2,8 +2,10 @@ package application.adapters.mapper;
 
 
 import application.adapters.persistence.entity.UserEntity;
+import application.adapters.web.presenter.UserAddressDTO;
 import application.adapters.web.presenter.UserDTO;
 import application.adapters.web.presenter.UserPhoneDTO;
+import application.domain.Address;
 import application.domain.User;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -18,6 +20,8 @@ public interface UserMapper {
     UserDTO userToUserDTO(User user);
     User userDtoToUser (UserDTO userDTO);
     User userUpdateDtoToUser(UserPhoneDTO userPhoneDTO);
+    Address userAddressDtoToAddress(UserAddressDTO userAddressDTO);
+
 
     List<User> usersToDocument(MongoCollection<Document> collection);
     List<UserDTO> listUserToListUserDTO(List<User> userList);

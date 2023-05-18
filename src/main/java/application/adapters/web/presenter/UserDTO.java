@@ -1,5 +1,6 @@
 package application.adapters.web.presenter;
 
+import application.domain.Address;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -45,7 +46,7 @@ public class UserDTO {
     @Getter
     @Setter
     @JsonProperty("address")
-    private List<String> address;
+    private List<Address> address;
 
 
 }

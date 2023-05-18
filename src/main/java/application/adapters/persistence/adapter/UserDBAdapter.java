@@ -6,6 +6,7 @@ import application.adapters.mapper.mapperImpl.UserMapperImpl;
 import application.adapters.persistence.MongoConfig;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.persistence.repository.UserRepository;
+import application.domain.Address;
 import application.domain.User;
 import application.port.out.UserPort;
 import org.bson.Document;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.mongodb.client.MongoCollection;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -41,6 +43,7 @@ public class UserDBAdapter implements UserPort {
         return userRepository.findById(id).isPresent();
     }
 
+
     @Override
     public User getUser(String id) {
         if(isAvailable(id))
@@ -50,33 +53,11 @@ public class UserDBAdapter implements UserPort {
 
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
-        UserEntity userEntity = userRepository.findById(user.getId()).orElse(null);
-        if (userEntity != null) {
-            throw new UserAlreadyExistsException("");
-        }
-        // save the user
-        userEntity = new UserEntity();
-        userEntity.setId(user.getId());
-        userEntity.setFullname(user.getName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPicture(user.getPicture());
-        userEntity.setNumberPhone(user.getPhone());
+        UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress());
+
         return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
     }
 
-    @Override
-    public User addAddress(String id, String address) {
-        User user=this.getUser(id);
-        if(user.getAddress() ==null )
-            user.setAddress(List.of(address));
-        else {
-            List<String> addresses=user.getAddress();
-            addresses.add(address);
-            user.setAddress(addresses);
-        }
-        userRepository.save(userMapperImpl.userToUserEntity(user));
-        return user;
-    }
     @Override
     public List<User> listUser() {
         MongoCollection<Document> collection=mongoConfig.getAllDocuments("Users");
