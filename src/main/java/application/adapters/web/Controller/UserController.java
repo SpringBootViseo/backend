@@ -133,10 +133,15 @@ public class UserController {
             UserDTO response=userMapper.userToUserDTO(userUseCase.loginWithGoogle(userMapper.userDtoToUser(userDTO)));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }
+        catch (IllegalAccessException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         catch (Exception e) {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
+
     }
     @GetMapping()
     public ResponseEntity<List<UserDTO>> listUsers(){

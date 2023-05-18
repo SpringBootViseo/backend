@@ -11,7 +11,7 @@ public interface UserUseCase {
     User saveUser(User user);
     User addAddress(String id,String address);
     List<User> listUser();
-    User loginWithGoogle(User user);
+    User loginWithGoogle(User user) throws IllegalAccessException;
     User avertirUser(String id);
     User blacklisterUser(String id);
 

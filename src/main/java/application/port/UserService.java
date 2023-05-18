@@ -62,10 +62,16 @@ public class UserService implements UserUseCase {
     }
 
 
-    public User loginWithGoogle(User user) {
+    public User loginWithGoogle(User user) throws IllegalAccessException {
         System.out.println("Availability in DB:"+isAvailable(user.getId()));
         if(isAvailable(user.getId())){
-            return userPort.getUser(user.getId());
+            User user1=userPort.getUser(user.getId());
+            if(user1.isBlackListed()){
+                throw new IllegalAccessException("Can't be connected");
+            }
+            else{
+                return user1;
+            }
         }
         else{
             return this.saveUser(user);
