@@ -37,7 +37,6 @@ class UserServiceTest {
     private  String id;
     private User user;
     private Cart cart;
-    private Address address;
 
     private Preference preference;
     @BeforeEach
