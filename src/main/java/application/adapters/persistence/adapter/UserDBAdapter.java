@@ -2,11 +2,11 @@ package application.adapters.persistence.adapter;
 
 import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.exception.UserNotFoundException;
+import application.adapters.mapper.mapperImpl.AddressMapperImpl;
 import application.adapters.mapper.mapperImpl.UserMapperImpl;
 import application.adapters.persistence.MongoConfig;
 import application.adapters.persistence.entity.UserEntity;
 import application.adapters.persistence.repository.UserRepository;
-import application.domain.Address;
 import application.domain.User;
 import application.port.out.UserPort;
 import org.bson.Document;
@@ -24,6 +24,7 @@ public class UserDBAdapter implements UserPort {
     @Autowired
     private UserRepository userRepository;
     private UserMapperImpl userMapperImpl;
+    private AddressMapperImpl addressMapper;
     private final MongoConfig mongoConfig;
 
     @Override
@@ -47,15 +48,13 @@ public class UserDBAdapter implements UserPort {
     @Override
     public User getUser(String id) {
         if(isAvailable(id))
-        return userMapperImpl.userEntityToUser(userRepository.findById(id).get());
+             return userMapperImpl.userEntityToUser(userRepository.findById(id).get());
         else throw new UserNotFoundException(id);
     }
 
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
-
-            UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress(), user.getAvertissement(), user.isBlackListed());
-
+            UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), addressMapper.listAddressToAddressEntity(user.getAddress()), user.getAvertissement(), user.isBlackListed());
             return userMapperImpl.userEntityToUser (userRepository.save(userEntity));
 
 

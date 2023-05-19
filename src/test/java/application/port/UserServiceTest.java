@@ -191,6 +191,40 @@ class UserServiceTest {
         verify(userPort, times(1)).getUser(id);
         assertEquals(true, result);
     }
+    @Test
+    void shouldDeleteAddressWhenAvailable() {
+        List<Address> addresses = new ArrayList<>();
+        UUID addressId = UUID.randomUUID();
+        Address address = new Address(addressId, "Street 1", "City", "12345");
+        addresses.add(address);
+        user.setAddress(addresses);
+        given(userPort.getUser(id)).willReturn(user);
+        given(userPort.saveUser(user)).willReturn(user);
+
+        User result = userService.deleteAddress(addressId, id);
+
+        verify(userPort, times(1)).getUser(id);
+        verify(userPort, times(1)).saveUser(user);
+        assertEquals(user, result);
+        assertEquals(0, result.getAddress().size());
+    }
+
+//    @Test
+//    void shouldThrowExceptionWhenAddressUnavailable() {
+//        // Arrange
+//
+//        Address address = new Address(UUID.randomUUID(), "Street 1", "City", "12345");
+//        user.setAddress(List.of(address));
+//
+//        given(userPort.getUser(id)).willReturn(user);
+//        given(userService.addressAvailable(id, address)).willReturn(false);
+//
+//        // Act & Assert
+//        assertThrows(IllegalArgumentException.class, () -> userService.addAddress(id, address));
+//    }
+
+
+
 
 //    @Test
 //    void shouldAddAddressWhenAvailable() {

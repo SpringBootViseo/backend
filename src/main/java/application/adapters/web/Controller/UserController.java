@@ -1,5 +1,6 @@
 package application.adapters.web.Controller;
 
+import application.adapters.exception.AddressNotFound;
 import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.exception.UserNotFoundException;
 import application.adapters.mapper.UserMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -48,7 +50,6 @@ public class UserController {
     @PostMapping("/{id}")
     public ResponseEntity<User> addAdressToUser(@Validated @PathVariable(name = "id")String id, @Validated @RequestBody UserAddressDTO userAddressDTO){
         try{
-            System.out.println("hellllllllllllll");
             User response= userUseCase.addAddress(id,userMapper.userAddressDtoToAddress(userAddressDTO));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (UnexpectedTypeException e){
@@ -61,6 +62,28 @@ public class UserController {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
+    }
+
+    @DeleteMapping("/{id}/idAddress/{idAddress}")
+    public ResponseEntity<UserDTO> deleteAddressFromUser(@Validated @PathVariable(name = "idAddress") UUID idAddress, @PathVariable (name = "id") String id){
+        try{
+            User userResponse=userUseCase.deleteAddress(idAddress,id);
+            return new ResponseEntity<>(userMapper.userToUserDTO(userResponse),HttpStatus.OK);
+        }
+        catch (UnexpectedTypeException e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bad argument",e);
+        }
+        catch(AddressNotFound e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Address not found",e);
+        }
+
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+
     }
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(@Validated @RequestBody UserPhoneDTO userPhoneDTO, @Validated @PathVariable(name = "id") String id){
@@ -131,6 +154,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginWithGoogle(@Validated @RequestBody UserDTO userDTO){
         try{
+
             UserDTO response=userMapper.userToUserDTO(userUseCase.loginWithGoogle(userMapper.userDtoToUser(userDTO)));
             return new ResponseEntity<>(response,HttpStatus.OK);
         }

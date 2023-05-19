@@ -2,12 +2,16 @@ package application.adapters.web.presenter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAddressDTO {
     @Getter
     @Setter
@@ -30,4 +34,13 @@ public class UserAddressDTO {
     @NotBlank
     private String state;
 
+    @Override
+    public String toString() {
+        return "UserAddressDTO{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                '}';
+    }
 }

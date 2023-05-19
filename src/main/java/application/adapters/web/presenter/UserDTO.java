@@ -46,7 +46,7 @@ public class UserDTO {
     @Getter
     @Setter
     @JsonProperty("address")
-    private List<Address> address;
+    private List<UserAddressDTO> address;
     @Getter
     @Setter
     @JsonProperty("avertissement")
@@ -58,4 +58,17 @@ public class UserDTO {
     @Valid
     private boolean blackListed;
 
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", picture='" + picture + '\'' +
+                ", address=" + address +
+                ", avertissement=" + avertissement +
+                ", blackListed=" + blackListed +
+                '}';
+    }
 }

@@ -12,25 +12,25 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UserMapperImpl implements UserMapper {
-    @Override
+    AddressMapperImpl addressMapper = new AddressMapperImpl();    @Override
     public UserEntity userToUserEntity(User user) {
-        return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(),user.getAddress(), user.getAvertissement(), user.isBlackListed());
+        return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(),addressMapper.listAddressToAddressEntity(user.getAddress()), user.getAvertissement(), user.isBlackListed());
     }
     @Override
     public User userEntityToUser(UserEntity userEntity) {
-        return new User(userEntity.getId(), userEntity.getFullname(), userEntity.getEmail(), userEntity.getNumberPhone(), userEntity.getPicture(), userEntity.getAddress(), userEntity.getAvertissement(), userEntity.isBlackListed());
+        return new User(userEntity.getId(), userEntity.getFullname(), userEntity.getEmail(), userEntity.getNumberPhone(), userEntity.getPicture(),addressMapper.listaddressEntityToLisAddress(userEntity.getAddress()) , userEntity.getAvertissement(), userEntity.isBlackListed());
     }
     @Override
     public UserDTO userToUserDTO(User user) {
-        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), user.getAddress(), user.getAvertissement(), user.isBlackListed() );
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(),addressMapper.listAddressTolistUserAddressDTO(user.getAddress()) , user.getAvertissement(), user.isBlackListed() );
     }
     @Override
     public User userDtoToUser(UserDTO userDTO) {
-        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone(), userDTO.getPicture(), userDTO.getAddress() , userDTO.getAvertissement(), userDTO.isBlackListed());
-
+        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail(), userDTO.getPhone(), userDTO.getPicture(), addressMapper.listUserAddressDTOTolistAddress(userDTO.getAddress()) , userDTO.getAvertissement(), userDTO.isBlackListed());
     }
 
     @Override
@@ -38,21 +38,46 @@ public class UserMapperImpl implements UserMapper {
         return new User(null,null,null, userPhoneDTO.getPhone(),null, null,0,false);
     }
 
-        @Override
+    @Override
         public Address userAddressDtoToAddress(UserAddressDTO userAddressDTO) {
             Address address = new Address(userAddressDTO.getId(),userAddressDTO.getStreet(), userAddressDTO.getCity(), userAddressDTO.getState());
             return address;
-        }
+    }
 
 
 
 
     @Override
     public List<User> usersToDocument(MongoCollection<Document> collection) {
-        List<User> userList=new ArrayList<>();
-        for(Document doc:collection.find()){
-            userList.add(new User(doc.getString("_id"),doc.getString("fullname"), doc.getString("email"),doc.getString("numberPhone"),doc.getString("picture"),doc.getList("address", Address.class), doc.getInteger("avertissement"),doc.getBoolean("blackListed") ));
+        List<User> userList = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            List<Document> addressDocs = doc.getList("address", Document.class);
+            List<Address> addresses = new ArrayList<>();
+            for (Document addressDoc : addressDocs) {
+                Address address = new Address(
+                        addressDoc.get("id", UUID.class),
+                        addressDoc.getString("street"),
+                        addressDoc.getString("city"),
+                        addressDoc.getString("state")
+                );
+                System.out.println("address   :"+address);
+                addresses.add(address);
+            }
+
+            User user = new User(
+                    doc.getString("_id"),
+                    doc.getString("fullname"),
+                    doc.getString("email"),
+                    doc.getString("numberPhone"),
+                    doc.getString("picture"),
+                    addresses,
+                    doc.getInteger("avertissement"),
+                    doc.getBoolean("blackListed")
+            );
+
+            userList.add(user);
         }
+        System.out.println("userList   :"+userList);
         return userList;
     }
 
@@ -67,3 +92,4 @@ public class UserMapperImpl implements UserMapper {
 
 
 }
+

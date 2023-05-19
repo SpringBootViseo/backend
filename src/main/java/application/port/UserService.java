@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -61,6 +62,16 @@ public class UserService implements UserUseCase {
         }
     }
 
+    @Override
+    public User deleteAddress(UUID idAddress, String id) {
+        User user = userPort.getUser(id);
+        List<Address> addresses = user.getAddress();
+
+        addresses.removeIf(address -> (address.getId()==(idAddress)));
+        userPort.saveUser(user);
+
+        return user;
+    }
 
     public boolean isAvailable(String id){
         return userPort.isAvailable(id);
@@ -95,7 +106,6 @@ public class UserService implements UserUseCase {
 
 
     public User loginWithGoogle(User user) throws IllegalAccessException {
-        System.out.println("Availability in DB:"+isAvailable(user.getId()));
         if(isAvailable(user.getId())){
             User user1=userPort.getUser(user.getId());
             if(user1.isBlackListed()){
