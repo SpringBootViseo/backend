@@ -32,4 +32,8 @@ public class Order {
     @Getter
     @Setter
     private String  dateCommande;
+    @Getter
+    @Setter
+    private Preparateur preparateur;
+
 }

@@ -35,4 +35,7 @@ public class OrderEntity {
     @Getter
     @Setter
     private String dateCommande;
+    @Getter
+    @Setter
+    private PreparateurEntity preparateur;
 }

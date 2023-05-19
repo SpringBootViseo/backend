@@ -1,19 +1,19 @@
 package application.port;
 
 
-import application.domain.AuthenticationRequest;
-import application.domain.AuthenticationResponse;
-import application.domain.RegisterRequest;
-import application.domain.UserInfo;
+import application.domain.*;
 import application.port.in.AuthenticationUseCase;
 import application.port.out.AuthenticationPort;
+import application.port.out.PreparateurPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @AllArgsConstructor
 public class AuthenticationService implements AuthenticationUseCase {
     AuthenticationPort authentificationPort;
+    PreparateurPort preparateurPort;
     @Override
     public void saveUserToken(UserInfo user, String jwtToken) {
         authentificationPort.saveUserToken(user,jwtToken);
@@ -27,6 +27,11 @@ public class AuthenticationService implements AuthenticationUseCase {
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+
+        if(request.getRole()== Role.PREPARATOR){
+
+            preparateurPort.addPreparateur(new Preparateur(request.getFirstname(),request.getLastname(),request.getEmail()));
+        }
         return authentificationPort.register(request);
     }
 

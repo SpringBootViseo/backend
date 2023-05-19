@@ -185,4 +185,26 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
+    @PatchMapping("/{idOrder}/Preparateur/{emailPreparateur}")
+    ResponseEntity<OrderDTO> attribuerOrderPreparateur(@PathVariable(name = "idOrder") UUID idOrder, @PathVariable(name = "emailPreparateur")String idPreparateur){
+        try{
+            Order response=orderUseCase.attribuerOrder(idOrder,idPreparateur);
+            return new ResponseEntity<>(orderMapper.orderToOrderDTO(response),HttpStatus.OK);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
+    @GetMapping("/Preparateur/{email}")
+    ResponseEntity<List<OrderDTO>> listOrderPreparedByEmailPrepa(@PathVariable(name = "email") String email){
+        try {
+            List<Order> orders=orderUseCase.listOrderPreparateur(email);
+            return new ResponseEntity<>(orderMapper.listOrderTolistOrderDTO(orders),HttpStatus.OK);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
+        }
+    }
 }

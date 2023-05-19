@@ -47,4 +47,7 @@ public class OrderDTO {
     @Valid
     @JsonProperty(value = "dateCommande")
     private String dateCommande;
+    @Getter
+    @Setter
+    private PreparateurDTO preparateurDTO;
 }

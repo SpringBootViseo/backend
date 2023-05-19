@@ -16,5 +16,6 @@ public interface OrderUseCase {
     Order payerOrder(UUID id) throws IllegalAccessException;
     Order preparerOrder(UUID id) throws IllegalAccessException;
     Order readyForDeliveryOrder(UUID id) throws IllegalAccessException;
-
+    Order attribuerOrder(UUID idOrder,String emailPreparateur) throws IllegalAccessException;
+    List<Order> listOrderPreparateur(String email);
 }

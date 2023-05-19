@@ -2,6 +2,7 @@ package application.port;
 
 import application.domain.*;
 import application.port.out.AuthenticationPort;
+import application.port.out.PreparateurPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +22,8 @@ class AuthenticationServiceTest {
     AuthenticationService authenticationService;
     @Mock
     AuthenticationPort authenticationPort;
+    @Mock
+    PreparateurPort preparateurPort;
     UserInfo userInfo;
     RegisterRequest registerRequest;
     AuthenticationRequest authenticationRequest;
@@ -68,6 +71,18 @@ class AuthenticationServiceTest {
         given(authenticationPort.register(registerRequest)).willReturn(authenticationResponse);
         AuthenticationResponse response=authenticationService.register(registerRequest);
         assertEquals(response,authenticationResponse);
+    }
+    @DisplayName("should add Preparateur when register user with role preparator")
+    @Test
+    void fonction(){
+        registerRequest.setRole(Role.PREPARATOR);
+        Preparateur preparateur=new Preparateur(registerRequest.getFirstname(),registerRequest.getLastname(),registerRequest.getEmail());
+        given(preparateurPort.addPreparateur(preparateur)).willReturn(preparateur);
+        given(authenticationPort.register(registerRequest)).willReturn(authenticationResponse);
+
+        AuthenticationResponse response=authenticationService.register(registerRequest);
+        assertEquals(response,authenticationResponse);
+
     }
     @DisplayName("should return authenticationResponse when authenticate ")
     @Test

@@ -4,10 +4,7 @@ import application.adapters.exception.OrderAlreadyExistException;
 import application.adapters.exception.ProductNotAvailableException;
 import application.adapters.exception.UserNotFoundException;
 import application.domain.*;
-import application.port.out.OrderPort;
-import application.port.out.OrderStatePort;
-import application.port.out.ProductPort;
-import application.port.out.UserPort;
+import application.port.out.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +29,8 @@ class OrderServiceTest {
     ProductPort productPort;
     @Mock
     OrderStatePort orderStatePort;
+    @Mock
+    PreparateurPort preparateurPort;
     Order order;
     User user;
     Category category;
@@ -57,7 +56,7 @@ class OrderServiceTest {
         orderItemList=new ArrayList<>();
         orderItemList.add(new OrderItem(product,1));
         orderItemList.add(new OrderItem(product1,3));
-        order=new Order(id,user,readyState,orderItemList,0L,"15-12-2020");
+        order=new Order(id,user,readyState,orderItemList,0L,"15-12-2020",null);
     }
 
     @AfterEach
@@ -93,7 +92,7 @@ class OrderServiceTest {
         List<OrderItem> orderItemList1=new ArrayList<>();
         orderItemList1.add(new OrderItem(updatedProduct,1));
         orderItemList1.add(new OrderItem(updatedProduct1,3));
-        Order savedOrder=new Order(id,user,readyState,orderItemList1,130L,"15-12-2020");
+        Order savedOrder=new Order(id,user,readyState,orderItemList1,130L,"15-12-2020",null);
 
         given(orderService.isAvailable(id)).willReturn(false);
         given(productPort.orderProduct(id,1)).willReturn(updatedProduct);
@@ -137,7 +136,7 @@ class OrderServiceTest {
 
     @Test
     void shouldupdateStateOrderWhenUpdateStateWithAvailableOrderAndState() {
-        Order resultedOrder= new Order(id,user,deliveredState,orderItemList,0L,"15-12-2020");
+        Order resultedOrder= new Order(id,user,deliveredState,orderItemList,0L,"15-12-2020",null);
         given(orderStatePort.getOrderState("delivered")).willReturn(deliveredState);
         given(orderPort.updateStateOrder(id,deliveredState)).willReturn(resultedOrder);
         assertEquals(orderService.updateStateOrder(id,"delivered"),resultedOrder);
@@ -189,8 +188,8 @@ class OrderServiceTest {
     @Test
     void function() throws IllegalAccessException {
         OrderState payed=new OrderState("payé","payé");
-        Order order1=new Order(id,user,new OrderState("prête à livré","prête à livré"),orderItemList,0L,"15-12-2020");
-        Order order2=new Order(id,user,payed,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,new OrderState("prête à livré","prête à livré"),orderItemList,0L,"15-12-2020",null);
+        Order order2=new Order(id,user,payed,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         given(orderPort.updateStateOrder(id,payed)).willReturn(order2);
         given(orderStatePort.getOrderState("payé")).willReturn(payed);
@@ -201,8 +200,8 @@ class OrderServiceTest {
     @Test
     void function1() throws IllegalAccessException {
         OrderState ordered1=new OrderState("en préparation","en préparation");
-        Order order1=new Order(id,user,new OrderState("commandé","commandé"),orderItemList,0L,"15-12-2020");
-        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,new OrderState("commandé","commandé"),orderItemList,0L,"15-12-2020",null);
+        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         given(orderPort.updateStateOrder(id,ordered1)).willReturn(order2);
         given(orderStatePort.getOrderState("en préparation")).willReturn(ordered1);
@@ -213,8 +212,8 @@ class OrderServiceTest {
     @Test
     void function2() throws IllegalAccessException {
         OrderState ordered1=new OrderState("prête à livré","prête à livré");
-        Order order1=new Order(id,user,new OrderState("en préparation","en préparation"),orderItemList,0L,"15-12-2020");
-        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,new OrderState("en préparation","en préparation"),orderItemList,0L,"15-12-2020",null);
+        Order order2=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         given(orderPort.updateStateOrder(id,ordered1)).willReturn(order2);
         given(orderStatePort.getOrderState("prête à livré")).willReturn(ordered1);
@@ -226,7 +225,7 @@ class OrderServiceTest {
     void function3(){
         OrderState ordered1=new OrderState("prête à livré","prête à livré");
 
-        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         assertThrows(IllegalAccessException.class,()->orderService.readyForDeliveryOrder(id));
     }
@@ -235,7 +234,7 @@ class OrderServiceTest {
     void function4(){
         OrderState ordered1=new OrderState("prête à livré","prête à livré");
 
-        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         assertThrows(IllegalAccessException.class,()->orderService.preparerOrder(id));
     }
@@ -244,8 +243,101 @@ class OrderServiceTest {
     void function5(){
         OrderState ordered1=new OrderState("commandé","commandé");
 
-        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020");
+        Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
         assertThrows(IllegalAccessException.class,()->orderService.payerOrder(id));
     }
+    @DisplayName("should throw NoSuchElementExeption if preparateur with such email doesn't exist ")
+    @Test
+    void fonction(){
+        given(preparateurPort.isPreparateur("test")).willReturn(false);
+        assertThrows(NoSuchElementException.class,()->orderService.attribuerOrder(uuid,"test"));
+    }
+    @DisplayName("should attribute order to preparateur if preparateur with such email  exist ")
+    @Test
+    void fonction1() throws IllegalAccessException {
+        String emailPreparateur = "preparator@example.com";
+
+
+        // Mocking preparateurPort
+        given(preparateurPort.isPreparateur(emailPreparateur)).willReturn(true);
+        Preparateur preparateur = new Preparateur("a","a",emailPreparateur);
+        given(preparateurPort.getPreparateur(emailPreparateur)).willReturn(preparateur);
+
+        // Mocking orderPort
+        OrderState orderStateCommande = new OrderState("commandé","commandé");
+        Order order1=new Order(id,user,orderStateCommande,orderItemList,0L,"15-12-2020",null);
+
+        given(orderPort.getOrder(id)).willReturn(order1);
+
+        // Mocking orderStatePort
+        OrderState orderStatePrepare = new OrderState("en préparation","en préparation");
+        given(orderStatePort.getOrderState("en préparation")).willReturn(orderStatePrepare);
+        Order order2=new Order(id,user,orderStateCommande,orderItemList,0L,"15-12-2020",null);
+        order2.setOrderState(orderStatePrepare);
+        given(orderPort.updateStateOrder(id,orderStatePrepare)).willReturn(order2);
+        order2.setPreparateur(preparateur);
+        given(orderPort.saveOrder(order2)).willReturn(order2);
+        // Perform the function call
+        Order result = orderService.attribuerOrder( id,emailPreparateur);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(preparateur, result.getPreparateur());
+        assertEquals(orderStatePrepare, result.getOrderState());
+
+       verify(orderPort, times(1)).saveOrder(order2);
+
+
+    }
+    @DisplayName("should throw NoSuchElementException if preparateur with such email doesn't exist!")
+    @Test
+    void fonction3(){
+        given(preparateurPort.isPreparateur("a@a.com")).willReturn(false);
+        assertThrows(NoSuchElementException.class,()->orderService.attribuerOrder(id,"a@a.com"));
+
+
+    }
+    @DisplayName("should throw IllegalAccessException if order state isn't commandé")
+    @Test
+    void fonction4(){
+        String emailPreparateur = "preparator@example.com";
+
+
+        // Mocking preparateurPort
+        given(preparateurPort.isPreparateur(emailPreparateur)).willReturn(true);
+        Preparateur preparateur = new Preparateur("a","a",emailPreparateur);
+        given(preparateurPort.getPreparateur(emailPreparateur)).willReturn(preparateur);
+        OrderState orderStateCommande = new OrderState("prête à livré","prête à livré");
+        Order order1=new Order(id,user,orderStateCommande,orderItemList,0L,"15-12-2020",null);
+        given(orderPort.getOrder(id)).willReturn(order1);
+        assertThrows(IllegalAccessException.class,()->orderService.attribuerOrder(id,emailPreparateur));
+
+    }
+    @DisplayName("should return empty list if no order  with email preparateur and has null as preparateur")
+    @Test
+    void fonction6(){
+
+        OrderState orderStateCommande = new OrderState("commandé","commandé");
+
+        Order order1=new Order(id,user,orderStateCommande,orderItemList,0L,"15-12-2020",new Preparateur());
+
+        given(orderPort.listOrder()).willReturn(List.of(order,order1));
+        assertEquals(orderService.listOrderPreparateur("a@a.com"),List.of());
+    }
+    @DisplayName("should return  list of orders  with email preparateur ")
+    @Test
+    void fonction5(){
+
+        OrderState orderStateCommande = new OrderState("commandé","commandé");
+        Preparateur preparateur=new Preparateur("a","a","a@a.com");
+        Order order1=new Order(id,user,orderStateCommande,orderItemList,10L,"15-12-2020",preparateur);
+
+        given(orderPort.listOrder()).willReturn(List.of(order,order1));
+        List<Order> orders=orderService.listOrderPreparateur("a@a.com");
+        assertEquals(orders.size(),1);
+        assertEquals(orders.get(0).getTotalPrice(),10L);
+    }
+
+
 }

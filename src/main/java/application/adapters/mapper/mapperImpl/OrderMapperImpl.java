@@ -23,12 +23,14 @@ public class OrderMapperImpl implements OrderMapper {
     private UserMapperImpl userMapper;
     private UserPort userPort;
     private OrderStatePort orderStatePort;
+    private PreparateurMapperImpl preparateurMapper;
     @Override
     public Order orderEntityToOrder(OrderEntity orderEntity) {
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemEntityTolistOrderItem(orderEntity.getOrderItems());
         OrderState orderState=orderStateMapper.orderStateEntityToOrderState(orderEntity.getOrderState());
         User user=userMapper.userEntityToUser(orderEntity.getUser());
-        return new Order(orderEntity.getId(),user,orderState,orderItemList,orderEntity.getTotalPrice(),orderEntity.getDateCommande());
+        Preparateur preparateur=preparateurMapper.preparateurEntityToPreparateur(orderEntity.getPreparateur());
+        return new Order(orderEntity.getId(),user,orderState,orderItemList,orderEntity.getTotalPrice(),orderEntity.getDateCommande(),preparateur);
     }
 
 
@@ -37,14 +39,16 @@ public class OrderMapperImpl implements OrderMapper {
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemDTOTolistOrderItem(orderDTO.getOrderItems());
         OrderState orderState=orderStateMapper.orderStateDTOToOrderState(orderDTO.getOrderState());
         User user=userMapper.userDtoToUser(orderDTO.getUser());
-        return new Order(orderDTO.getId(),user,orderState,orderItemList,orderDTO.getTotalPrice(),orderDTO.getDateCommande());    }
+        Preparateur preparateur=preparateurMapper.preparateurDTOToPreparateur(orderDTO.getPreparateurDTO());
+        return new Order(orderDTO.getId(),user,orderState,orderItemList,orderDTO.getTotalPrice(),orderDTO.getDateCommande(),preparateur);    }
 
     @Override
     public OrderDTO orderToOrderDTO(Order order) {
         List<OrderItemDTO> orderItemList=orderItemMapper.listOrderItemTolistOrderItemDTO(order.getOrderItems());
         OrderStateDTO orderState=orderStateMapper.orderStateToOrderStateDTO(order.getOrderState());
         UserDTO user=userMapper.userToUserDTO(order.getUser());
-        return new OrderDTO(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande());
+        PreparateurDTO preparateurDTO=preparateurMapper.preparateurToPreparateurDTO(order.getPreparateur());
+        return new OrderDTO(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande(),preparateurDTO);
     }
 
     @Override
@@ -52,7 +56,8 @@ public class OrderMapperImpl implements OrderMapper {
         List<OrderItemEntity> orderItemList=orderItemMapper.listOrderItemTolistOrderItemEntity(order.getOrderItems());
         OrderStateEntity orderState=orderStateMapper.orderStateToOrderStateEntity(order.getOrderState());
         UserEntity user=userMapper.userToUserEntity(order.getUser());
-        return new OrderEntity(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande());
+        PreparateurEntity preparateur=preparateurMapper.preparateurToPreparateurEntity(order.getPreparateur());
+        return new OrderEntity(order.getId(),user,orderState,orderItemList,order.getTotalPrice(),order.getDateCommande(),preparateur);
     }
 
     @Override
@@ -63,7 +68,8 @@ public class OrderMapperImpl implements OrderMapper {
             List<OrderItem> orderItemList=new ArrayList<>();
             Document userDocument= doc.get("user", Document.class);
             User user=new User(userDocument.getString("_id"),userDocument.getString("fullname"),userDocument.getString("email"),userDocument.getString("numberPhone"),userDocument.getString("images"),userDocument.getList("address",Address.class),0,false);
-
+            Document preparateurDocument=doc.get("preparateur", Document.class);
+            Preparateur preparateur=new Preparateur(preparateurDocument.getString("firstname"),preparateurDocument.getString("lastname"),preparateurDocument.getString("_id"));
             Document orderStateDocument=doc.get("orderState",Document.class);
             OrderState orderState=new OrderState(orderStateDocument.getString("_id"),orderStateDocument.getString("state"));
 
@@ -78,7 +84,7 @@ public class OrderMapperImpl implements OrderMapper {
 
                 orderItemList.add(new OrderItem(product,orderItemsDocument.getInteger("quantity")));
             }
-            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getLong("totalPrice"),doc.getString("dateCommande")));
+            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getLong("totalPrice"),doc.getString("dateCommande"),preparateur));
 
         }
         return orderList;
@@ -132,7 +138,7 @@ public class OrderMapperImpl implements OrderMapper {
         OrderState orderState=orderStatePort.getOrderState(orderCreateRequestDTO.getIdState());
         List<OrderItem> orderItemList=orderItemMapper.listOrderItemCreateRequestDTOTolistOrderItem(orderCreateRequestDTO.getOrderItems());
 
-        return new Order(orderCreateRequestDTO.getId(),user,orderState,orderItemList, orderCreateRequestDTO.getTotalPrice(), orderCreateRequestDTO.getDateCommande());
+        return new Order(orderCreateRequestDTO.getId(),user,orderState,orderItemList, orderCreateRequestDTO.getTotalPrice(), orderCreateRequestDTO.getDateCommande(),null);
     }
 
     @Override

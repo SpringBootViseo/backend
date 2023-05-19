@@ -4,9 +4,7 @@ import application.adapters.exception.UserAlreadyExistsException;
 import application.adapters.mapper.mapperImpl.*;
 import application.adapters.persistence.entity.TokenEntity;
 import application.adapters.security.config.JwtService;
-import application.adapters.security.entity.AuthenticationRequestSec;
 import application.adapters.security.entity.AuthenticationResponseSec;
-import application.adapters.security.entity.RegisterRequestSec;
 import application.adapters.security.entity.UserInfoSec;
 import application.domain.*;
 import application.port.out.AuthenticationPort;
@@ -40,10 +38,6 @@ public class AuthenticationAdapter implements AuthenticationPort {
         Random rand = new Random();
         Integer randomNumber = Integer.valueOf(rand.nextInt());
         var token = new TokenEntity(randomNumber,jwtToken,"BEARER",false,false,user);
-        /*List<Token> tokens=user.getTokens();
-        tokens.add(tokenMapper.tokenEntityToToken(token));
-        user.setTokens(tokens);
-        repository.save(userInfoMapper.userInfoToUserInfo(user));*/
         tokenPort.addToken(tokenMapper.tokenEntityToToken(token));
     }
     public void revokeAllUserTokens(UserInfo user) {
@@ -71,7 +65,7 @@ public class AuthenticationAdapter implements AuthenticationPort {
         if(userInfoPort.isUser(request.getEmail())){
             throw  new UserAlreadyExistsException("user with email "+request.getEmail()+" already exists!");
         }
-        UserInfo userInfo=new UserInfo(randomNumber,request.getFirstname(),request.getLastname(),request.getEmail(),passwordEncoder.encode(request.getPassword()),new ArrayList<>(), Role.ADMIN);
+        UserInfo userInfo=new UserInfo(randomNumber,request.getFirstname(),request.getLastname(),request.getEmail(),passwordEncoder.encode(request.getPassword()),new ArrayList<>(), request.getRole());
         userInfoPort.addUserInfo(userInfo);
         String jwtToken= jwtService.generateToken(userInfoMapper.userInfoToUserInfoSec(userInfo));
         String refreshToken=jwtService.generateRefreshToken(userInfoMapper.userInfoToUserInfoSec(userInfo));
