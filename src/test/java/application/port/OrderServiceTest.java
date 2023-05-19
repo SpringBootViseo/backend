@@ -31,6 +31,8 @@ class OrderServiceTest {
     OrderStatePort orderStatePort;
     @Mock
     PreparateurPort preparateurPort;
+    @Mock
+    PaymentPort paymentPort;
     Order order;
     User user;
     Category category;
@@ -193,7 +195,9 @@ class OrderServiceTest {
         given(orderPort.getOrder(id)).willReturn(order1);
         given(orderPort.updateStateOrder(id,payed)).willReturn(order2);
         given(orderStatePort.getOrderState("payé")).willReturn(payed);
+
         Order result=orderService.payerOrder(id);
+        verify(paymentPort,times(1)).savePayment(any());
         assertEquals(result,order2);
     }
     @DisplayName("should prepare order if order is commandé")

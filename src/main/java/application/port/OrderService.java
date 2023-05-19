@@ -21,6 +21,7 @@ public class OrderService implements OrderUseCase {
     private final OrderPort orderPort;
     private final UserPort userPort;
     private final ProductPort productPort;
+    private  final PaymentPort paymentPort;
     private final OrderStatePort orderStatePort;
     private  final PreparateurPort preparateurPort;
     @Override
@@ -97,7 +98,10 @@ public class OrderService implements OrderUseCase {
     public Order payerOrder(UUID id) throws IllegalAccessException {
         if(orderPort.getOrder(id).getOrderState().getState().equals("prête à livré")){
             OrderState payedState=orderStatePort.getOrderState("payé");
-            return orderPort.updateStateOrder(id,payedState);
+            Order order =orderPort.updateStateOrder(id,payedState);
+            Payment payment=new Payment(id,order.getTotalPrice(),order.getUser());
+            paymentPort.savePayment(payment);
+            return order;
         }
        else throw new IllegalAccessException("Impossible de payé cette commande ");
     }
