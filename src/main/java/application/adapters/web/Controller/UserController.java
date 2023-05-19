@@ -67,6 +67,7 @@ public class UserController {
     @DeleteMapping("/{id}/idAddress/{idAddress}")
     public ResponseEntity<UserDTO> deleteAddressFromUser(@Validated @PathVariable(name = "idAddress") UUID idAddress, @PathVariable (name = "id") String id){
         try{
+            System.out.println("delete");
             User userResponse=userUseCase.deleteAddress(idAddress,id);
             return new ResponseEntity<>(userMapper.userToUserDTO(userResponse),HttpStatus.OK);
         }

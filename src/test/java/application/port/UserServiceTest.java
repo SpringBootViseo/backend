@@ -192,21 +192,29 @@ class UserServiceTest {
         assertEquals(true, result);
     }
     @Test
-    void shouldDeleteAddressWhenAvailable() {
+    void shouldDeleteAddress() {
+        // Arrange
+        UUID idAddress = UUID.randomUUID();
+
+        Address address1 = new Address(idAddress, "Street 1", "City 1", "12345");
+        Address address2 = new Address(UUID.randomUUID(), "Street 2", "City 2", "67890");
+
         List<Address> addresses = new ArrayList<>();
-        UUID addressId = UUID.randomUUID();
-        Address address = new Address(addressId, "Street 1", "City", "12345");
-        addresses.add(address);
+        addresses.add(address1);
+        addresses.add(address2);
+
         user.setAddress(addresses);
         given(userPort.getUser(id)).willReturn(user);
-        given(userPort.saveUser(user)).willReturn(user);
 
-        User result = userService.deleteAddress(addressId, id);
+        // Act
+        User result = userService.deleteAddress(idAddress, id);
 
-        verify(userPort, times(1)).getUser(id);
-        verify(userPort, times(1)).saveUser(user);
-        assertEquals(user, result);
-        assertEquals(0, result.getAddress().size());
+        // Assert
+        assertEquals(1, result.getAddress().size());
+        assertFalse(result.getAddress().contains(address1));
+        assertTrue(result.getAddress().contains(address2));
+
+        verify(userPort).saveUser(result);
     }
 
 //    @Test

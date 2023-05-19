@@ -67,11 +67,14 @@ public class UserService implements UserUseCase {
         User user = userPort.getUser(id);
         List<Address> addresses = user.getAddress();
 
-        addresses.removeIf(address -> (address.getId()==(idAddress)));
+        addresses.removeIf(address -> address.getId().equals(idAddress));
+        user.setAddress(addresses);
         userPort.saveUser(user);
 
         return user;
     }
+
+
 
     public boolean isAvailable(String id){
         return userPort.isAvailable(id);
