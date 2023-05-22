@@ -110,10 +110,10 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }
     }
-    @PatchMapping("/pay/{id}")
-    ResponseEntity<OrderDTO> payOrder(@Validated @PathVariable(name = "id") UUID id){
+    @PatchMapping("/pay/{id}/email/{email}")
+    ResponseEntity<OrderDTO> payOrder(@Validated @PathVariable(name = "id") UUID id,@Validated @PathVariable(name = "email")String email){
         try{
-            Order order=orderUseCase.payerOrder(id);
+            Order order=orderUseCase.payerOrder(id,email);
             return new ResponseEntity<>(orderMapper.orderToOrderDTO(order),HttpStatus.OK);
         }
         catch (IllegalAccessException e){

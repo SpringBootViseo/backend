@@ -18,4 +18,7 @@ public class PaymentDTO {
     @Getter
     @Setter
     private UserDTO user;
+    @Getter
+    @Setter
+    private LivreurDTO livreur;
 }

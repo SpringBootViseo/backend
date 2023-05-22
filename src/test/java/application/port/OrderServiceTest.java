@@ -33,6 +33,8 @@ class OrderServiceTest {
     PreparateurPort preparateurPort;
     @Mock
     PaymentPort paymentPort;
+    @Mock
+    LivreurPort livreurPort;
     Order order;
     User user;
     Category category;
@@ -192,11 +194,12 @@ class OrderServiceTest {
         OrderState payed=new OrderState("payé","payé");
         Order order1=new Order(id,user,new OrderState("prête à livré","prête à livré"),orderItemList,0L,"15-12-2020",null);
         Order order2=new Order(id,user,payed,orderItemList,0L,"15-12-2020",null);
+        Livreur livreur=new Livreur("test","test","test");
         given(orderPort.getOrder(id)).willReturn(order1);
         given(orderPort.updateStateOrder(id,payed)).willReturn(order2);
         given(orderStatePort.getOrderState("payé")).willReturn(payed);
-
-        Order result=orderService.payerOrder(id);
+        given(livreurPort.getLivreur("test")).willReturn(livreur);
+        Order result=orderService.payerOrder(id,"test");
         verify(paymentPort,times(1)).savePayment(any());
         assertEquals(result,order2);
     }
@@ -249,7 +252,7 @@ class OrderServiceTest {
 
         Order order1=new Order(id,user,ordered1,orderItemList,0L,"15-12-2020",null);
         given(orderPort.getOrder(id)).willReturn(order1);
-        assertThrows(IllegalAccessException.class,()->orderService.payerOrder(id));
+        assertThrows(IllegalAccessException.class,()->orderService.payerOrder(id,"test"));
     }
     @DisplayName("should throw NoSuchElementExeption if preparateur with such email doesn't exist ")
     @Test

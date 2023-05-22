@@ -4,6 +4,7 @@ package application.port;
 import application.domain.*;
 import application.port.in.AuthenticationUseCase;
 import application.port.out.AuthenticationPort;
+import application.port.out.LivreurPort;
 import application.port.out.PreparateurPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService implements AuthenticationUseCase {
     AuthenticationPort authentificationPort;
     PreparateurPort preparateurPort;
+    LivreurPort livreurPort;
     @Override
     public void saveUserToken(UserInfo user, String jwtToken) {
         authentificationPort.saveUserToken(user,jwtToken);
@@ -31,6 +33,9 @@ public class AuthenticationService implements AuthenticationUseCase {
         if(request.getRole()== Role.PREPARATOR){
 
             preparateurPort.addPreparateur(new Preparateur(request.getFirstname(),request.getLastname(),request.getEmail()));
+        }
+        if(request.getRole()==Role.DELIVERY){
+            livreurPort.addLivreur(new Livreur(request.getFirstname(),request.getLastname(),request.getEmail()));
         }
         return authentificationPort.register(request);
     }

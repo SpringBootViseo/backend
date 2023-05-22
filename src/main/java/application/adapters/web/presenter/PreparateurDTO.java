@@ -7,7 +7,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PreparateurDTO {
-
     @Getter
     @Setter
     private String firstname;

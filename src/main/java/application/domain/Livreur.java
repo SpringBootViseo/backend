@@ -5,24 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payment {
+public class Livreur {
     @Getter
     @Setter
-    private UUID id;
+    private String firstname;
     @Getter
     @Setter
-    private long totalPrice;
+    private String lastname;
     @Getter
     @Setter
-    private User user;
-    @Getter
-    @Setter
-    private Livreur livreur;
-
-
-
+    private String email;
 }

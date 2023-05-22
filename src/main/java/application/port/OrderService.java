@@ -24,6 +24,7 @@ public class OrderService implements OrderUseCase {
     private  final PaymentPort paymentPort;
     private final OrderStatePort orderStatePort;
     private  final PreparateurPort preparateurPort;
+    private final LivreurPort livreurPort;
     @Override
     public Order saveOrder(Order order) {
         LocalDateTime now = LocalDateTime.now();
@@ -95,11 +96,12 @@ public class OrderService implements OrderUseCase {
     }
 
     @Override
-    public Order payerOrder(UUID id) throws IllegalAccessException {
+    public Order payerOrder(UUID id,String emailLivreur) throws IllegalAccessException {
         if(orderPort.getOrder(id).getOrderState().getState().equals("prête à livré")){
             OrderState payedState=orderStatePort.getOrderState("payé");
             Order order =orderPort.updateStateOrder(id,payedState);
-            Payment payment=new Payment(id,order.getTotalPrice(),order.getUser());
+            Livreur livreur=livreurPort.getLivreur(emailLivreur);
+            Payment payment=new Payment(id,order.getTotalPrice(),order.getUser(),livreur);
             paymentPort.savePayment(payment);
             return order;
         }

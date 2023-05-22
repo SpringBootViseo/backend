@@ -2,6 +2,7 @@ package application.port;
 
 import application.domain.*;
 import application.port.out.AuthenticationPort;
+import application.port.out.LivreurPort;
 import application.port.out.PreparateurPort;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ class AuthenticationServiceTest {
     AuthenticationPort authenticationPort;
     @Mock
     PreparateurPort preparateurPort;
+    @Mock
+    LivreurPort livreurPort;
     UserInfo userInfo;
     RegisterRequest registerRequest;
     AuthenticationRequest authenticationRequest;
@@ -82,6 +85,19 @@ class AuthenticationServiceTest {
 
         AuthenticationResponse response=authenticationService.register(registerRequest);
         assertEquals(response,authenticationResponse);
+
+    }
+    @DisplayName("should add Livreur when register user with role Delivery")
+    @Test
+    void fonction1(){
+        registerRequest.setRole(Role.DELIVERY);
+        Livreur livreur=new Livreur(registerRequest.getFirstname(),registerRequest.getLastname(),registerRequest.getEmail());
+        given(livreurPort.addLivreur(livreur)).willReturn(livreur);
+        given(authenticationPort.register(registerRequest)).willReturn(authenticationResponse);
+
+        AuthenticationResponse response=authenticationService.register(registerRequest);
+        assertEquals(response,authenticationResponse);
+        verify(livreurPort,times(1)).addLivreur(any());
 
     }
     @DisplayName("should return authenticationResponse when authenticate ")

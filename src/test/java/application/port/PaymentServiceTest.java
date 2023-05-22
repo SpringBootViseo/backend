@@ -32,7 +32,7 @@ class PaymentServiceTest {
         id=UUID.randomUUID();
         address=new Address(id,"test","test","test");
         user=new User("test","test","test","test","test",List.of(address),0,false);
-        payment=new Payment(id,10,user);
+        payment=new Payment(id,10,user,null);
     }
     @AfterEach
     void tearDown(){
@@ -112,8 +112,8 @@ class PaymentServiceTest {
         UUID uuid=UUID.randomUUID();
         UUID uuid1=UUID.randomUUID();
         User user1=new User("test1","test","test","test","test",List.of(address),0,false);
-        Payment payment1=new Payment(uuid,123,user1);
-        Payment payment2=new Payment(uuid1,123,user1);
+        Payment payment1=new Payment(uuid,123,user1,null);
+        Payment payment2=new Payment(uuid1,123,user1,null);
         List<Payment> payments=List.of(payment,payment1,payment2);
         List<Payment> payments1=List.of(payment1,payment2);
         given(paymentPort.listPayment()).willReturn(payments);
@@ -126,8 +126,8 @@ class PaymentServiceTest {
         UUID uuid=UUID.randomUUID();
         UUID uuid1=UUID.randomUUID();
         User user1=new User("test1","test","test","test","test",List.of(address),0,false);
-        Payment payment1=new Payment(uuid,123,user1);
-        Payment payment2=new Payment(uuid1,123,user1);
+        Payment payment1=new Payment(uuid,123,user1,null);
+        Payment payment2=new Payment(uuid1,123,user1,null);
         List<Payment> payments=List.of(payment,payment1,payment2);
         List<Payment> payments1=List.of(payment1,payment2);
         given(paymentPort.listPayment()).willReturn(payments);
@@ -141,8 +141,8 @@ class PaymentServiceTest {
         UUID uuid=UUID.randomUUID();
         UUID uuid1=UUID.randomUUID();
         User user1=new User("test1","test","test","test","test",List.of(address),0,false);
-        Payment payment1=new Payment(uuid,9,user1);
-        Payment payment2=new Payment(uuid1,9,user1);
+        Payment payment1=new Payment(uuid,9,user1,null);
+        Payment payment2=new Payment(uuid1,9,user1,null);
         List<Payment> payments=List.of(payment,payment1,payment2);
         List<Payment> payments1=List.of(payment1,payment2);
         given(paymentPort.listPayment()).willReturn(payments);

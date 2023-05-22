@@ -67,7 +67,14 @@ public class OrderMapperImpl implements OrderMapper {
         for(Document doc:collection.find()){
             List<OrderItem> orderItemList=new ArrayList<>();
             Document userDocument= doc.get("user", Document.class);
-            User user=new User(userDocument.getString("_id"),userDocument.getString("fullname"),userDocument.getString("email"),userDocument.getString("numberPhone"),userDocument.getString("images"),userDocument.getList("address",Address.class),0,false);
+            List<Document> listAddressDocument=userDocument.getList("address",Document.class);
+            List<Address> addresses=new ArrayList<>();
+            for (Document addressDocument:listAddressDocument
+                 ) {
+                addresses.add(new Address(addressDocument.get("_id", UUID.class),addressDocument.getString("street"),addressDocument.getString("city"),addressDocument.getString("state")));
+            }
+
+            User user=new User(userDocument.getString("_id"),userDocument.getString("fullname"),userDocument.getString("email"),userDocument.getString("numberPhone"),userDocument.getString("picture"),addresses,userDocument.getInteger("avertissement"),userDocument.getBoolean("blackListed"));
             Document preparateurDocument=doc.get("preparateur", Document.class);
             Preparateur preparateur=new Preparateur(preparateurDocument.getString("firstname"),preparateurDocument.getString("lastname"),preparateurDocument.getString("_id"));
             Document orderStateDocument=doc.get("orderState",Document.class);

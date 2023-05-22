@@ -55,7 +55,7 @@ public class UserMapperImpl implements UserMapper {
             List<Address> addresses = new ArrayList<>();
             for (Document addressDoc : addressDocs) {
                 Address address = new Address(
-                        addressDoc.get("id", UUID.class),
+                        addressDoc.get("_id", UUID.class),
                         addressDoc.getString("street"),
                         addressDoc.getString("city"),
                         addressDoc.getString("state")
