@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Component
 @AllArgsConstructor
@@ -72,24 +72,9 @@ public class ProductDBAdapter implements ProductPort {
 
     }
 
-    @Override
-    public List<Product> listProducts(UUID id) {
 
-        List<Product> productList=this.listProducts();
-        List<Product> productsHasCategory = productList.stream()
-                .filter(product -> product.getCategory().getId().equals(id))
-                .collect(Collectors.toList());
-        return productsHasCategory;
-    }
 
-    @Override
-    public List<Product> listProducts(String subStringName) {
-        List<Product> productList=this.listProducts();
-        List<Product> productsHasSubStringNameInName = productList.stream()
-                .filter(product -> product.getName().contains(subStringName))
-                .collect(Collectors.toList());
-        return productsHasSubStringNameInName;
-    }
+
 
     @Override
     public Boolean isAvailableToOrder(UUID id, int quantity) {

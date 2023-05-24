@@ -13,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,23 +83,9 @@ class ProductServiceTest {
         assertEquals(result,productexp);
     }
 
-    @Test
-    void ShouldCallListProductsOnceAndListProductsWithTheCategoryIdWhenListProductWithId() {
-        given(productPort.listProducts(id)).willReturn(List.of(product));
-        List<Product> productList=productService.listProducts(id);
-        assertEquals(productList,List.of(product));
-        verify(productPort,times(1)).listProducts((UUID) any());
 
-    }
 
-    @Test
-    void ShouldCallListProductsOnceAndListProductsWithNameLikeSubstringWhenListProductWithSubString() {
-        given(productPort.listProducts("t")).willReturn(List.of(product));
-        List<Product> productList=productService.listProducts("t");
-        assertEquals(productList,List.of(product));
-        verify(productPort,times(1)).listProducts((String) any());
 
-    }
     @Test
     void shouldReturnTrueWhenIsAvailableWithValidIdAndQuanity(){
         given(productPort.isAvailableToOrder(id,2)).willReturn(true);
@@ -153,6 +136,60 @@ class ProductServiceTest {
 
 
     }
+    @DisplayName("should return list of products that their names contains element of incomplete string in a given String to listProducts(string)  ")
+    @Test
+    void test10(){
+        Product product1=  new Product(id,"Tomate rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product2=  new Product(id,"Tomate cerise rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product3=  new Product(id,"Tomate cerise orange","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        given(productPort.listProducts()).willReturn(List.of(product1,product2,product3));
+        List<Product> result1=productService.listProducts("omat rise");
+        List<Product> result2=productService.listProducts("tomat roug");
+        List<Product> result3=productService.listProducts("tomate");
+        assertEquals(result1,List.of(product2,product3));
+        assertEquals(result2,List.of(product1,product2));
+        assertEquals(result3,List.of(product1,product2,product3));
+
+    }
+    @DisplayName("should return Empty list of products  when given String to listProducts(string) that isn't contained in any productName ")
+    @Test
+    void test11(){
+        Product product1=  new Product(id,"Tomate rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product2=  new Product(id,"Tomate cerise rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product3=  new Product(id,"Tomate cerise orange","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        given(productPort.listProducts()).willReturn(List.of(product1,product2,product3));
+        List<Product> result1=productService.listProducts("maro");
+        assertEquals(result1, Collections.emptyList());
+
+    }
+    @DisplayName("should return List of product with the same category id when listProduct(int id) id of the specific category")
+    @Test
+    void test12(){
+        Category  category1=new Category(UUID.randomUUID(),"test","test","test");
+
+        Product product1=  new Product(id,"Tomate rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product2=  new Product(UUID.randomUUID(),"Tomate cerise rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product3=  new Product(UUID.randomUUID(),"Tomate cerise orange","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category1);
+        given(productPort.listProducts()).willReturn(List.of(product1,product2,product3));
+        List<Product> productList=productService.listProducts(id);
+        assertEquals(productList,List.of(product1,product2));
+    }
+    @DisplayName("should return empty list if no product with such id category exist in DB")
+    @Test
+    void test13(){
+        UUID uuid=UUID.randomUUID();
+        Product product1=  new Product(id,"Tomate rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product2=  new Product(UUID.randomUUID(),"Tomate cerise rouge","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        Product product3=  new Product(UUID.randomUUID(),"Tomate cerise orange","test","test","test", 20,10, List.of(new String[]{"test", "test"}),"test",10.0,100.0,90.0,category);
+        if(uuid==id){
+            uuid=UUID.randomUUID();
+        }
+        given(productPort.listProducts()).willReturn(List.of(product1,product2,product3));
+        List<Product> productList=productService.listProducts(UUID.randomUUID());
+        assertEquals(productList,Collections.emptyList());
+
+    }
+
     @DisplayName("should not make reduction to product when setReductionToProduct with negative reductionpercentage")
     @Test
     void test6(){

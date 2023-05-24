@@ -10,8 +10,8 @@ public interface ProductPort {
     Product getProduct(UUID id);
     List<Product> listProducts();
     Product updateProduct(Product product,UUID id);
-    List<Product> listProducts(UUID id);
-    List<Product> listProducts(String subStringName);
+
+
     Boolean isAvailableToOrder(UUID id, int quantity);
     Product orderProduct(UUID id,int quantity);
     void deleteProduct(UUID id);

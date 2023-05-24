@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class ProductService implements ProductUseCase{
@@ -30,13 +32,33 @@ public class ProductService implements ProductUseCase{
 
     @Override
     public List<Product> listProducts(UUID id) {
-        return productPort.listProducts(id);
+        List<Product> productList=productPort.listProducts();
+        List<Product> productsHasCategory = productList.stream()
+                .filter(product -> product.getCategory().getId().equals(id))
+                .collect(Collectors.toList());
+        return productsHasCategory;
     }
 
     @Override
     public List<Product> listProducts(String subStringName) {
-        return productPort.listProducts(subStringName);
+        String[] words = subStringName.split("\\s+");
+        int wordCount = words.length;
+        List<Product> productList=productPort.listProducts();
+        List<Product> productsHasSubStringNameInName = productList.stream()
+                .filter(product ->{
+                    int matchCount = 0;
+                    for (String word : words) {
+                        if (product.getName().toLowerCase().contains(word.toLowerCase())) {
+                            matchCount++;
+                        }
+                    }
+
+                    return matchCount == wordCount;
+                } )
+                .collect(Collectors.toList());
+        return productsHasSubStringNameInName;
     }
+
 
     @Override
     public Product updateProduct(Product product, UUID id) {
