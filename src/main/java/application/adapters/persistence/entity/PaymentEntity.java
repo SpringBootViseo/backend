@@ -18,7 +18,7 @@ public class PaymentEntity {
     private UUID id;
     @Getter
     @Setter
-    private Long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     private UserEntity user;

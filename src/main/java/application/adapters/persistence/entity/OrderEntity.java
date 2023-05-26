@@ -33,7 +33,7 @@ public class OrderEntity {
     private List<OrderItemEntity> orderItems;
     @Getter
     @Setter
-    private Long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     private String dateCommande;

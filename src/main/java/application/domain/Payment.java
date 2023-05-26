@@ -15,7 +15,7 @@ public class Payment {
     private UUID id;
     @Getter
     @Setter
-    private long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     private User user;

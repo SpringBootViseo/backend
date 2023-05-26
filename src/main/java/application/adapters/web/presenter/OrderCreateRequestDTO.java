@@ -35,7 +35,7 @@ public class OrderCreateRequestDTO {
     @Setter
     @Valid
     @JsonProperty(value = "totalPrice")
-    private Long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     @Valid

@@ -28,7 +28,7 @@ public class Order {
 
     @Getter
     @Setter
-    private long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     private String  dateCommande;

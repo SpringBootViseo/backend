@@ -14,7 +14,7 @@ public class PaymentDTO {
     private UUID id;
     @Getter
     @Setter
-    private Long totalPrice;
+    private Double totalPrice;
     @Getter
     @Setter
     private UserDTO user;

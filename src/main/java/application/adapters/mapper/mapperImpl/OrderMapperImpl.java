@@ -91,7 +91,7 @@ public class OrderMapperImpl implements OrderMapper {
 
                 orderItemList.add(new OrderItem(product,orderItemsDocument.getInteger("quantity")));
             }
-            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getLong("totalPrice"),doc.getString("dateCommande"),preparateur));
+            orderList.add(new Order(doc.get("_id", UUID.class),user,orderState,orderItemList,doc.getDouble("totalPrice"),doc.getString("dateCommande"),preparateur));
 
         }
         return orderList;

@@ -113,7 +113,7 @@ public class UserController {
         } catch (UserNotFoundException e) {
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User doesn't exist", e);
-        } catch (Exception e) {
+        } catch (Exception e) { 
             System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred", e);
         }

@@ -30,7 +30,7 @@ public class OrderService implements OrderUseCase {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
         order.setDateCommande(now.format(formatter));
-        order.setTotalPrice(0L);
+        order.setTotalPrice(0.0);
         order.setPreparateur(new Preparateur());
 
         if(this.isAvailable(order.getId())){
@@ -44,7 +44,7 @@ public class OrderService implements OrderUseCase {
             for (OrderItem orderItem: orderItemList){
                 try {
                     Product orderedProduct=productPort.orderProduct(orderItem.getProduct().getId(), orderItem.getQuantity());
-                    order.setTotalPrice( (long)(order.getTotalPrice()+orderItem.getProduct().getCurrentPrice()*orderItem.getQuantity()));
+                    order.setTotalPrice( (Double) (order.getTotalPrice()+orderItem.getProduct().getCurrentPrice()*orderItem.getQuantity()));
                     orderItem.setProduct(orderedProduct);
                 }
                 catch (ProductNotAvailableException e){

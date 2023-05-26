@@ -111,7 +111,7 @@ public class PaymentMapperImpl implements PaymentMapper {
                 addresses.add(new Address(addressDocument.get("_id", UUID.class),addressDocument.getString("street"),addressDocument.getString("city"),addressDocument.getString("state")));
             }
             User user=new User(userDocument.getString("_id"),userDocument.getString("fullname"),userDocument.getString("email"),userDocument.getString("numberPhone"),userDocument.getString("images"),addresses,userDocument.getInteger("avertissement"),userDocument.getBoolean("blackListed"));
-            payments.add(new Payment(doc.get("_id", UUID.class),doc.getLong("totalPrice"),user,livreur));
+            payments.add(new Payment(doc.get("_id", UUID.class),doc.getDouble("totalPrice"),user,livreur));
 
         }
         return payments;
