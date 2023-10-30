@@ -27,7 +27,7 @@
         <mongodb-version>3.12.11</mongodb-version>
         <mongodb-driver-version>4.8.2</mongodb-driver-version>
         <spring-aop-version>6.0.3</spring-aop-version>
-        <slf4j-version>2.0.6</slf4j-version>
+      <!--  <slf4j-version>2.0.6</slf4j-version>-->
     </properties>
 
     <dependencies>
@@ -133,11 +133,11 @@
             <artifactId>spring-aop</artifactId>
             <version>${spring-aop-version}</version>
         </dependency>
-        <dependency>
+      <!--  <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -152,6 +152,12 @@
                     <artifactId>jackson-annotations</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>3.0.10</version>
+            <!-- Use the appropriate version -->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -169,6 +175,28 @@
             <version>4.6.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>3.1.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.20.0</version> <!-- Use the latest version of Log4j2 -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version> <!-- Use the latest version of Log4j2 -->
+        </dependency>
+
     </dependencies>
 
     <build>

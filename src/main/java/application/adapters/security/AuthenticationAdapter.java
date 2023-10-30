@@ -87,7 +87,6 @@ public class AuthenticationAdapter implements AuthenticationPort {
 
         UserInfoSec user=userInfoMapper.userInfoToUserInfoSec(userInfoDetails);
         var jwtToken = jwtService.generateToken(user);
-        System.out.println(jwtToken);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(userInfoDetails);
         saveUserToken(userInfoMapper.userInfoSecToUserInfo(user), jwtToken);
