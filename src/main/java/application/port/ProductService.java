@@ -44,7 +44,7 @@ public class ProductService implements ProductUseCase {
         List<Product> productList = productPort.listProducts();
         List<Product> productsHasCategory = productList.stream()
                 .filter(product -> product.getCategory().getId().equals(id))
-                .collect(Collectors.toList();
+                .collect(Collectors.toList());
 
         return productsHasCategory;
     }

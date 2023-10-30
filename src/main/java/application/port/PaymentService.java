@@ -45,7 +45,6 @@ public class PaymentService implements PaymentUseCase {
 
     @Override
     public List<Payment> listPayment() {
-        // INFO level for a significant operation
         logger.info("Listing all payments");
         return paymentPort.listPayment();
     }
@@ -66,8 +65,11 @@ public class PaymentService implements PaymentUseCase {
         return result;
     }
 
+
+
+
     @Override
-    public List<Payment> listPaymentMontantSuperieurAMontant(long montant) {
+    public List<Payment> listPaymentMontantSuperieuAMontant(long montant) {
         logger.info("Listing payments with a total price greater than: {}", montant);
         List<Payment> payments = paymentPort.listPayment();
         List<Payment> paymentsHasTotalNotNull = payments.stream()

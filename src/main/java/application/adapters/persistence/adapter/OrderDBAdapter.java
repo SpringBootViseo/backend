@@ -11,6 +11,8 @@ import application.port.out.OrderPort;
 import com.mongodb.client.MongoCollection;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,57 +26,87 @@ public class OrderDBAdapter implements OrderPort {
     private final OrderRepository orderRepository;
     private final OrderMapperImpl orderMapper;
     private final MongoConfig mongoConfig;
+    private static final Logger logger = LoggerFactory.getLogger(OrderDBAdapter.class);
 
     @Override
     public Order saveOrder(Order order) {
-        OrderEntity orderEntity=orderMapper.orderToOrderEntity(order);
-        OrderEntity savedOrder=orderRepository.save(orderEntity);
+        logger.info("Saving Order with ID: {}", order.getId());
+
+        OrderEntity orderEntity = orderMapper.orderToOrderEntity(order);
+
+        OrderEntity savedOrder = orderRepository.save(orderEntity);
+
+        logger.info("Order with ID {} has been saved successfully", savedOrder.getId());
+
         return orderMapper.orderEntityToOrder(savedOrder);
     }
 
     @Override
     public Order getOrder(UUID id) {
-        if(this.isAvailable(id)){
-            OrderEntity orderEntity=orderRepository.findById(id).get();
+        logger.trace("Chiking if Order with ID: {} exist", id);
+        if (this.isAvailable(id)) {
+            OrderEntity orderEntity = orderRepository.findById(id).get();
+            logger.info("Fetching Order with ID: {}", id);
             return orderMapper.orderEntityToOrder(orderEntity);
+        } else {
+            logger.error("Order with ID {} not found", id);
+            throw new NoSuchElementException("Can't find Order");
         }
-        else throw new NoSuchElementException("Can't find Order");
     }
-    public List<Order> listOrder(){
-        MongoCollection<Document> collection= mongoConfig.getAllDocuments("Orders");
-        List<Order> orderList=orderMapper.documentOrderTolistOrder(collection);
-return orderList;
+
+    public List<Order> listOrder() {
+        logger.info("Listing all orders");
+        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Orders");
+        List<Order> orderList = orderMapper.documentOrderTolistOrder(collection);
+        return orderList;
     }
 
     @Override
     public List<Order> listOrder(User user) {
-        List<Order> orderList=this.listOrder();
-        List<Order> orderHasUser=orderList.stream().filter(
+        logger.info("Listing orders for User with ID: {}", user.getId());
+        List<Order> orderList = this.listOrder();
+        List<Order> orderHasUser = orderList.stream().filter(
                 order -> order.getUser().getId().equals(user.getId())
         ).collect(Collectors.toList());
+        logger.info("Found {} orders for User with ID: {}", orderHasUser.size(), user.getId());
+
         return orderHasUser;
     }
 
     @Override
     public Order updateStateOrder(UUID id, OrderState orderState) {
-        Order order=this.getOrder(id);
+        logger.info("Updating state for Order with ID: {}", id);
+        Order order = this.getOrder(id);
         order.setOrderState(orderState);
-        OrderEntity orderEntity=orderMapper.orderToOrderEntity(order);
+        OrderEntity orderEntity = orderMapper.orderToOrderEntity(order);
+        logger.debug("Order state updated for Order with ID: {} to {}", id, orderState);
         return orderMapper.orderEntityToOrder(orderRepository.save(orderEntity));
     }
 
     @Override
     public List<Order> listOrder(User user, OrderState orderState) {
-        List<Order> orderhasUser=this.listOrder(user);
-        List<Order> orderHasUserAndState=orderhasUser.stream().filter(
-                order -> order.getOrderState().getId().equals(orderState.getId())
-        ).collect(Collectors.toList());
-        return orderHasUserAndState;
+        logger.info("Listing orders for User with ID: {} and OrderState: {}", user.getId(), orderState.getId());
+
+        List<Order> ordersForUser = this.listOrder(user);
+
+        logger.debug("Found {} orders for User with ID: {}", ordersForUser.size(), user.getId());
+
+        List<Order> ordersForUserAndState = ordersForUser.stream()
+                .filter(order -> order.getOrderState().getId().equals(orderState.getId()))
+                .collect(Collectors.toList());
+
+        logger.debug("Found {} orders for User with ID: {} and OrderState: {}",
+                ordersForUserAndState.size(), user.getId(), orderState.getId());
+
+        logger.info("Completed listing orders for User with ID: {} and OrderState: {}", user.getId(), orderState.getId());
+
+        return ordersForUserAndState;
     }
+
 
     @Override
     public Boolean isAvailable(UUID id) {
-
+        logger.info("Checking if Order with ID {} exists", id);
         return orderRepository.findById(id).isPresent();
     }
 }

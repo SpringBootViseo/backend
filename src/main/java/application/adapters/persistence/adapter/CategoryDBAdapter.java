@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import org.bson.Document;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 
@@ -30,21 +32,27 @@ public class CategoryDBAdapter implements CategoryPort {
     private CategoryRepository categoryRepository;
     private CategoryMapperImpl categoryMapper;
     private final MongoConfig mongoConfig;
+    private final Logger logger = LoggerFactory.getLogger(CategoryDBAdapter.class);
 
     @Override
     public Category createCategory(Category category) {
+        logger.info("Create Category with id : {}",category.getId());
         CategoryEntity categoryEntity= categoryMapper.categoryEntityToCategory(category);
         CategoryEntity savedCategory=categoryRepository.save(categoryEntity);
+        logger.info("Category with id {} created successfully", savedCategory.getId());
         return categoryMapper.categoryToCategoryEntity(savedCategory);
     }
 
     @Override
     public Category getCategory(UUID id) {
+        logger.trace("Checking if category with id: {} exists", id);
         if(categoryRepository.findById(id).isPresent()) {
+            logger.debug("Getting Category with id : {}",id);
             CategoryEntity returnedCategory = categoryRepository.findById(id).get();
             return categoryMapper.categoryToCategoryEntity(returnedCategory);
         }
         else{
+            logger.error("Category with id : {} doesn't exist",id);
             throw new NoSuchElementException("This element doesn't exist");
         }
     }
@@ -52,12 +60,12 @@ public class CategoryDBAdapter implements CategoryPort {
     @Override
     public List<Category> listCategories() {
 
-
+        logger.info("Listing All Categories");
         MongoCollection<Document> collection =  mongoConfig.getAllDocuments("Categories");
+        List<Category> categories = categoryMapper.categoryToDocument(collection);
 
-
-
-        return categoryMapper.categoryToDocument(collection);
+        logger.debug("Listed {} categories", categories.size());
+        return categories;
     }
 
     @Override
@@ -66,9 +74,11 @@ public class CategoryDBAdapter implements CategoryPort {
             category.setId(id);
             CategoryEntity categoryEntity = categoryMapper.categoryEntityToCategory(category);
             CategoryEntity savedCategory=categoryRepository.save(categoryEntity);
+            logger.info("Category with id {} updated successfully", savedCategory.getId());
             return categoryMapper.categoryToCategoryEntity(savedCategory);
         }
         else{
+            logger.error("Category with id: {} doesn't exist, cannot update", id);
             throw new NoSuchElementException("This element doesn't exist");
         }
 
@@ -76,6 +86,7 @@ public class CategoryDBAdapter implements CategoryPort {
     @Override
     public void deleteCategory(UUID id) {
         categoryRepository.deleteById(id);
+        logger.info("Category with id {} has been deleted", id);
     }
 
 
