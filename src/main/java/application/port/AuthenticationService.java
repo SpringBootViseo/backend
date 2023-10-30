@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AuthenticationService implements AuthenticationUseCase {
+
     AuthenticationPort authentificationPort;
     PreparateurPort preparateurPort;
     LivreurPort livreurPort;

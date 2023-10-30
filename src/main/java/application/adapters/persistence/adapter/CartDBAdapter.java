@@ -9,6 +9,8 @@ import application.domain.Cart;
 import application.domain.Product;
 import application.port.out.CartPort;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class CartDBAdapter implements CartPort {
     private CartRepository cartRepository;
     private CartMapperImpl cartMapper;
+    private static final Logger logger = LoggerFactory.getLogger("CartDBAdapter");
     @Override
     public Cart createCart(String idCart) {
         if(cartRepository.findById(idCart).isPresent()){
