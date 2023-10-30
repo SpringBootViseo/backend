@@ -1,6 +1,8 @@
 package application.adapters.security.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,9 +32,12 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+    private final static Logger logger= LogManager.getLogger(SecurityConfiguration.class);
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        logger.debug("Instantiate the security filter chain");
+
         http
                 .csrf()
 
@@ -75,6 +80,8 @@ public class SecurityConfiguration {
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        logger.debug("Instantiate the CorsConfig");
+
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("*");
         configuration.addAllowedMethod("*");

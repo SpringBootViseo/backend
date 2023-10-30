@@ -20,6 +20,8 @@ import java.security.Security;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,9 +33,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final static Logger logger= LogManager.getLogger(JwtAuthenticationFilter.class);
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
     private final TokenPort tokenPort;
     private final UserInfoPort userInfoPort;
     private final UserInfoMapperImpl userInfoMapper;
@@ -44,24 +46,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        logger.debug("Check if request contains /api/v1/auth");
         if (request.getServletPath().contains("/api/v1/auth")) {
+            logger.debug("Do filter");
             filterChain.doFilter(request, response);
             return;
         }
+        logger.debug("Retrieve the Authorization Header from requet");
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
+        logger.debug("Check if the Authorization Header starts with Bearer");
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            logger.debug("Do filter");
+
             filterChain.doFilter(request, response);
             return;
         }
+        logger.debug("Ommit \"Bearer\" from the Authorization Header and atribute it to Jwt");
+
         jwt = authHeader.substring(7);
+        logger.debug("Extract Email");
+
         userEmail = jwtService.extractUsername(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            logger.debug("Get Info of User with email "+userEmail);
+
             UserInfo userInfo=userInfoPort.getUserByEmail(userEmail);
+
+
             UserDetails userDetails = userInfoMapper.userInfoToUserInfoSec(userInfo);
 
             var isTokenValid = tokenPort.isValid(jwt);
+            logger.debug("check if token "+jwt+" is valid");
+
             if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -72,9 +90,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
+                logger.debug("Put User on the context and give him his authorities");
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+        logger.debug("Do filter");
+
         filterChain.doFilter(request, response);
     }
 }
