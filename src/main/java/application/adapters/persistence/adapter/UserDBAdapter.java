@@ -34,20 +34,21 @@ public class UserDBAdapter implements UserPort {
     public User updateUser(String id, User user) {
         logger.info("Updating user with ID: {}", id);
         logger.trace("Checking if user with ID: {} already exists", id);
-
-        if (userRepository.findById(id).isPresent()) {
-            UserEntity savedUser = userRepository.findById(id).get();
+        if(userRepository.findById(id).isPresent()){
+            UserEntity savedUser=userRepository.findById(id).get();
             logger.debug("Getting user with ID: {}", id);
             savedUser.setNumberPhone(user.getPhone());
             logger.debug("Setting user's phone number : {}",user.getPhone());
-            UserEntity result = userRepository.save(savedUser);
+            UserEntity result=userRepository.save(savedUser);
             logger.debug("Saving updated user");
             logger.info("User with ID: {} updated successfully", id);
             return userMapperImpl.userEntityToUser(result);
-        } else {
-            logger.info("User with ID: {} not found", id);
+        }
+        else {
+            logger.error("User with ID: {} not found", id);
             throw new UserNotFoundException(id);
         }
+
     }
 
     @Override
@@ -58,66 +59,40 @@ public class UserDBAdapter implements UserPort {
         return available;
     }
 
+
     @Override
     public User getUser(String id) {
         logger.info("Getting user with ID: {}", id);
-
-        if (isAvailable(id)) {
-            UserEntity userEntity = userRepository.findById(id).get();
+        if(isAvailable(id)) {
             logger.debug("User with ID: {} found", id);
-            return userMapperImpl.userEntityToUser(userEntity);
-        } else {
-            logger.info("User with ID: {} not found", id);
+            return userMapperImpl.userEntityToUser(userRepository.findById(id).get());
+        }
+        else {
+            logger.error("User with ID: {} not found", id);
             throw new UserNotFoundException(id);
         }
     }
 
-
     @Override
     public User saveUser(User user) throws UserAlreadyExistsException {
         logger.info("Saving user with ID: {}", user.getId());
-        logger.trace("Checking if user with id : {} already exist ",user.getId());
-        if (!userRepository.findById(user.getId()).isPresent()) {
-            UserEntity userEntity = new UserEntity(
-                    user.getId(),
-                    user.getName(),
-                    user.getEmail(),
-                    user.getPhone(),
-                    user.getPicture(),
-                    addressMapper.listAddressToAddressEntity(user.getAddress()),
-                    user.getAvertissement(),
-                    user.isBlackListed()
-            );
-            logger.debug("Creating UserEntity with id : {}",user.getId());
-            UserEntity savedUserEntity = userRepository.save(userEntity);
-            logger.debug("Saving UserEntity with id : {}",user.getId());
-            User savedUser = userMapperImpl.userEntityToUser(savedUserEntity);
-            logger.debug("Converting UserEntity to User");
-            logger.info("User with ID: {} saved successfully", user.getId());
-
-            return savedUser;
-        } else {
-            logger.error("User with ID: {} already exists", user.getId());
-            throw new UserAlreadyExistsException("User already exists!");
-        }
+        UserEntity userEntity = new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getPicture(), addressMapper.listAddressToAddressEntity(user.getAddress()), user.getAvertissement(), user.isBlackListed());
+        logger.debug("Creating UserEntity with id : {}",user.getId());
+        UserEntity savedUserEntity = userRepository.save(userEntity);
+        logger.debug("Saving UserEntity with id : {}",user.getId());
+        User savedUser = userMapperImpl.userEntityToUser(savedUserEntity);
+        logger.debug("Converting UserEntity to User");
+        logger.info("User with ID: {} saved successfully", user.getId());
+        return savedUser;
     }
 
     @Override
     public List<User> listUser() {
         logger.info("Listing all users");
-
         logger.debug("Retrieving user documents from the database");
-        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Users");
-
-        List<User> users = userMapperImpl.usersToDocument(collection);
-
-        logger.debug("Converting user documents to User objects");
-
+        MongoCollection<Document> collection=mongoConfig.getAllDocuments("Users");
         logger.info("Listed all users successfully");
-
-        return users;
+        return userMapperImpl.usersToDocument(collection);
     }
-
-
 
 }
