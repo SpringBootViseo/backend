@@ -9,7 +9,10 @@ import application.domain.Token;
 import application.port.out.TokenPort;
 import com.mongodb.client.MongoCollection;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,42 +24,75 @@ public class TokenDBAdapter implements TokenPort {
     private final TokenRepository tokenRepository;
     private final TokenMapperImpl tokenMapper;
     private final MongoConfig mongoConfig;
+    private static final Logger logger = LogManager.getLogger(TokenDBAdapter.class);
     @Override
     public List<Token> getAllValidTokenByUser(Integer id) {
-        MongoCollection<Document> collection= mongoConfig.getAllDocuments("Tokens");
+        logger.info("Getting all valid tokens for User with ID: {}", id);
 
-        List<Token> tokenList=tokenMapper.documentTokenToListTokens(collection);
-        List<Token> tokenHasUser=tokenList.stream().filter(
-                token ->
-                        token.getUserInfo().getId().equals(id)
+        MongoCollection<Document> collection = mongoConfig.getAllDocuments("Tokens");
 
+        List<Token> tokenList = tokenMapper.documentTokenToListTokens(collection);
 
-        ).collect(Collectors.toList());
-        List<Token> tokenHasRevokedFalse= tokenHasUser.stream().filter(
-                token -> !token.expired || !token.revoked
-        ).collect(Collectors.toList());
+        logger.debug("Found {} tokens in the collection", tokenList.size());
+
+        List<Token> tokenHasUser = tokenList.stream()
+                .filter(token -> token.getUserInfo().getId().equals(id))
+                .collect(Collectors.toList());
+
+        logger.debug("Found {} tokens belonging to User with ID: {}", tokenHasUser.size(), id);
+
+        List<Token> tokenHasRevokedFalse = tokenHasUser.stream()
+                .filter(token -> !token.expired || !token.revoked)
+                .collect(Collectors.toList());
+
+        logger.info("Found {} valid tokens for User with ID: {}", tokenHasRevokedFalse.size(), id);
+
         return tokenHasRevokedFalse;
-
     }
+
 
     @Override
     public Token getToken(String token) {
-        if(tokenRepository.findByToken(token).isPresent()){
-            TokenEntity tokenEntity=tokenRepository.findByToken(token).get();
-            return tokenMapper.tokenEntityToToken(tokenEntity);}
-        else return null;
+        logger.info("Getting token by token value: {}", token);
+
+        if (tokenRepository.findByToken(token).isPresent()) {
+            TokenEntity tokenEntity = tokenRepository.findByToken(token).get();
+            logger.debug("Token found by token value: {}", token);
+            return tokenMapper.tokenEntityToToken(tokenEntity);
+        } else {
+            logger.info("Token with value {} not found", token);
+            return null;
+        }
     }
 
     @Override
     public Token addToken(Token token) {
-        TokenEntity tokenEntity=tokenMapper.tokenToTokenEntity(token);
-        return tokenMapper.tokenEntityToToken(tokenRepository.save(tokenEntity));
+        logger.info("Adding a new token");
+
+        TokenEntity tokenEntity = tokenMapper.tokenToTokenEntity(token);
+        logger.debug("Converting token to tokenEntity");
+        TokenEntity savedTokenEntity = tokenRepository.save(tokenEntity);
+        logger.debug("Saving tokenEntity: {}", tokenEntity);
+        Token savedToken = tokenMapper.tokenEntityToToken(savedTokenEntity);
+        logger.debug("Converting tokenEntity to token");
+
+        logger.info("Token added successfully");
+
+        return savedToken;
     }
+
 
     @Override
     public boolean isValid(String token) {
-        return tokenRepository.findByToken(token)
+        logger.info("Checking if token is valid");
+
+        boolean valid = tokenRepository.findByToken(token)
                 .map(t -> !t.isExpired() && !t.isRevoked())
                 .orElse(false);
+
+        logger.info("Token is {}valid", valid ? "" : "not ");
+
+        return valid;
     }
+
 }

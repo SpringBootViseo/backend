@@ -9,6 +9,9 @@ import application.domain.User;
 import application.domain.UserInfo;
 import application.port.out.UserInfoPort;
 import lombok.AllArgsConstructor;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,23 +19,46 @@ import org.springframework.stereotype.Component;
 public class UserInfoDBAdapter implements UserInfoPort {
     private final UserInfoRepository userInfoRepository;
     private final UserInfoMapperImpl userInfoMapper;
+    private  static final Logger logger = LogManager.getLogger(UserInfoDBAdapter.class);
+
     @Override
     public UserInfo getUserByEmail(String email) {
-        if(userInfoRepository.findByEmail(email).isPresent()) {
+        logger.info("Getting user by email: {}", email);
+        logger.trace("Checking if user with email: {} exists", email);
+
+        if (userInfoRepository.findByEmail(email).isPresent()) {
             UserInfoEntity userInfoEntity = userInfoRepository.findByEmail(email).get();
-            return userInfoMapper.userInfoEntityToUserInfo(userInfoEntity);
+            UserInfo userInfo = userInfoMapper.userInfoEntityToUserInfo(userInfoEntity);
+            logger.debug("Converting userInfoEntity to UserInfo");
+            logger.debug("Retrieved user with email: {}", email);
+            return userInfo;
+        } else {
+            logger.error("User with email: {} not found", email);
+            throw new UserAlreadyExistsException("User doesn't exist");
         }
-        else throw new UserAlreadyExistsException("User doesn't exist");
     }
 
     @Override
     public UserInfo addUserInfo(UserInfo userInfo) {
-        UserInfoEntity userInfoEntity=userInfoMapper.userInfoToUserInfo(userInfo);
-        return userInfoMapper.userInfoEntityToUserInfo(userInfoRepository.save(userInfoEntity));
+        logger.info("Adding user information");
+
+        UserInfoEntity userInfoEntity = userInfoMapper.userInfoToUserInfo(userInfo);
+        logger.debug("Converting UserInfo to UserInfoEntity");
+        UserInfoEntity savedUserInfoEntity = userInfoRepository.save(userInfoEntity);
+        logger.debug("Saving UserInfoEntity");
+        UserInfo savedUserInfo = userInfoMapper.userInfoEntityToUserInfo(savedUserInfoEntity);
+        logger.debug("Converting UserInfoEntity to UserInfo");
+
+        logger.info("User information added successfully");
+
+        return savedUserInfo;
     }
 
     @Override
     public boolean isUser(String email) {
+        logger.info("Checking if user with email: {} exists", email);
+
         return userInfoRepository.findByEmail(email).isPresent();
     }
+
 }
