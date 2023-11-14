@@ -5,8 +5,8 @@ import application.domain.Preparateur;
 import application.port.in.PreparateurUseCase;
 import application.port.out.PreparateurPort;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -15,37 +15,40 @@ import java.util.NoSuchElementException;
 @Service
 public class PreparateurService implements PreparateurUseCase {
     private final PreparateurPort preparateurPort;
-    private static final Logger logger = LoggerFactory.getLogger(PreparateurService.class);
-
+    private final static Logger logger= LogManager.getLogger(PreparateurService.class);
     @Override
     public Preparateur addPreparateur(Preparateur preparateur) {
-        // INFO level for a significant operation
-        logger.info("Adding preparateur: {}", preparateur);
-
-        if (preparateurPort.isPreparateur(preparateur.getEmail())) {
-            logger.error("Preparateur with email {} already exists", preparateur.getEmail());
-            throw new UserAlreadyExistsException("Preparateur already exists!");
+        logger.debug("Check if preparateur"+preparateur.toString()+" Already exist");
+        if(preparateurPort.isPreparateur(preparateur.getEmail())){
+            logger.error("preparateur alreadyExist!");
+            throw new UserAlreadyExistsException("preparateur alreadyExist!");
         }
+        logger.info("Create new Preparateur "+preparateur.toString());
 
         return preparateurPort.addPreparateur(preparateur);
     }
 
     @Override
-    public Preparateur getPreparateur(String email) {
-        // INFO level for a significant operation
-        logger.info("Getting preparateur with email: {}", email);
+    public Preparateur getPreparateur(String email)
+    {
+        logger.debug("Check if preparateur with email "+email+" Already exist");
 
-        if (preparateurPort.isPreparateur(email)) {
+        if(preparateurPort.isPreparateur(email)){
+            logger.info("Get preparateur info with email :"+email);
             return preparateurPort.getPreparateur(email);
-        } else {
-            logger.error("Preparateur with email {} doesn't exist", email);
-            throw new NoSuchElementException("Preparateur with such email doesn't exist!");
+        }
+
+        else {
+            logger.error("Preparateur with such mail doesn't exist!");
+            throw new NoSuchElementException("Preparateur with such mail doesn't exist!");
         }
     }
 
     @Override
     public Boolean isPreparateur(String email) {
-        logger.debug("Checking if preparateur with email {} exists", email);
+        logger.debug("Check if preparateur with email "+email+" Already exist");
+
         return preparateurPort.isPreparateur(email);
     }
+
 }

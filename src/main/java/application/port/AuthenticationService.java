@@ -9,9 +9,8 @@ import application.port.out.PreparateurPort;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 public class AuthenticationService implements AuthenticationUseCase {
 
-    private final static Logger logger= LoggerFactory.getLogger(AuthenticationService.class);
+    private final static Logger logger= LogManager.getLogger(AuthenticationService.class);
     AuthenticationPort authentificationPort;
     PreparateurPort preparateurPort;
     LivreurPort livreurPort;

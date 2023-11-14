@@ -7,8 +7,7 @@ import application.port.out.CartPort;
 import application.port.out.ProductPort;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -18,7 +17,7 @@ import java.util.UUID;
 public class CartService implements CartUseCase {
     CartPort cartPort;
     ProductPort productPort;
-    private final static Logger logger= LoggerFactory.getLogger(CartService.class);
+    private final static Logger logger= LogManager.getLogger(CartService.class);
     @Override
     public Cart createCart(String idCart) {
         logger.info(String.format("create cart with id :"+idCart));

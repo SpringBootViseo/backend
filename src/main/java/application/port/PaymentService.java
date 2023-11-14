@@ -4,8 +4,8 @@ import application.domain.Payment;
 import application.port.in.PaymentUseCase;
 import application.port.out.PaymentPort;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.InvalidPropertiesFormatException;
@@ -16,92 +16,93 @@ import java.util.UUID;
 @AllArgsConstructor
 @Service
 public class PaymentService implements PaymentUseCase {
-    private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
     private final PaymentPort paymentPort;
-
+    private final static Logger logger= LogManager.getLogger(PaymentService.class);
     @Override
     public Payment savePayment(Payment payment) throws InvalidPropertiesFormatException {
-        logger.info("Saving payment: {}", payment);
-
-        if (paymentPort.isPayment(payment.getId())) {
-            logger.error("Payment with ID {} already exists", payment.getId());
-            throw new InvalidPropertiesFormatException("Payment with id already exists");
-        } else {
+        logger.debug("check if payment with id "+payment.getId()+"exist");
+        if(paymentPort.isPayment(payment.getId())){
+            logger.error("Payment with id"+payment.getId()+" Already exist!");
+            throw new InvalidPropertiesFormatException("Payment with id Already exist!");
+        }
+        else {
+            logger.info("Save payment "+payment.toString());
             return paymentPort.savePayment(payment);
         }
     }
 
     @Override
     public Payment getPayement(UUID id) {
-        logger.info("Getting payment with ID: {}", id);
-
-        if (paymentPort.isPayment(id)) {
+        if(paymentPort.isPayment(id)){
+            logger.info("Retrieve Payement with id"+id);
             return paymentPort.getPayement(id);
-        } else {
-            logger.error("Payment with ID {} doesn't exist", id);
-            throw new NoSuchElementException("Payment doesn't exist");
+        }
+
+        else{
+            logger.error("Payment doesn't exist with such id "+id);
+            throw new NoSuchElementException("Payment doesn't exist!");
         }
     }
 
     @Override
     public List<Payment> listPayment() {
-        logger.info("Listing all payments");
+        logger.info("Get all Payements ");
+
         return paymentPort.listPayment();
     }
 
     @Override
     public List<Payment> listPayment(String idUser) {
-        logger.info("Listing payments for user with ID: {}", idUser);
-
-        List<Payment> payments = paymentPort.listPayment();
-        List<Payment> paymentsHasUserNotNull = payments.stream()
-                .filter(payment -> payment.getUser() != null)
-                .toList();
-
-        List<Payment> result = paymentsHasUserNotNull.stream()
-                .filter(payment -> payment.getUser().getId().equals(idUser))
-                .toList();
-
+        logger.debug("Get All Payments");
+        List<Payment> payments=paymentPort.listPayment();
+        logger.debug("omit the payments with null user");
+        List<Payment> paymentsHasUserNotNull=payments.stream().filter(
+                payment -> payment.getUser()!=null
+        ).toList();
+        logger.info("Retrieve all payment done by user with id "+idUser);
+        List<Payment> result=paymentsHasUserNotNull.stream().filter(
+                payment -> payment.getUser().getId().equals(idUser)
+        ).toList();
         return result;
     }
 
-
-
-
     @Override
     public List<Payment> listPaymentMontantSuperieuAMontant(long montant) {
-        logger.info("Listing payments with a total price greater than: {}", montant);
-        List<Payment> payments = paymentPort.listPayment();
-        List<Payment> paymentsHasTotalNotNull = payments.stream()
-                .filter(payment -> payment.getTotalPrice() != 0)
-                .toList();
+        logger.debug("Get All Payments");
 
-        List<Payment> result = paymentsHasTotalNotNull.stream()
-                .filter(payment -> payment.getTotalPrice() > montant)
-                .toList();
+        List<Payment> payments=paymentPort.listPayment();
+        logger.debug("omit the payments with 0 in total");
 
+        List<Payment> paymentsHasTotalNotNull=payments.stream().filter(
+                payment -> payment.getTotalPrice()!=0
+        ).toList();
+        logger.info("Retrieve all payment with total superior than "+montant);
+        List<Payment> result=paymentsHasTotalNotNull.stream().filter(
+                payment -> payment.getTotalPrice()>montant
+        ).toList();
         return result;
     }
 
     @Override
     public List<Payment> listPaymentMontantInferieurAMontant(long montant) {
-        logger.info("Listing payments with a total price less than: {}", montant);
+        logger.debug("Get All Payments");
+        List<Payment> payments=paymentPort.listPayment();
+        logger.debug("omit the payments with 0 in total");
 
-        List<Payment> payments = paymentPort.listPayment();
-        List<Payment> paymentsHasTotalNotNull = payments.stream()
-                .filter(payment -> payment.getTotalPrice() != 0)
-                .toList();
+        List<Payment> paymentsHasTotalNotNull=payments.stream().filter(
+                payment -> payment.getTotalPrice()!=0
+        ).toList();
+        logger.info("Retrieve all payment with total inferior than "+montant);
 
-        List<Payment> result = paymentsHasTotalNotNull.stream()
-                .filter(payment -> payment.getTotalPrice() < montant)
-                .toList();
-
+        List<Payment> result=paymentsHasTotalNotNull.stream().filter(
+                payment -> payment.getTotalPrice()<montant
+        ).toList();
         return result;
     }
 
     @Override
     public Boolean isPayment(UUID id) {
-        logger.debug("Checking if payment with ID {} exists", id);
+        logger.debug("Retrieve payment with id "+id);
         return paymentPort.isPayment(id);
     }
 }

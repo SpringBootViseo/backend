@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CategoryService implements CategoryUseCase {
     private final static Logger logger= LogManager.getLogger(CategoryService.class);
 
-    private  CategoryPort categoryPort;
+    private final CategoryPort categoryPort;
     @Override
     public Category createCategory(Category category) {
         logger.info("Create category "+category.toString());
